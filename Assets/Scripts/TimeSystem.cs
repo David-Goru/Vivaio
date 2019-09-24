@@ -51,7 +51,7 @@ public class TimeSystem : MonoBehaviour
 
     public void NewDayCall()
     {
-        foreach (Farm.SimpleCrop crop in Farm.SimpleCrops.ToArray())
+        foreach (Crop crop in Farm.Crops.ToArray())
         {
             crop.NewDay();
         }

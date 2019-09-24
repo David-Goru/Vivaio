@@ -1,0 +1,108 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Crop
+{
+    // Info
+    Plant plant;
+    GameObject pot;
+    int amount;
+
+    // State
+    int growLevel;
+    bool watered;
+    int daysUntilDry;
+
+
+    public Crop(Plant plant, GameObject pot)
+    {
+        this.plant = plant;
+        this.daysUntilDry = plant.DaysUntilDry;
+        this.pot = pot;
+
+        // Random
+        amount = Random.Range(plant.MinAmount, plant.MaxAmount);
+
+        // Default
+        growLevel = 0;
+        watered = false;
+
+        // Instantiate crop
+        GameObject crop = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Crop"));
+        crop.transform.position = pot.transform.position;
+        crop.transform.SetParent(pot.transform);
+        crop.name = "Crop";
+
+        // Set sprite
+        pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = Farm.UnwateredSeed;
+    }
+
+    public void NewDay()
+    {
+        // Check if the plant can grow
+        if (growLevel < plant.Levels)
+        {
+            if (!watered)
+            {
+                // If the plant can grow, if it wasn't watered, it will dry a bit
+                daysUntilDry--;
+                if (daysUntilDry == 0)
+                {
+                    if (growLevel == 0) pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = Farm.UnwateredSeed;
+                    else pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Dry[growLevel - 1];
+                }
+            }
+            else
+            {
+                // If the plant was watered and can grow, grow it
+                watered = false;
+                growLevel++;
+                pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Unwatered[growLevel - 1];
+            }
+        }
+        else if (daysUntilDry > 0)
+        {
+            // The plant can grow more so dry it a bit
+            daysUntilDry--;
+            if (daysUntilDry == 0) pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Dry[growLevel - 1];
+        }
+    }
+
+    public bool Water()
+    {
+        // Check if the plant was already watered and, if not, water it
+        if (watered) return true;
+        else if (daysUntilDry > 0)
+        {
+            daysUntilDry = 2;
+            watered = true;
+            if (growLevel == 0) pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = Farm.WateredSeed;
+            else pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Watered[growLevel - 1];
+        }
+        return false;
+    }
+
+    public void Harvest()
+    {
+        if (growLevel == plant.Levels && (PlayerTools.CropsInBasket + amount) < 20 && (PlayerTools.TypeInBasket == plant.Name || PlayerTools.TypeInBasket == "None"))
+        {
+            PlayerTools.TypeInBasket = plant.Name;
+            PlayerTools.CropsInBasket += amount;
+            Inventory.ChangeSubobject(plant.Name, "Crop");
+            MonoBehaviour.Destroy(pot.transform.Find("Crop").gameObject);
+            Farm.Crops.Remove(this);
+        }
+    }
+
+    public GameObject GetPot()
+    {
+        return pot;
+    }
+
+    public void Delete()
+    {
+        MonoBehaviour.Destroy(pot.transform.Find("Crop").gameObject);
+        Farm.Crops.Remove(this);
+    }
+}

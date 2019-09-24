@@ -51,7 +51,7 @@ public class PlayerTools : MonoBehaviour
                     GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
                     if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
                     {
-                        Farm.SimpleCrop plant = Farm.SimpleCrops.Find(x => x.Pot == pot);
+                        Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
                         if (plant.Water()) Debug.Log("Was already watered");
                     }
                 }
@@ -63,19 +63,7 @@ public class PlayerTools : MonoBehaviour
                     GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject;
                     if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f && pot.name == "Plowed soil")
                     {
-                        switch (CurrentSeed)
-                        {
-                            case "Tomato":
-                                Farm.SimpleCrops.Add(new Farm.SimpleCrop(CurrentSeed, 2, 8, 5, pot));
-                                break;
-                            case "Carrot":
-                                Farm.SimpleCrops.Add(new Farm.SimpleCrop(CurrentSeed, 2, 5, 3, pot));
-                                break;
-                            case "Potato":
-                                Farm.SimpleCrops.Add(new Farm.SimpleCrop(CurrentSeed, 2, 4, 2, pot));
-                                break;
-                        }
-
+                        Farm.Crops.Add(new Crop(Farm.Plants[CurrentSeed], pot));
                     }
                 }
                 break;
@@ -87,7 +75,7 @@ public class PlayerTools : MonoBehaviour
                     GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
                     if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
                     {
-                        Farm.SimpleCrop plant = Farm.SimpleCrops.Find(x => x.Pot == pot);
+                        Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
                         plant.Delete();
                     }
                 }
@@ -100,7 +88,7 @@ public class PlayerTools : MonoBehaviour
                     GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
                     if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
                     {
-                        Farm.SimpleCrop plant = Farm.SimpleCrops.Find(x => x.Pot == pot);
+                        Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
                         plant.Harvest();
                     }
                 }
