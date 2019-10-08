@@ -34,26 +34,34 @@ public class TimeSystem : MonoBehaviour
         DisplayTimeState.GetComponent<Text>().text = "Current time: " + TimeState;
     }
 
-    public void OnMouseDown()
+    public void OnTriggerEnter2D()
     {
-        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 1 && TimeState == "Night")
+        if (TimeState == "Night")
         {
-            TimeState = "Sleepig";
-            DisplayTimeState.GetComponent<Text>().text = "Current time: " + TimeState;
-            // Sleep, black screen, etc
-            TimeState = "Morning";
-            DisplayTimeState.GetComponent<Text>().text = "Current time: " + TimeState;
-            // Dawn, wake up and whatever
-            NewDayCall();
-            StartCoroutine(StateHandler());
+            GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(true);
         }
     }
 
+    public void OnTriggerExit2D()
+    {        
+        GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(false);
+    }
+
+
+
     public void NewDayCall()
     {
+        TimeState = "Sleepig";
+        GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(false);
+        DisplayTimeState.GetComponent<Text>().text = "Current time: " + TimeState;
+        // Sleep, black screen, etc
+        TimeState = "Morning";
+        DisplayTimeState.GetComponent<Text>().text = "Current time: " + TimeState;
+        // Dawn, wake up and whatever
         foreach (Crop crop in Farm.Crops.ToArray())
         {
             crop.NewDay();
         }
+        StartCoroutine(StateHandler());
     }
 }

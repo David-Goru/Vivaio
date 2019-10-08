@@ -25,75 +25,78 @@ public class PlayerTools : MonoBehaviour
 
     void Update()
     {
-        Vector2 mousePos;
-        switch (CurrentTool)
+        if (Input.GetMouseButtonDown(0))
         {
-            case "Hoe":
-                mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
-                if (Input.GetMouseButtonDown(0) && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")))
-                {
-                    GameObject farmFloor = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).transform.gameObject;
-                    if (Vector2.Distance(transform.position, farmFloor.transform.position) <= 1.5f && farmFloor.name == "Grass")
+            Vector2 mousePos;
+            switch (CurrentTool)
+            {
+                case "Hoe":
+                    mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
+                    if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")))
                     {
-                        farmFloor.name = "Plowed soil";
-                        updateFarmland(farmFloor);
-                        foreach (Collider2D col in Physics2D.OverlapCircleAll(farmFloor.transform.position, 1.5f))
+                        GameObject farmFloor = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).transform.gameObject;
+                        if (Vector2.Distance(transform.position, farmFloor.transform.position) <= 1.5f && farmFloor.name == "Grass")
                         {
-                            if (col.gameObject.name == "Plowed soil") updateFarmland(col.gameObject);
+                            farmFloor.name = "Plowed soil";
+                            updateFarmland(farmFloor);
+                            foreach (Collider2D col in Physics2D.OverlapCircleAll(farmFloor.transform.position, 1.5f))
+                            {
+                                if (col.gameObject.name == "Plowed soil") updateFarmland(col.gameObject);
+                            }
                         }
                     }
-                }
-                break;
-            case "Watering can":
-                mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
-                if (Input.GetMouseButtonDown(0) && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
-                {
-                    GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
-                    if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
+                    break;
+                case "Watering can":
+                    mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
+                    if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
                     {
-                        Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
-                        if (plant.Water()) Debug.Log("Was already watered");
+                        GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
+                        if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
+                        {
+                            Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
+                            if (plant.Water()) Debug.Log("Was already watered");
+                        }
                     }
-                }
-                break;
-            case "Seed":
-                mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
-                if (Input.GetMouseButtonDown(0) && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")) && !Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
-                {
-                    GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject;
-                    if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f && pot.name == "Plowed soil")
+                    break;
+                case "Seed":
+                    mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
+                    if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")) && !Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
                     {
-                        Farm.Crops.Add(new Crop(Farm.Plants[CurrentSeed], pot));
+                        GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject;
+                        if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f && pot.name == "Plowed soil")
+                        {
+                            Farm.Crops.Add(new Crop(Farm.Plants[CurrentSeed], pot));
+                        }
                     }
-                }
-                break;
-            case "Shovel":
-                mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
+                    break;
+                case "Shovel":
+                    mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
 
-                if (Input.GetMouseButtonDown(0) && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
-                {
-                    GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
-                    if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
+                    if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
                     {
-                        Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
-                        plant.Delete();
+                        GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
+                        if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
+                        {
+                            Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
+                            plant.Delete();
+                        }
                     }
-                }
-                break;
-            case "Basket":
-                mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
+                    break;
+                case "Basket":
+                    mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 1.0f) / 1.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 1.0f) / 1.0f);
 
-                if (Input.GetMouseButtonDown(0) && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
-                {
-                    GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
-                    if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
+                    if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
                     {
-                        Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
-                        plant.Harvest();
+                        GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
+                        if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
+                        {
+                            Crop plant = Farm.Crops.Find(x => x.GetPot() == pot);
+                            plant.Harvest();
+                        }
                     }
-                }
-                break;
-        }   
+                    break;
+            }   
+        }
     }
 
     public void TakeTool(string tool)
