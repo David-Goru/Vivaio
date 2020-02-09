@@ -29,7 +29,7 @@ public class Crop
         watered = false;
 
         // Instantiate crop
-        GameObject crop = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Crop"));
+        GameObject crop = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Crops/Crop"));
         crop.transform.position = pot.transform.position;
         crop.transform.SetParent(pot.transform);
         crop.name = "Crop";
@@ -63,7 +63,7 @@ public class Crop
         }
         else if (daysUntilDry > 0)
         {
-            // The plant can grow more so dry it a bit
+            // The plant can't grow more so dry it a bit
             daysUntilDry--;
             if (daysUntilDry == 0) pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Dry[growLevel - 1];
         }
@@ -83,16 +83,19 @@ public class Crop
         return false;
     }
 
-    public void Harvest()
+    public bool Harvest()
     {
-        if (growLevel == plant.Levels && (PlayerTools.CropsInBasket + amount) < 20 && (PlayerTools.TypeInBasket == plant.Name || PlayerTools.TypeInBasket == "None"))
+        Basket basket = GameObject.Find("Tools").transform.Find("Basket").GetComponent("Basket") as Basket;
+        if (growLevel == plant.Levels && (PlayerTools.ToolOnHand.Remaining + amount) < 20 && (basket.Product == null || basket.Product.Name == plant.Name))
         {
-            PlayerTools.TypeInBasket = plant.Name;
-            PlayerTools.CropsInBasket += amount;
+            basket.Product = Products.ProductsList.Find(x => x.Name == plant.Name);
+            PlayerTools.ToolOnHand.Remaining += amount;
             Inventory.ChangeSubobject(plant.Name, "Crop");
             MonoBehaviour.Destroy(pot.transform.Find("Crop").gameObject);
             Farm.Crops.Remove(this);
+            return true;
         }
+        return false;
     }
 
     public GameObject GetPot()

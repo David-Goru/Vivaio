@@ -20,4 +20,11 @@
 		<MaxAmount>5</MaxAmount>
 		<DaysUntilDry>1</DaysUntilDry>
 	</Plant>
+	<Plant>
+		<Name>Pumpkin</Name>
+		<Levels>6</Levels>
+		<MinAmount>1</MinAmount>
+		<MaxAmount>1</MaxAmount>
+		<DaysUntilDry>4</DaysUntilDry>
+	</Plant>
 </Plants>

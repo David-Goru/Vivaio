@@ -12,7 +12,6 @@ public class Plant
     public int DaysUntilDry;
 
     // Sprites
-    public Sprite Icon;
     public Sprite[] Watered;
     public Sprite[] Unwatered;
     public Sprite[] Dry;
@@ -30,13 +29,11 @@ public class Plant
         Unwatered = new Sprite[levels];
         Dry = new Sprite[levels];
 
-        Icon = Resources.Load<Sprite>("Crops/" + name);
-
         for (int i = 0; i < levels; i++)
         {
-            Watered[i] = Resources.Load<Sprite>(name + "/Watered/" + i);
-            Unwatered[i] = Resources.Load<Sprite>(name + "/Unwatered/" + i);
-            Dry[i] = Resources.Load<Sprite>(name + "/Dry/" + i);
+            Watered[i] = Resources.Load<Sprite>("Crops/" + name + "/Watered/" + i);
+            Unwatered[i] = Resources.Load<Sprite>("Crops/" + name + "/Unwatered/" + i);
+            Dry[i] = Resources.Load<Sprite>("Crops/" + name + "/Dry/" + i);
         }
     }
 }

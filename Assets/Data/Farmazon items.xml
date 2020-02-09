@@ -1,0 +1,50 @@
+<FarmazonItems>
+	<FarmazonItem>
+		<Name>Carrot seeds</Name>
+		<Use>Carrot</Use>
+		<Price>35</Price>
+		<Description>A small bag of 10 carrot seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Potato seeds</Name>
+		<Use>Potato</Use>
+		<Price>50</Price>
+		<Description>A small bag of 10 potato seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Tomato seeds</Name>
+		<Use>Tomato</Use>
+		<Price>60</Price>
+		<Description>A small bag of 10 tomato seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Pumpkin seeds</Name>
+		<Use>Pumpkin</Use>
+		<Price>75</Price>
+		<Description>A small bag of 10 pumpkin seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Shop table</Name>
+		<Use>Build</Use>
+		<Price>100</Price>
+		<Description>A stand with storage to sell things.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Storage box</Name>
+		<Use>Build</Use>
+		<Price>60</Price>
+		<Description>A box to store things.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Product box</Name>
+		<Use>Build</Use>
+		<Price>40</Price>
+		<Description>A box to store one product.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Shop tile</Name>
+		<Use>Build</Use>
+		<Price>10</Price>
+		<Description>A pack of 5 rock tiles for the shop.</Description>
+	</FarmazonItem>
+</FarmazonItems>
