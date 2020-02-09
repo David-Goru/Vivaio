@@ -1,0 +1,34 @@
+<Items>
+	<Item>
+		<Name>Carrot seeds</Name>
+		<Use>Carrot</Use>
+	</Item>
+	<Item>
+		<Name>Potato seeds</Name>
+		<Use>Potato</Use>
+	</Item>
+	<Item>
+		<Name>Tomato seeds</Name>
+		<Use>Tomato</Use>
+	</Item>
+	<Item>
+		<Name>Pumpkin seeds</Name>
+		<Use>Pumpkin</Use>
+	</Item>
+	<Item>
+		<Name>Shop table</Name>
+		<Use>Build</Use>
+	</Item>
+	<Item>
+		<Name>Storage box</Name>
+		<Use>Build</Use>
+	</Item>
+	<Item>
+		<Name>Product box</Name>
+		<Use>Build</Use>
+	</Item>
+	<Item>
+		<Name>Shop tile</Name>
+		<Use>Build</Use>
+	</Item>
+</Items>
