@@ -30,5 +30,11 @@ public class Master : MonoBehaviour
     {
         Balance += money;
         GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Balance + "€";
+
+        Transform MoneyHandler = GameObject.Find("UI").transform.Find("Money").Find("Money updates").Find("Viewport").Find("Content");
+
+        GameObject uiElement = Instantiate<GameObject>(Resources.Load<GameObject>("UI/Money " + (money < 0 ? "removed" : "added")), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+        uiElement.GetComponent<Text>().text = money + "€";
+        uiElement.transform.SetParent(MoneyHandler);
     }
 }

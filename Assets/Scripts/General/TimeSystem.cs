@@ -9,6 +9,8 @@ public class TimeSystem : MonoBehaviour
     public static string TimeState;
     public float MinuteValue; // Real seconds for in game minute
     public static bool OnIndoors;
+    public static bool Sleeping;
+    public static int CurrentMinute;
 
     // Time system things    
     public GameObject HouseSprite;
@@ -28,48 +30,81 @@ public class TimeSystem : MonoBehaviour
     void Start()
     {
         OnIndoors = false;
+        Sleeping = false;
         Night = GameObject.Find("Night");
         Night.SetActive(false);
         houseDay = Resources.Load<Sprite>("House/Indoor house day");
         houseNight = Resources.Load<Sprite>("House/Indoor house night");
 
         TimeState = "Morning";
+        CurrentMinute = 180;
 
-        StartCoroutine(StateHandler());
+        Time.timeScale = MinuteValue;
+
+        StartCoroutine(TimeTick());
     }
 
-    IEnumerator StateHandler()
+    public void StartSleeping()
     {
-        Night.SetActive(false);
-        ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockMorning;
+        StopCoroutine(TimeTick());
 
-        for (int i = 0; i < 90; i++)
+        Time.timeScale = 40;
+        (Player.GetComponent("PlayerMovement") as PlayerMovement).enabled = false;
+        Player.GetComponent<SpriteRenderer>().enabled = false;
+        GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(false);
+        Bed.GetComponent<Animator>().SetTrigger("Sleep");
+        Sleeping = true;
+
+        StartCoroutine(TimeTick());
+    }
+
+    IEnumerator TimeTick()
+    {
+        if (Sleeping)
         {
-            yield return new WaitForSeconds(MinuteValue);
-            ClockHand.transform.Rotate(0, 0, -1);
+            yield return new WaitForSeconds(1);
+            ClockHand.transform.eulerAngles = new Vector3(0, 0, -1f * CurrentMinute);
+            CurrentMinute++;
+
+            switch (CurrentMinute)
+            {
+                case 702:
+                    CurrentMinute = 0;
+                    NewDayCall();
+                    break;
+                case 180:
+                    Bed.GetComponent<Animator>().SetTrigger("StopSleep");
+                    (Player.GetComponent("PlayerMovement") as PlayerMovement).enabled = true;
+                    Player.GetComponent<SpriteRenderer>().enabled = true;
+                    Sleeping = false;
+                    Time.timeScale = MinuteValue;
+                    TimeState = "Morning";
+                    ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockMorning;
+                    break;
+                case 270:
+                    TimeState = "Shop open";
+                    ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockAfternoon;
+                    break;
+                case 630:
+                    TimeState = "Night";
+                    ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockNight;
+                    break;
+            }
+
+            StartCoroutine(TimeTick());
         }
-
-        // Open shop
-        TimeState = "Shop open";
-        ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockAfternoon;
-
-        for (int i = 0; i < 360; i++)
+        else if (CurrentMinute < 720)
         {
-            yield return new WaitForSeconds(MinuteValue);
-            ClockHand.transform.Rotate(0, 0, -1);
-        }
+            yield return new WaitForSeconds(1);
+            ClockHand.transform.eulerAngles = new Vector3(0, 0, -1f * CurrentMinute);
+            CurrentMinute++;
 
-        // Close shop, start sunset and whatever
-        TimeState = "Night"; // Night lasts until player decides to sleep
-        ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockNight;
-        if (!OnIndoors) Night.SetActive(true);
-        else if (Vector2.Distance(Player.transform.position, Bed.transform.position) < 1) GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(true);
-        HouseSprite.GetComponent<SpriteRenderer>().sprite = houseNight;
+            StartCoroutine(TimeTick());
+        }
     }
 
     public void NewDayCall()
     {
-        StartCoroutine(goNight());
         Master.Day++;
         Master.LastDayPaid = 0;
         Master.LastDayPaid += WaterSource.WaterUsage;
@@ -98,57 +133,12 @@ public class TimeSystem : MonoBehaviour
         }
         else Master.LastDayDebt = 0;
         Master.UpdateBalance(-Master.LastDayPaid);
-    }
 
-    IEnumerator goNight()
-    {
-        TimeState = "Sleeping";
-        Bed.GetComponent<Animator>().SetTrigger("Sleep");
-        (Player.GetComponent("PlayerMovement") as PlayerMovement).enabled = false;
-        Player.GetComponent<SpriteRenderer>().enabled = false;
-        GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(false);
-
-        Color colorBasement = HouseSprite.GetComponent<SpriteRenderer>().color;
-
-        while (colorBasement.a > 0.2)
-        {
-            colorBasement = new Color(colorBasement.r, colorBasement.g, colorBasement.b, colorBasement.a - 0.1f);
-            HouseSprite.GetComponent<SpriteRenderer>().color = colorBasement;
-            Bed.GetComponent<SpriteRenderer>().color = colorBasement;
-            yield return new WaitForSeconds(0.05f);
-        }
-
-        yield return new WaitForSeconds(2f);
-
-        StartCoroutine(goDay());
-    }
-
-    IEnumerator goDay()
-    {
-        ClockHand.transform.rotation = Quaternion.Euler(0, 0, -180);
-        TimeState = "Morning";
-        HouseSprite.GetComponent<SpriteRenderer>().sprite = houseDay;
         foreach (Crop crop in Farm.Crops.ToArray())
         {
             crop.NewDay();
         }
         (gameObject.GetComponent("AI") as AI).NewDay();
-
         (GameObject.Find("Farm handler").GetComponent("DeliverySystem") as DeliverySystem).UpdatePackages();
-
-        Color colorBasement = HouseSprite.GetComponent<SpriteRenderer>().color;
-
-        while (colorBasement.a < 1)
-        {
-            colorBasement = new Color(colorBasement.r, colorBasement.g, colorBasement.b, colorBasement.a + 0.1f);
-            HouseSprite.GetComponent<SpriteRenderer>().color = colorBasement;
-            Bed.GetComponent<SpriteRenderer>().color = colorBasement;
-            yield return new WaitForSeconds(0.05f);
-        }
-        Bed.GetComponent<Animator>().SetTrigger("StopSleep");
-        (Player.GetComponent("PlayerMovement") as PlayerMovement).enabled = true;
-        Player.GetComponent<SpriteRenderer>().enabled = true;
-
-        StartCoroutine(StateHandler());
     }
 }

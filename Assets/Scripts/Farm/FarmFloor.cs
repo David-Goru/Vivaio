@@ -33,7 +33,7 @@ public class FarmFloor : MonoBehaviour
                     }
                     break;
                 case "Watering can":
-                    if (hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f)
+                    if (hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.0f)
                     {
                         if (PlayerTools.ToolOnHand.CheckTool() && !Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
                         {

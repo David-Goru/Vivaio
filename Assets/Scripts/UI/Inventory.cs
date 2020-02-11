@@ -26,7 +26,11 @@ public class Inventory : MonoBehaviour
             case "Tool":
                 InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + objectName);
                 InventorySlot.SetActive(true);
-                if (objectName == "Watering can") InventoryText.text = objectName + " (" + PlayerTools.ToolOnHand.Remaining + "/10)";
+                if (objectName == "Watering can")
+                { 
+                    InventoryText.text = objectName + " (" + PlayerTools.ToolOnHand.Remaining + "/10)";
+                    if (PlayerTools.ToolOnHand.Remaining == 0) InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
+                }
                 else InventoryText.text = objectName;
                 break;
             case "Seed":
