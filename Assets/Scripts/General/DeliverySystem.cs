@@ -65,6 +65,10 @@ public class DeliverySystem : MonoBehaviour
                     GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
                     Inventory.ChangeObject(Items[itemID].Name, "Object");
                 }
+                else if (Items[itemID].Use == "Farm") // Drip bottle
+                {
+                    Inventory.ChangeObject(Items[itemID].Name, "Object");
+                }
                 else // They are seeds
                 {
                     SeedTool seedTool = (GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool);

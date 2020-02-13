@@ -13,7 +13,7 @@ public class SeedTool : Tool
         GameObject.Find("UI").transform.Find("Throw seeds").gameObject.SetActive(true);
     }
 
-    public override void UseTool()
+    public override void UseTool(int none)
     {
         Remaining--;
         Inventory.ChangeObject(SeedName, "Seed");

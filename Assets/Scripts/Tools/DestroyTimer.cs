@@ -12,7 +12,7 @@ public class DestroyTimer : MonoBehaviour
 
     IEnumerator RemoveObject()
     {
-        yield return new WaitForSeconds(Timer);
+        yield return new WaitForSecondsRealtime(Timer);
         Destroy(gameObject);
     }
 }

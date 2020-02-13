@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class WateringCan : Tool
 {
-    public override void UseTool()
+    public override void UseTool(int amount)
     {
-        Remaining--;
+        Remaining -= amount;
         Inventory.ChangeObject("Watering can", "Tool");
     }
 

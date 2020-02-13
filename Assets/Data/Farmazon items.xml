@@ -47,4 +47,10 @@
 		<Price>10</Price>
 		<Description>A pack of 5 rock tiles for the shop.</Description>
 	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Drip bottle</Name>
+		<Use>Farm</Use>
+		<Price>150</Price>
+		<Description>A bottle that can water one plant during 5 days.</Description>
+	</FarmazonItem>
 </FarmazonItems>

@@ -59,7 +59,8 @@ public class Crop
                 watered = false;
                 growLevel++;
                 pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Unwatered[growLevel - 1];
-            }
+            }            
+            pot.GetComponent<FarmFloor>().AutoWater();
         }
         else if (daysUntilDry > 0)
         {

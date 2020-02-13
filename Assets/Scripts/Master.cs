@@ -15,7 +15,7 @@ public class Master : MonoBehaviour
 
     void Start()
     {
-        Balance = 2000;
+        Balance = 0;
         Day = 0;
         Debt = 3000;
         DailyDebt = 100;
@@ -24,6 +24,7 @@ public class Master : MonoBehaviour
         LastDayWaterUsage = 0;
 
         Application.targetFrameRate = 60;
+        UpdateBalance(2000);
     }
 
     public static void UpdateBalance(int money)

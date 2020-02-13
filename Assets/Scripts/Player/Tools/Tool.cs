@@ -39,7 +39,7 @@ public class Tool : MonoBehaviour
         ChangeVisual();
     }
 
-    public virtual void UseTool() {}
+    public virtual void UseTool(int amount) {}
 
     public virtual bool CheckTool() 
     {

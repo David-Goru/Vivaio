@@ -46,7 +46,7 @@ public class TimeSystem : MonoBehaviour
 
     public void StartSleeping()
     {
-        StopCoroutine(TimeTick());
+        StopAllCoroutines();
 
         Time.timeScale = 40;
         (Player.GetComponent("PlayerMovement") as PlayerMovement).enabled = false;
@@ -62,13 +62,13 @@ public class TimeSystem : MonoBehaviour
     {
         if (Sleeping)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.25f);
             ClockHand.transform.eulerAngles = new Vector3(0, 0, -1f * CurrentMinute);
             CurrentMinute++;
 
             switch (CurrentMinute)
             {
-                case 702:
+                case 720:
                     CurrentMinute = 0;
                     NewDayCall();
                     break;

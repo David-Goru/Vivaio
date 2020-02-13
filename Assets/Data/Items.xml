@@ -31,4 +31,8 @@
 		<Name>Shop tile</Name>
 		<Use>Build</Use>
 	</Item>
+	<Item>
+		<Name>Drip bottle</Name>
+		<Use>Farm</Use>
+	</Item>
 </Items>
