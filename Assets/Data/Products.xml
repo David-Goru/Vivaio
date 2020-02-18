@@ -15,4 +15,8 @@
 		<Name>Pumpkin</Name>
 		<MediumValue>25</MediumValue>
 	</Product>
+	<Product>
+		<Name>Onion</Name>
+		<MediumValue>7</MediumValue>
+	</Product>
 </Products>

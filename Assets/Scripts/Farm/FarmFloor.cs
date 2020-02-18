@@ -22,7 +22,6 @@ public class FarmFloor : MonoBehaviour
         {
             transform.Find("Drip bottle").Find(((int)Mathf.Ceil(waterUnits / 2)).ToString()).gameObject.SetActive(false);
             waterUnits--;
-            Debug.Log(waterUnits + ", " + ((int)Mathf.Ceil((float)waterUnits / 2)).ToString());
             transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
             Farm.Crops.Find(x => x.GetPot() == gameObject).Water();
         }
@@ -72,6 +71,13 @@ public class FarmFloor : MonoBehaviour
                                 transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(false);
                                 waterUnits += unitsToUse * 2;
                                 transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
+
+                                if (!Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
+                                {
+                                    transform.Find("Drip bottle").Find(((int)Mathf.Ceil(waterUnits / 2)).ToString()).gameObject.SetActive(false);
+                                    waterUnits--;
+                                    transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
+                                }
                             }
                         }
                         else if (hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.0f)

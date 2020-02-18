@@ -14,13 +14,13 @@ public class StorageSystem : MonoBehaviour
 
     public class Box
     {
-        public ItemsHandler.Item[] Items;
+        public IObject[] Items;
         public GameObject BoxObject;
 
         public Box(GameObject box)
         {
             BoxObject = box;
-            Items = new ItemsHandler.Item[4];
+            Items = new IObject[4];
         }
         
         public void BoxClicked()
@@ -44,7 +44,16 @@ public class StorageSystem : MonoBehaviour
                     {
                         hasItems = true;
                         SetUIButton(StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Button>(), i, true);
-                        StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Items[i].Name);
+                        if (Items[i] is Letter)
+                        {
+                            Letter letter = (Letter)Items[i];                     
+                            StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
+                        }
+                        else
+                        {
+                            ItemsHandler.Item item = (ItemsHandler.Item)Items[i];
+                            StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + item.Name);
+                        }
                     }
                 }
                 if (!hasItems) GameObject.Find("UI").transform.Find("Take storage").gameObject.SetActive(true);
@@ -66,23 +75,32 @@ public class StorageSystem : MonoBehaviour
 
             if (!Inventory.InventorySlot.activeSelf)
             {
-                if (Items[itemID].Use == "Build")
+                if (Items[itemID] is Letter)
                 {
-                    if (Items[itemID].Name == "Shop tile") PlayerTools.TilesAmount = Items[itemID].Amount;
-                    (GameObject.Find("Farm handler").GetComponent("Build") as Build).ObjectName = Items[itemID].Name;
-                    GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
-                    Inventory.ChangeObject(Items[itemID].Name, "Object");
+                    Inventory.ObjectInHand = (Letter)Items[itemID];
+                    Inventory.ChangeObject("Letter", "Letter");
                 }
-                else if (Items[itemID].Use == "Farm") // Drip bottle
+                else
                 {
-                    Inventory.ChangeObject(Items[itemID].Name, "Object");
-                }
-                else // They are seeds
-                {
-                    SeedTool seedTool = (GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool);
-                    seedTool.SeedName = Items[itemID].Use;
-                    seedTool.Remaining = Items[itemID].Amount;
-                    seedTool.TakeTool();
+                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
+                    if (item.Use == "Build")
+                    {
+                        if (item.Name == "Shop tile") PlayerTools.TilesAmount = item.Amount;
+                        (GameObject.Find("Farm handler").GetComponent("Build") as Build).ObjectName = item.Name;
+                        GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
+                        Inventory.ChangeObject(item.Name, "Object");
+                    }
+                    else if (item.Use == "Farm") // Drip bottle
+                    {
+                        Inventory.ChangeObject(item.Name, "Object");
+                    }
+                    else // They are seeds
+                    {
+                        SeedTool seedTool = (GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool);
+                        seedTool.SeedName = item.Use;
+                        seedTool.Remaining = item.Amount;
+                        seedTool.TakeTool();
+                    }
                 }
                 
                 Items[itemID] = null;
@@ -112,24 +130,43 @@ public class StorageSystem : MonoBehaviour
             if (Inventory.InventorySlot.activeSelf)
             {
                 int slotNumber = itemID + 1;
-                if (ItemsHandler.ItemsList.Find(x => x.Name == Inventory.InventoryText.text) != null)
+                if (Inventory.ObjectInHand != null && Inventory.ObjectInHand is Letter)
+                {
+                    Items[itemID] = Inventory.ObjectInHand;
+                    GameObject.Find("UI").transform.Find("Open letter").gameObject.SetActive(false);
+                    GameObject.Find("UI").transform.Find("Letter").gameObject.SetActive(false);
+                    Inventory.ChangeObject("", "None");
+                    Inventory.ObjectInHand = null;
+                }
+                else if (ItemsHandler.ItemsList.Find(x => x.Name == Inventory.InventoryText.text) != null)
                 {
                     Items[itemID] = ItemsHandler.ItemsList.Find(x => x.Name == Inventory.InventoryText.text);
-                    if (Items[itemID].Name == "Shop tile") Items[itemID].Amount = PlayerTools.TilesAmount;
+                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
+                    if (item.Name == "Shop tile") item.Amount = PlayerTools.TilesAmount;
                     Inventory.ChangeObject("", "None");
                     GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(false);
                 }
                 else if (PlayerTools.ToolOnHand != null && PlayerTools.ToolOnHand.Name == "Seed")
                 {
                     Items[itemID] = ItemsHandler.ItemsList.Find(x => x.Name == (GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool).SeedName + " seeds");
-                    Items[itemID].Amount = PlayerTools.ToolOnHand.Remaining;
+                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
+                    item.Amount = PlayerTools.ToolOnHand.Remaining;
                     PlayerTools.ToolOnHand.LetTool();
                 }
                 else return;
 
                 GameObject.Find("UI").transform.Find("Take storage").gameObject.SetActive(false);
                 SetUIButton(StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Button>(), itemID, true);
-                StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Items[itemID].Name);
+                if (Items[itemID] is Letter)
+                {
+                    Letter letter = (Letter)Items[itemID];                     
+                    StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
+                }
+                else
+                {
+                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
+                    StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + item.Name);
+                }                
             }
         }
 

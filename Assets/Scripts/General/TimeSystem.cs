@@ -134,6 +134,8 @@ public class TimeSystem : MonoBehaviour
         else Master.LastDayDebt = 0;
         Master.UpdateBalance(-Master.LastDayPaid);
 
+        GameObject.Find("Structure").transform.Find("Entrance").Find("Mailbox").gameObject.GetComponent<PostBox>().UpdateLetters();
+
         foreach (Crop crop in Farm.Crops.ToArray())
         {
             crop.NewDay();

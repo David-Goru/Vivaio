@@ -7,7 +7,7 @@ public class ItemsHandler : MonoBehaviour
 {
     public static List<Item> ItemsList;
 
-    public class Item
+    public class Item : IObject
     {
         public string Name;
         public string Use;

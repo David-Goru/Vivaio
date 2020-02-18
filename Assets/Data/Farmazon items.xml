@@ -24,6 +24,12 @@
 		<Description>A small bag of 10 pumpkin seeds.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
+		<Name>Onion seeds</Name>
+		<Use>Onion</Use>
+		<Price>24</Price>
+		<Description>A small bag of 10 onion seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
 		<Name>Shop table</Name>
 		<Use>Build</Use>
 		<Price>100</Price>

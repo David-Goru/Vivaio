@@ -16,6 +16,10 @@
 		<Use>Pumpkin</Use>
 	</Item>
 	<Item>
+		<Name>Onion seeds</Name>
+		<Use>Onion</Use>
+	</Item>
+	<Item>
 		<Name>Shop table</Name>
 		<Use>Build</Use>
 	</Item>

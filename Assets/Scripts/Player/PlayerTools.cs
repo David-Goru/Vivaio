@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using CodeTools;
 using UnityEngine.EventSystems;
 
@@ -250,6 +251,26 @@ public class PlayerTools : MonoBehaviour
     {
         if (ToolOnHand.name == "Seed") ToolOnHand.LetTool();
         GameObject.Find("UI").transform.Find("Throw seeds").gameObject.SetActive(false);
+    }
+
+    public void OpenLetter()
+    {
+        GameObject letterUI = GameObject.Find("UI").transform.Find("Letter").gameObject;
+        Letter letter = (Letter)Inventory.ObjectInHand;
+        letter.Read = true;
+        Inventory.ChangeObject("Letter", "Letter");
+        letterUI.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + letter.Type);
+        letterUI.transform.Find("Title").gameObject.GetComponent<Text>().text = letter.Title;
+        letterUI.transform.Find("Body").gameObject.GetComponent<Text>().text = letter.Body;
+        letterUI.SetActive(true);
+    }
+
+    public void ThrowLetter()
+    {
+        GameObject.Find("UI").transform.Find("Letter").gameObject.SetActive(false);
+        GameObject.Find("UI").transform.Find("Open letter").gameObject.SetActive(false);
+        Inventory.ChangeObject("", "None");
+        Inventory.ObjectInHand = null;
     }
 
     public void LeaveGame()

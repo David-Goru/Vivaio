@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     public static GameObject InventorySlot;
-    public static Text InventoryText;
+    public static Text InventoryText;    
+    public static IObject ObjectInHand;
 
     void Start()
     {
@@ -37,6 +38,13 @@ public class Inventory : MonoBehaviour
                 InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + objectName + " seeds");
                 InventorySlot.SetActive(true);
                 InventoryText.text = objectName + " (" + PlayerTools.ToolOnHand.Remaining + "/10)";
+                break;
+            case "Letter":
+                Letter letter = (Letter)ObjectInHand;
+                InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
+                InventorySlot.SetActive(true);
+                InventoryText.text = letter.Type + " letter";
+                GameObject.Find("UI").transform.Find("Open letter").gameObject.SetActive(true);
                 break;
             default:
                 InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + objectName);
