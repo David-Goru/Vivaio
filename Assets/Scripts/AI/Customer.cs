@@ -10,6 +10,7 @@ public class Customer
     public int MediumAmount;
 
     public int Trust;
+    public bool LetterSent;
 
     GameObject body;
     Stand nextStand;
@@ -30,6 +31,7 @@ public class Customer
         
         this.speed = speed;
         Trust = 95;
+        LetterSent = false;
         lastDir = "Idle down";
     }
 

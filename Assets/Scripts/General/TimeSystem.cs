@@ -134,13 +134,13 @@ public class TimeSystem : MonoBehaviour
         else Master.LastDayDebt = 0;
         Master.UpdateBalance(-Master.LastDayPaid);
 
+        (gameObject.GetComponent("AI") as AI).NewDay();
         GameObject.Find("Structure").transform.Find("Entrance").Find("Mailbox").gameObject.GetComponent<PostBox>().UpdateLetters();
 
         foreach (Crop crop in Farm.Crops.ToArray())
         {
             crop.NewDay();
         }
-        (gameObject.GetComponent("AI") as AI).NewDay();
         (GameObject.Find("Farm handler").GetComponent("DeliverySystem") as DeliverySystem).UpdatePackages();
     }
 }
