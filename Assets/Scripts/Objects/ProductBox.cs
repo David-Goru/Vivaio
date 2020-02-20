@@ -34,6 +34,8 @@ public class ProductBox
 
             Model.transform.Find("Item").gameObject.SetActive(true);
             Model.transform.Find("Item").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/" + Item.Name);
+            Model.transform.Find("Product").gameObject.SetActive(true);
+            Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Products/" + Item.Name);
             
             return amountPlaced;
         }
@@ -63,6 +65,7 @@ public class ProductBox
             amount = itemCount;
             Item = null;
             Model.transform.Find("Item").gameObject.SetActive(false);
+            Model.transform.Find("Product").gameObject.SetActive(false);
         }
         else amount = maxAmount;
         itemCount -= amount;

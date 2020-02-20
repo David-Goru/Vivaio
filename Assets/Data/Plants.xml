@@ -30,8 +30,8 @@
 	<Plant>
 		<Name>Onion</Name>
 		<Levels>3</Levels>
-		<MinAmount>1</MinAmount>
-		<MaxAmount>1</MaxAmount>
+		<MinAmount>3</MinAmount>
+		<MaxAmount>3</MaxAmount>
 		<DaysUntilDry>1</DaysUntilDry>
 	</Plant>
 </Plants>

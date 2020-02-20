@@ -46,6 +46,7 @@ public class FarmFloor : MonoBehaviour
                     case "Hoe":
                         if (!hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f && name == "Grass")
                         {
+                            PlayerTools.DoingAnim = true;
                             StartCoroutine(PlayerTools.DoAnim("Hoe", (Vector2)transform.position));
 
                             name = "Plowed soil";
@@ -66,13 +67,14 @@ public class FarmFloor : MonoBehaviour
 
                             if (unitsToUse > 0)
                             {
+                                PlayerTools.DoingAnim = true;
                                 StartCoroutine(PlayerTools.DoAnim("Water", (Vector2)transform.position));
                                 PlayerTools.ToolOnHand.UseTool(unitsToUse);
                                 transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(false);
                                 waterUnits += unitsToUse * 2;
                                 transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
 
-                                if (!Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
+                                if (hasPlant && !Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
                                 {
                                     transform.Find("Drip bottle").Find(((int)Mathf.Ceil(waterUnits / 2)).ToString()).gameObject.SetActive(false);
                                     waterUnits--;
@@ -84,6 +86,7 @@ public class FarmFloor : MonoBehaviour
                         {
                             if (PlayerTools.ToolOnHand.CheckTool() && !Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
                             {
+                                PlayerTools.DoingAnim = true;
                                 StartCoroutine(PlayerTools.DoAnim("Water", (Vector2)transform.position));
                                 PlayerTools.ToolOnHand.UseTool(1);
                             }
@@ -92,6 +95,7 @@ public class FarmFloor : MonoBehaviour
                     case "Seed":
                         if (!hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f && name == "Plowed soil")
                         {
+                            PlayerTools.DoingAnim = true;
                             StartCoroutine(PlayerTools.DoAnim("Seed", (Vector2)transform.position));
 
                             PlayerTools.ToolOnHand.UseTool(0);
@@ -104,6 +108,7 @@ public class FarmFloor : MonoBehaviour
                         {
                             if (hasPlant)
                             {
+                                PlayerTools.DoingAnim = true;
                                 StartCoroutine(PlayerTools.DoAnim("Shovel", (Vector2)transform.position));
 
                                 Crop plant = Farm.Crops.Find(x => x.GetPot() == gameObject);
@@ -112,6 +117,7 @@ public class FarmFloor : MonoBehaviour
                             }
                             else if (name != "Grass")
                             {
+                                PlayerTools.DoingAnim = true;
                                 StartCoroutine(PlayerTools.DoAnim("Shovel", (Vector2)transform.position));
 
                                 name = "Grass";
@@ -126,7 +132,8 @@ public class FarmFloor : MonoBehaviour
                     case "Basket":
                         if (hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f
                             && Farm.Crops.Find(x => x.GetPot() == gameObject).Harvest())
-                        {    
+                        {  
+                            PlayerTools.DoingAnim = true;  
                             StartCoroutine(PlayerTools.DoAnim("Basket", (Vector2)transform.position));
 
                             hasPlant = false;

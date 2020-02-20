@@ -18,15 +18,13 @@ public class PlayerMovement : MonoBehaviour
         controller = gameObject.GetComponent<Animator>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (PlayerTools.DoingAnim) return;
-
-        if (Input.GetAxis("Horizontal") > 0)
+        else if (Input.GetAxis("Horizontal") > 0)
         {
             if (IsRunning)
             {
-                transform.Translate(new Vector2(Time.deltaTime * RunSpeed, 0));
                 if (LastDirection != "Running right")
                 {                    
                     switch(LastDirection)
@@ -66,8 +64,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             else
-            {                
-                transform.Translate(new Vector2(Time.deltaTime * Speed, 0));
+            {
                 if (LastDirection != "Walking right")
                 {                    
                     switch(LastDirection)
@@ -111,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (IsRunning)
             {
-                transform.Translate(new Vector2(-Time.deltaTime * RunSpeed, 0));
                 if (LastDirection != "Running left")
                 {                    
                     switch(LastDirection)
@@ -151,8 +147,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             else
-            {   
-                transform.Translate(new Vector2(-Time.deltaTime * Speed, 0));
+            {
                 if (LastDirection != "Walking left")
                 {                    
                     switch(LastDirection)
@@ -196,7 +191,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (IsRunning)
             {
-                transform.Translate(new Vector2(0, Time.deltaTime * RunSpeed));
                 if (LastDirection != "Running up")
                 {                    
                     switch(LastDirection)
@@ -237,7 +231,6 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                transform.Translate(new Vector2(0, Time.deltaTime * Speed));
                 if (LastDirection != "Walking up")
                 {                    
                     switch(LastDirection)
@@ -281,7 +274,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (IsRunning)
             {
-                transform.Translate(new Vector2(0, -Time.deltaTime * RunSpeed));
                 if (LastDirection != "Running down")
                 {                    
                     switch(LastDirection)
@@ -322,7 +314,6 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                transform.Translate(new Vector2(0, -Time.deltaTime * Speed));
                 if (LastDirection != "Walking down")
                 {                    
                     switch(LastDirection)
@@ -394,6 +385,33 @@ public class PlayerMovement : MonoBehaviour
                     controller.SetTrigger("IdleLeft");
                     LastDirection = "Idle left";
                     break;
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (PlayerTools.DoingAnim) return;
+        else if (Input.GetAxis("Horizontal") != 0)
+        {
+            if (IsRunning)
+            {
+                transform.Translate(new Vector2(Input.GetAxis("Horizontal") * Time.deltaTime * RunSpeed, 0));
+            }
+            else
+            {                
+                transform.Translate(new Vector2(Input.GetAxis("Horizontal") * Time.deltaTime * Speed, 0));
+            }
+        }
+        else if (Input.GetAxis("Vertical") != 0)
+        {
+            if (IsRunning)
+            {
+                transform.Translate(new Vector2(0, Input.GetAxis("Vertical") * Time.deltaTime * RunSpeed));
+            }
+            else
+            {
+                transform.Translate(new Vector2(0, Input.GetAxis("Vertical") * Time.deltaTime * Speed));
             }
         }
     }

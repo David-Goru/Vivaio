@@ -4,9 +4,11 @@
 		<Age>62</Age>
 		<Job>Cook</Job>
 		<Priorities>
-			<Priority1>Tomato</Priority1>
-			<Priority2>Carrot</Priority2>
-			<Priority3>Potato</Priority3>
+			<Priority>Tomato</Priority>
+			<Priority>Carrot</Priority>
+			<Priority>Potato</Priority>
+			<Priority>Onion</Priority>
+			<Priority>Pumpkin</Priority>
 		</Priorities>
 		<MediumAmount>10</MediumAmount>
 		<Speed>0.75</Speed>
@@ -16,8 +18,11 @@
 		<Age>32</Age>
 		<Job>Teacher</Job>
 		<Priorities>
-			<Priority1>Pumpkin</Priority1>
-			<Priority2>Potato</Priority2>
+			<Priority>Pumpkin</Priority>
+			<Priority>Potato</Priority>
+			<Priority>Onion</Priority>
+			<Priority>Carrot</Priority>
+			<Priority>Tomato</Priority>
 		</Priorities>
 		<MediumAmount>2</MediumAmount>
 		<Speed>1.1</Speed>

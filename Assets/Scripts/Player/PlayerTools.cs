@@ -66,7 +66,7 @@ public class PlayerTools : MonoBehaviour
                     }
                     else pickableObject = null;
                 }
-            } 
+            }
             else if (ToolOnHand != null && ToolOnHand.Name == "Shovel")
             {
                 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
@@ -91,15 +91,7 @@ public class PlayerTools : MonoBehaviour
         {
             Vector2 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
                     
-            if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")))
-            {
-                GameObject pot = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plant")).transform.parent.gameObject;
-                if (Vector2.Distance(transform.position, pot.transform.position) <= 1.5f)
-                {
-                    Debug.Log("Pot info");
-                }
-            }
-            else if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
+            if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
             {
                 GameObject objectSelected = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")).gameObject;
                 if (Vector2.Distance(transform.position, objectSelected.transform.position) <= 1.5f)
@@ -195,7 +187,7 @@ public class PlayerTools : MonoBehaviour
         
         if (Input.GetAxisRaw("Cancel") == 0) cancelPaused = false;
 
-        if (Input.GetAxis("Speed") != 0) PlayerMovement.IsRunning = true;
+        if (Input.GetAxis("Speed") != 0 && !DoingAnim) PlayerMovement.IsRunning = true;
         else PlayerMovement.IsRunning = false;
     }
 
@@ -207,8 +199,6 @@ public class PlayerTools : MonoBehaviour
 
     public static IEnumerator DoAnim(string anim, Vector2 pos)
     {
-        DoingAnim = true;
-
         GameObject player = GameObject.Find("Player");
 
         Vector2 distance = new Vector2(pos.x - player.transform.position.x,
