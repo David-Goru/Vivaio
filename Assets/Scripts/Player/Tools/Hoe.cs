@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IObject
+public class Hoe : Tool
 {
-    public string Name;
+    
 }

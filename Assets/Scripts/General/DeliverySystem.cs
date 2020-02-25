@@ -12,14 +12,14 @@ public class DeliverySystem : MonoBehaviour
 
     public class DeliveryBox
     {
-        public ItemsHandler.Item[] Items;
+        public IObject[] Items;
         public DeliveryPoint Point;
         public GameObject Box;
         public bool Placed;
 
         public DeliveryBox()
         {            
-            Items = new ItemsHandler.Item[4];
+            Items = new IObject[4];
             Placed = false;
         }
 
@@ -58,25 +58,9 @@ public class DeliverySystem : MonoBehaviour
 
             if (!Inventory.InventorySlot.activeSelf)
             {
-                if (Items[itemID].Use == "Build")
-                {
-                    if (Items[itemID].Name == "Shop tile") PlayerTools.TilesAmount = 5;
-                    (GameObject.Find("Farm handler").GetComponent("Build") as Build).ObjectName = Items[itemID].Name;
-                    GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
-                    Inventory.ChangeObject(Items[itemID].Name, "Object");
-                }
-                else if (Items[itemID].Use == "Farm") // Drip bottle
-                {
-                    Inventory.ChangeObject(Items[itemID].Name, "Object");
-                }
-                else // They are seeds
-                {
-                    SeedTool seedTool = (GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool);
-                    seedTool.SeedName = Items[itemID].Use;
-                    seedTool.Remaining = 10;
-                    seedTool.TakeTool();
-                }
-                
+                Inventory.ObjectInHand = Items[itemID];
+                GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
+                Inventory.ChangeObject();                
                 Items[itemID] = null;
 
                 int count = 0;

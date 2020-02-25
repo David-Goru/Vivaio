@@ -5,21 +5,21 @@ using UnityEngine.EventSystems;
 
 public class Build : MonoBehaviour
 {
-    public string ObjectName;
     GameObject objectBP; // Object blueprint
     Vector2 lastPos;
     bool buildable;
 
     void Update()
     {
-        if (ObjectName != "None")
+        if (Inventory.ObjectInHand is BuildableObject)
         {
+            BuildableObject bo = (BuildableObject)Inventory.ObjectInHand;
             Vector2 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
             Vector2 pos = new Vector3(Mathf.Round(mousePos.x * 2.0f) / 2.0f, Mathf.Round(mousePos.y * 2.0f) / 2.0f); // Exact position
 
             if (lastPos != pos)
             {
-                if (objectBP == null) objectBP = (GameObject)Instantiate(Resources.Load("Objects/" + ObjectName), pos, Quaternion.Euler(0, 0, 0));
+                if (objectBP == null) objectBP = (GameObject)Instantiate(Resources.Load("Objects/" + Inventory.ObjectInHand.Name), pos, Quaternion.Euler(0, 0, 0));
 
                 if (Vector2.Distance(pos, GameObject.Find("Player").transform.position) < 2
                     && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Buildable area")) 
@@ -41,41 +41,41 @@ public class Build : MonoBehaviour
             {
                 objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
 
-                if (ObjectName == "Shop tile")
+                if (bo.Name == "Shop tile")
                 {
                     VertexSystem.Vertex v = new VertexSystem.Vertex(pos);
                     VertexSystem.Vertices.Add(v);
                     v.UpdateCons();
-                    PlayerTools.TilesAmount--;
+                    bo.Amount--;
                     objectBP.name = "Shop tile";
-                    if (PlayerTools.TilesAmount > 0)
+                    if (bo.Amount > 0)
                     {
+                        Inventory.ChangeObject();
                         objectBP = null;
                         lastPos = new Vector2(-1000, -1000);
                         return;
                     }
                 }
-                else if (ObjectName == "Shop table")
+                else if (bo.Name == "Shop table")
                 {
                     Stands.StandsList.Add(new Stand(objectBP, 10));
                     objectBP.name = "Shop table";
                     objectBP.GetComponent<BoxCollider2D>().enabled = true;
                 }
-                else if (ObjectName == "Storage box")
+                else if (bo.Name == "Storage box")
                 {
                     objectBP.name = "Storage box";
                     objectBP.GetComponent<BoxCollider2D>().enabled = true;
                 }
-                else if (ObjectName == "Product box")
+                else if (bo.Name == "Product box")
                 {
                     ProductStorages.PBList.Add(new ProductBox(objectBP, 50));
                     objectBP.name = "Product box";
                     objectBP.GetComponent<BoxCollider2D>().enabled = true;
                 }
                 objectBP = null;
-                ObjectName = "None";
                 lastPos = new Vector2(-1000, -1000);
-                Inventory.ChangeObject("", "None");
+                Inventory.RemoveObject();
                 GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(false);
                 this.enabled = false;
             }

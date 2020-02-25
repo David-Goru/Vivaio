@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VideoCheats : MonoBehaviour
 {
-    bool normalTime = true;
+    /*bool normalTime = true;
 
     void Update()
     {
@@ -54,5 +54,5 @@ public class VideoCheats : MonoBehaviour
             seedTool.Remaining = 1000;
             seedTool.TakeTool();
         }
-    }
+    }*/
 }

@@ -8,16 +8,12 @@ using UnityEngine.EventSystems;
 
 public class PlayerTools : MonoBehaviour
 {
-    public static Tool ToolOnHand;
     public static bool DoingAnim;
     bool cancelPaused;
 
     // Pickable object
     GameObject pickableObject;
     Vector3 firstPos;
-
-    // Tiles
-    public static int TilesAmount;
 
     void Update()
     {        
@@ -51,11 +47,12 @@ public class PlayerTools : MonoBehaviour
                     pickableObject = null;
                 }
             }
-            else if (!Inventory.InventorySlot.activeSelf)
+            else
             {
                 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
                 
-                if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable"))
+                if (!(Inventory.ObjectInHand is Basket) 
+                 && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable"))
                  && Vector2.Distance(transform.position, mousePos) <= 1.5f)
                 {
                     pickableObject = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")).gameObject;
@@ -67,7 +64,8 @@ public class PlayerTools : MonoBehaviour
                     else pickableObject = null;
                 }
             }
-            else if (ToolOnHand != null && ToolOnHand.Name == "Shovel")
+            
+            if (Inventory.ObjectInHand is Shovel)
             {
                 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
                 
@@ -108,29 +106,32 @@ public class PlayerTools : MonoBehaviour
                         }
                         else
                         {
-                            if (Inventory.InventorySlot.activeSelf) return;
-
+                            if (Inventory.ObjectInHand != null) return;
                             if (standObject.IsEmpty())
                             {
                                 Stands.StandsList.Remove(standObject);
-                                (GameObject.Find("Farm handler").GetComponent("Build") as Build).ObjectName = "Shop table";
+                                BuildableObject bo = new BuildableObject(-1);
+                                bo.Name = "Shop table";
+                                Inventory.ObjectInHand = bo;
                                 GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
-                                Inventory.ChangeObject("Shop table", "Object");
+                                Inventory.ChangeObject();
                                 Destroy(objectSelected);
                             }
                         }
                     }
                     else if (objectSelected.name == "Product box")
                     {                        
-                        if (Inventory.InventorySlot.activeSelf) return;
+                            if (Inventory.ObjectInHand != null) return;
                         ProductBox pb = ProductStorages.PBList.Find(x => x.Model == objectSelected);
 
                         if (pb.IsEmpty())
                         {
                             ProductStorages.PBList.Remove(pb);
-                            (GameObject.Find("Farm handler").GetComponent("Build") as Build).ObjectName = "Product box";
+                            BuildableObject bo = new BuildableObject(-1);
+                            bo.Name = "Product box";
+                            Inventory.ObjectInHand = bo;
                             GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
-                            Inventory.ChangeObject("Product box", "Object");
+                            Inventory.ChangeObject();
                             Destroy(objectSelected);
                         }
                     }
@@ -239,7 +240,7 @@ public class PlayerTools : MonoBehaviour
 
     public void ThrowSeeds()
     {
-        if (ToolOnHand.name == "Seed") ToolOnHand.LetTool();
+        if (Inventory.ObjectInHand is Seed) Inventory.RemoveObject();
         GameObject.Find("UI").transform.Find("Throw seeds").gameObject.SetActive(false);
     }
 
@@ -248,7 +249,7 @@ public class PlayerTools : MonoBehaviour
         GameObject letterUI = GameObject.Find("UI").transform.Find("Letter").gameObject;
         Letter letter = (Letter)Inventory.ObjectInHand;
         letter.Read = true;
-        Inventory.ChangeObject("Letter", "Letter");
+        Inventory.ChangeObject();
         letterUI.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + letter.Type);
         letterUI.transform.Find("Title").gameObject.GetComponent<Text>().text = letter.Title;
         letterUI.transform.Find("Body").gameObject.GetComponent<Text>().text = letter.Body;
@@ -259,8 +260,7 @@ public class PlayerTools : MonoBehaviour
     {
         GameObject.Find("UI").transform.Find("Letter").gameObject.SetActive(false);
         GameObject.Find("UI").transform.Find("Open letter").gameObject.SetActive(false);
-        Inventory.ChangeObject("", "None");
-        Inventory.ObjectInHand = null;
+        Inventory.RemoveObject();
     }
 
     public void LeaveGame()

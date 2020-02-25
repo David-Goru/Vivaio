@@ -79,15 +79,8 @@ public class PostBox : MonoBehaviour
         {
             Letter letterToTake = Letters.Dequeue();
             Inventory.ObjectInHand = letterToTake;
-            Inventory.ChangeObject("Letter", "Letter");
+            Inventory.ChangeObject();
         }
-
-        //InvoiceUI.transform.Find("Energy").GetComponent<Text>().text = string.Format("Energy usage: -{0}€", 1);
-        //InvoiceUI.transform.Find("Water").GetComponent<Text>().text = string.Format("Water usage: -{0}€", Master.LastDayWaterUsage);
-        //InvoiceUI.transform.Find("Debt").GetComponent<Text>().text = string.Format("Debt: -{0}€", Master.LastDayDebt);
-        //InvoiceUI.transform.Find("Total paid").GetComponent<Text>().text = string.Format("Total: -{0}€", Master.LastDayPaid);
-        //InvoiceUI.transform.Find("Remaining debt").GetComponent<Text>().text = string.Format("Remaining debt: {0}€", Master.Debt);
-        //InvoiceUI.SetActive(true);
         
         // Update mail box warning
         if (Letters.Count == 0)

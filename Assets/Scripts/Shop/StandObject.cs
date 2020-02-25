@@ -8,32 +8,28 @@ public class StandObject : MonoBehaviour
 {
     void OnMouseDown()
     {
-        if (PlayerTools.ToolOnHand != null && PlayerTools.ToolOnHand.Name == "Basket" && !EventSystem.current.IsPointerOverGameObject())
+        if (Inventory.ObjectInHand is Basket && !EventSystem.current.IsPointerOverGameObject())
         {
-            Basket basket = GameObject.Find("Tools").transform.Find("Basket").GetComponent("Basket") as Basket;
+            Basket basket = (Basket)Inventory.ObjectInHand;
             if (Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f)
             {
                 if (basket.Product != null)
                 {
-                    int amountPlaced = Stands.StandsList.Find(x => x.Model == gameObject).AddProduct(basket.Product.Name, PlayerTools.ToolOnHand.Remaining);
-                    PlayerTools.ToolOnHand.Remaining -= amountPlaced;
-                    if (PlayerTools.ToolOnHand.Remaining == 0)
-                    { 
-                        basket.Product = null;  
-                        Inventory.ChangeSubobject("None", "None");
-                    }  
-                    else Inventory.ChangeSubobject(basket.Product.Name, "Crop");
+                    int amountPlaced = Stands.StandsList.Find(x => x.Model == gameObject).AddProduct(basket.Product.Name, basket.Amount);
+                    basket.Amount -= amountPlaced;
+                    if (basket.Amount == 0) basket.Product = null;  
+                    Inventory.ChangeObject();
                 }
                 else
                 {
-                    if (PlayerTools.ToolOnHand.Remaining < 20)
+                    if (basket.Amount < 20)
                     {
                         Tuple pickUpStand = Stands.StandsList.Find(x => x.Model == gameObject).PickUp();
                         if (pickUpStand.Item2 > 0)
                         {
                             basket.Product = Products.ProductsList.Find(x => x.Name == pickUpStand.Item1);
-                            PlayerTools.ToolOnHand.Remaining += pickUpStand.Item2;
-                            Inventory.ChangeSubobject(basket.Product.Name, "Crop");
+                            basket.Amount += pickUpStand.Item2;
+                            Inventory.ChangeObject();
                         }
                     }
                 }

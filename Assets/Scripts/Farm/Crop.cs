@@ -86,12 +86,12 @@ public class Crop
 
     public bool Harvest()
     {
-        Basket basket = GameObject.Find("Tools").transform.Find("Basket").GetComponent("Basket") as Basket;
-        if (growLevel == plant.Levels && (PlayerTools.ToolOnHand.Remaining + amount) < 20 && (basket.Product == null || basket.Product.Name == plant.Name))
+        Basket basket = (Basket)Inventory.ObjectInHand;
+        if (growLevel == plant.Levels && (basket.Amount + amount) < 20 && (basket.Product == null || basket.Product.Name == plant.Name))
         {
             basket.Product = Products.ProductsList.Find(x => x.Name == plant.Name);
-            PlayerTools.ToolOnHand.Remaining += amount;
-            Inventory.ChangeSubobject(plant.Name, "Crop");
+            basket.Amount += amount;
+            Inventory.ChangeObject();
             MonoBehaviour.Destroy(pot.transform.Find("Crop").gameObject);
             Farm.Crops.Remove(this);
             return true;

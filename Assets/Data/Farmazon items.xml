@@ -1,31 +1,31 @@
 <FarmazonItems>
 	<FarmazonItem>
-		<Name>Carrot seeds</Name>
-		<Use>Carrot</Use>
+		<Name>Carrot</Name>
+		<Use>Seed</Use>
 		<Price>35</Price>
 		<Description>A small bag of 10 carrot seeds.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
-		<Name>Potato seeds</Name>
-		<Use>Potato</Use>
+		<Name>Potato</Name>
+		<Use>Seed</Use>
 		<Price>50</Price>
 		<Description>A small bag of 10 potato seeds.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
-		<Name>Tomato seeds</Name>
-		<Use>Tomato</Use>
+		<Name>Tomato</Name>
+		<Use>Seed</Use>
 		<Price>60</Price>
 		<Description>A small bag of 10 tomato seeds.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
-		<Name>Pumpkin seeds</Name>
-		<Use>Pumpkin</Use>
+		<Name>Pumpkin</Name>
+		<Use>Seed</Use>
 		<Price>75</Price>
 		<Description>A small bag of 10 pumpkin seeds.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
-		<Name>Onion seeds</Name>
-		<Use>Onion</Use>
+		<Name>Onion</Name>
+		<Use>Seed</Use>
 		<Price>52</Price>
 		<Description>A small bag of 10 onion seeds.</Description>
 	</FarmazonItem>

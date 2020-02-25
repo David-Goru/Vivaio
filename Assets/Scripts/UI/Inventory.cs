@@ -21,70 +21,58 @@ public class Inventory : MonoBehaviour
         InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
         InventoryText.text = "";
         ObjectInHand = null;
+
+        Transform UI = GameObject.Find("UI").transform;
+        UI.Find("Build button").gameObject.SetActive(false);
+        UI.Find("Throw seeds").gameObject.SetActive(false);
+        UI.Find("Letter").gameObject.SetActive(false);
+        UI.Find("Open letter").gameObject.SetActive(false);
     }
 
     public static void ChangeObject()
     {
-        InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Inventory/" + ObjectInHand.Name);
-        InventoryText.text = ObjectInHand.Name + (ObjectInHand.IsStackable ? " (" + ObjectInHand.Amount + ")" : "");
+        InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + ObjectInHand.Name);
 
-        InventorySlot.SetActive(true);
-    }
-
-    // To remove
-
-    public static void ChangeObject(string objectName, string type)
-    {
-        switch (type)
+        Transform UI = GameObject.Find("UI").transform;
+        InventoryText.text = ObjectInHand.Name;
+        if (ObjectInHand is Seed)
         {
-            case "None":
-                InventorySlot.SetActive(false);
-                InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
-                InventoryText.text = "";
-                break;
-            case "Tool":
-                InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + objectName);
-                InventorySlot.SetActive(true);
-                if (objectName == "Watering can")
-                { 
-                    InventoryText.text = objectName + " (" + PlayerTools.ToolOnHand.Remaining + "/10)";
-                    if (PlayerTools.ToolOnHand.Remaining == 0) InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
+            Seed seed = (Seed)ObjectInHand;
+            InventoryText.text = seed.Name + " (" + seed.Amount + ")";
+            UI.Find("Throw seeds").gameObject.SetActive(true);
+        }
+        else if (ObjectInHand is Tool)
+        {
+            if (ObjectInHand is WateringCan)
+            {
+                WateringCan wc = (WateringCan)ObjectInHand;
+                InventoryText.text = wc.Name + " (" + wc.Remaining + "/10)";
+                if (wc.Remaining == 0) InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
+            }
+            else if (ObjectInHand is Basket)
+            {
+                Basket basket = (Basket)ObjectInHand;
+                if (basket.Product != null)
+                {
+                    InventoryText.text = basket.Name + " (" + basket.Amount + "/20)";
+                    InventorySlot.transform.Find("Subobject").gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + basket.Product.Name);
+                    InventorySlot.transform.Find("Subobject").gameObject.SetActive(true);
                 }
-                else InventoryText.text = objectName;
-                break;
-            case "Seed":
-                InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + objectName + " seeds");
-                InventorySlot.SetActive(true);
-                InventoryText.text = objectName + " (" + PlayerTools.ToolOnHand.Remaining + "/10)";
-                break;
-            case "Letter":
-                Letter letter = (Letter)ObjectInHand;
-                InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
-                InventorySlot.SetActive(true);
-                InventoryText.text = letter.Type + " letter";
-                GameObject.Find("UI").transform.Find("Open letter").gameObject.SetActive(true);
-                break;
-            default:
-                InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + objectName);
-                InventoryText.text = objectName;
-                InventorySlot.SetActive(true);
-                break;
+                else InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
+            }
         }
-    }
-
-    public static void ChangeSubobject(string objectName, string type)
-    {
-        switch (type)
+        else if (ObjectInHand is BuildableObject)
         {
-            case "None":
-                InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
-                InventoryText.text = "Basket";
-                break;
-            case "Crop":
-                InventorySlot.transform.Find("Subobject").gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + objectName);
-                InventorySlot.transform.Find("Subobject").gameObject.SetActive(true);
-                InventoryText.text = string.Format("Basket\n{0}/{1} of {2}", PlayerTools.ToolOnHand.Remaining, 20, objectName.ToLower());
-                break;
+            UI.Find("Build button").gameObject.SetActive(true);
+            if (ObjectInHand.Name == "Shop tile") InventoryText.text = ObjectInHand.Name + " (" + ((BuildableObject)ObjectInHand).Amount + ")";
         }
+        else if (ObjectInHand is Letter)
+        {
+            Letter letter = (Letter)ObjectInHand;
+            InventoryText.text = letter.Type + " letter";
+            InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
+            UI.Find("Open letter").gameObject.SetActive(true);
+        }
+        InventorySlot.SetActive(true);
     }
 }

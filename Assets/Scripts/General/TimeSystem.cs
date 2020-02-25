@@ -80,6 +80,7 @@ public class TimeSystem : MonoBehaviour
                     Time.timeScale = MinuteValue;
                     TimeState = "Morning";
                     ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockMorning;
+                    HouseSprite.GetComponent<SpriteRenderer>().sprite = houseDay;
                     break;
                 case 270:
                     TimeState = "Shop open";
@@ -88,6 +89,7 @@ public class TimeSystem : MonoBehaviour
                 case 630:
                     TimeState = "Night";
                     ClockHand.transform.parent.gameObject.GetComponent<Image>().sprite = ClockNight;
+                    HouseSprite.GetComponent<SpriteRenderer>().sprite = houseNight;
                     break;
             }
 

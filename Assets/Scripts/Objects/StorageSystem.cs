@@ -49,11 +49,9 @@ public class StorageSystem : MonoBehaviour
                             Letter letter = (Letter)Items[i];                     
                             StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
                         }
-                        else
-                        {
-                            ItemsHandler.Item item = (ItemsHandler.Item)Items[i];
-                            StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + item.Name);
-                        }
+                        else if (Items[i] is Seed) StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Items[i].Name);
+                        else StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Items[i].Name);
+
                     }
                 }
                 if (!hasItems) GameObject.Find("UI").transform.Find("Take storage").gameObject.SetActive(true);
@@ -75,33 +73,8 @@ public class StorageSystem : MonoBehaviour
 
             if (!Inventory.InventorySlot.activeSelf)
             {
-                if (Items[itemID] is Letter)
-                {
-                    Inventory.ObjectInHand = (Letter)Items[itemID];
-                    Inventory.ChangeObject("Letter", "Letter");
-                }
-                else
-                {
-                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
-                    if (item.Use == "Build")
-                    {
-                        if (item.Name == "Shop tile") PlayerTools.TilesAmount = item.Amount;
-                        (GameObject.Find("Farm handler").GetComponent("Build") as Build).ObjectName = item.Name;
-                        GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
-                        Inventory.ChangeObject(item.Name, "Object");
-                    }
-                    else if (item.Use == "Farm") // Drip bottle
-                    {
-                        Inventory.ChangeObject(item.Name, "Object");
-                    }
-                    else // They are seeds
-                    {
-                        SeedTool seedTool = (GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool);
-                        seedTool.SeedName = item.Use;
-                        seedTool.Remaining = item.Amount;
-                        seedTool.TakeTool();
-                    }
-                }
+                Inventory.ObjectInHand = Items[itemID];
+                Inventory.ChangeObject();            
                 
                 Items[itemID] = null;
 
@@ -127,33 +100,11 @@ public class StorageSystem : MonoBehaviour
             GameObject StorageUI = GameObject.Find("UI").transform.Find("Storage").gameObject;
             if ((StorageUI.GetComponent("StorageHandler") as StorageHandler).Box != BoxObject) return;
 
-            if (Inventory.InventorySlot.activeSelf)
+            if (Inventory.ObjectInHand != null && !(Inventory.ObjectInHand is Tool))
             {
                 int slotNumber = itemID + 1;
-                if (Inventory.ObjectInHand != null && Inventory.ObjectInHand is Letter)
-                {
-                    Items[itemID] = Inventory.ObjectInHand;
-                    GameObject.Find("UI").transform.Find("Open letter").gameObject.SetActive(false);
-                    GameObject.Find("UI").transform.Find("Letter").gameObject.SetActive(false);
-                    Inventory.ChangeObject("", "None");
-                    Inventory.ObjectInHand = null;
-                }
-                else if (ItemsHandler.ItemsList.Find(x => x.Name == Inventory.InventoryText.text) != null)
-                {
-                    Items[itemID] = ItemsHandler.ItemsList.Find(x => x.Name == Inventory.InventoryText.text);
-                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
-                    if (item.Name == "Shop tile") item.Amount = PlayerTools.TilesAmount;
-                    Inventory.ChangeObject("", "None");
-                    GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(false);
-                }
-                else if (PlayerTools.ToolOnHand != null && PlayerTools.ToolOnHand.Name == "Seed")
-                {
-                    Items[itemID] = ItemsHandler.ItemsList.Find(x => x.Name == (GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool).SeedName + " seeds");
-                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
-                    item.Amount = PlayerTools.ToolOnHand.Remaining;
-                    PlayerTools.ToolOnHand.LetTool();
-                }
-                else return;
+                Items[itemID] = Inventory.ObjectInHand;
+                Inventory.RemoveObject();
 
                 GameObject.Find("UI").transform.Find("Take storage").gameObject.SetActive(false);
                 SetUIButton(StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Button>(), itemID, true);
@@ -162,11 +113,8 @@ public class StorageSystem : MonoBehaviour
                     Letter letter = (Letter)Items[itemID];                     
                     StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
                 }
-                else
-                {
-                    ItemsHandler.Item item = (ItemsHandler.Item)Items[itemID];
-                    StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + item.Name);
-                }                
+                else StorageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Items[itemID].Name);
+              
             }
         }
 

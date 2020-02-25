@@ -33,15 +33,15 @@ public class FarmFloor : MonoBehaviour
         {
             if (Inventory.InventoryText.text == "Drip bottle" && !hasDripBottle)
             {
-                Inventory.ChangeObject("", "None");
+                Inventory.RemoveObject();
                 hasDripBottle = true;
                 GameObject bottle = Instantiate<GameObject>(Resources.Load<GameObject>("Farm/Drip bottle"), transform.position, transform.rotation);
                 bottle.transform.SetParent(transform);
                 bottle.name = "Drip bottle";
             }
-            else if (PlayerTools.ToolOnHand != null && !PlayerTools.DoingAnim)
+            else if (Inventory.ObjectInHand is Tool && !PlayerTools.DoingAnim)
             {
-                switch (PlayerTools.ToolOnHand.Name)
+                switch (Inventory.ObjectInHand.Name)
                 {
                     case "Hoe":
                         if (!hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f && name == "Grass")
@@ -59,17 +59,18 @@ public class FarmFloor : MonoBehaviour
                         }
                         break;
                     case "Watering can":
+                        WateringCan wc = (WateringCan)Inventory.ObjectInHand;
                         if (hasDripBottle)
                         {
                             int unitsNeeded = (10 - waterUnits) / 2;
-                            int unitsAvailable = PlayerTools.ToolOnHand.Remaining;
+                            int unitsAvailable = wc.Remaining;
                             int unitsToUse = (unitsAvailable > unitsNeeded) ? unitsNeeded : unitsAvailable;
 
                             if (unitsToUse > 0)
                             {
                                 PlayerTools.DoingAnim = true;
                                 StartCoroutine(PlayerTools.DoAnim("Water", (Vector2)transform.position));
-                                PlayerTools.ToolOnHand.UseTool(unitsToUse);
+                                wc.UseTool(unitsToUse);
                                 transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(false);
                                 waterUnits += unitsToUse * 2;
                                 transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
@@ -84,23 +85,12 @@ public class FarmFloor : MonoBehaviour
                         }
                         else if (hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.0f)
                         {
-                            if (PlayerTools.ToolOnHand.CheckTool() && !Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
+                            if (wc.CheckTool() && !Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
                             {
                                 PlayerTools.DoingAnim = true;
                                 StartCoroutine(PlayerTools.DoAnim("Water", (Vector2)transform.position));
-                                PlayerTools.ToolOnHand.UseTool(1);
+                                wc.UseTool(1);
                             }
-                        }
-                        break;
-                    case "Seed":
-                        if (!hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f && name == "Plowed soil")
-                        {
-                            PlayerTools.DoingAnim = true;
-                            StartCoroutine(PlayerTools.DoAnim("Seed", (Vector2)transform.position));
-
-                            PlayerTools.ToolOnHand.UseTool(0);
-                            Farm.Crops.Add(new Crop(Farm.Plants[(GameObject.Find("Tools").transform.Find("Seed").GetComponent("SeedTool") as SeedTool).SeedName], gameObject));
-                            hasPlant = true;
                         }
                         break;
                     case "Shovel":
@@ -139,6 +129,18 @@ public class FarmFloor : MonoBehaviour
                             hasPlant = false;
                         }
                         break;
+                }
+            }
+            else if (Inventory.ObjectInHand is Seed && !PlayerTools.DoingAnim)
+            {                
+                Seed seed = (Seed)Inventory.ObjectInHand;
+                if (!hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f && name == "Plowed soil")
+                {
+                    PlayerTools.DoingAnim = true;
+                    StartCoroutine(PlayerTools.DoAnim("Seed", (Vector2)transform.position));
+                    Farm.Crops.Add(new Crop(Farm.Plants[seed.Type], gameObject));
+                    seed.UseSeed();
+                    hasPlant = true;
                 }
             }
         }

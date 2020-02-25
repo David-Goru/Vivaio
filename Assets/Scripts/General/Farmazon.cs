@@ -32,8 +32,16 @@ public class Farmazon : MonoBehaviour
             // Add to Farmazon shop list
             GameObject farmazonButton = Instantiate(Resources.Load<GameObject>("UI/Farmazon item"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
             farmazonButton.GetComponent<Button>().onClick.AddListener(delegate () { (GameObject.Find("UI").transform.Find("Farmazon").GetComponent("Farmazon") as Farmazon).SelectItem(name); });
-            farmazonButton.transform.Find("Name").GetComponent<Text>().text = name;
-            farmazonButton.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + name);
+            if (Use == "Seed")
+            {
+                farmazonButton.transform.Find("Name").GetComponent<Text>().text = name + " seeds";
+                farmazonButton.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + name + " seeds");
+            }
+            else
+            {
+                farmazonButton.transform.Find("Name").GetComponent<Text>().text = name;
+                farmazonButton.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + name);
+            }
             farmazonButton.transform.Find("Price").GetComponent<Text>().text = price + "€/u";
             farmazonButton.transform.SetParent(FarmazonListHandler, false);
             farmazonButton.name = name;
@@ -98,8 +106,16 @@ public class Farmazon : MonoBehaviour
         ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = "0€";
 
         ItemUI.transform.Find("Item").gameObject.SetActive(true);
-        ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = itemName;
-        ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + itemName);
+        if (selectedItem.Use == "Seed")
+        {
+            ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = itemName + " seeds"; 
+            ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + itemName + " seeds");
+        }
+        else 
+        {
+            ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = itemName;
+            ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + itemName);
+        }
         ItemUI.transform.Find("Item").Find("Description").GetComponent<Text>().text = selectedItem.Description;
         ItemUI.transform.Find("No selected item").gameObject.SetActive(false);
     }
@@ -148,8 +164,16 @@ public class Farmazon : MonoBehaviour
             GameObject itemObject = Instantiate(Resources.Load<GameObject>("UI/Cart item"), transform.position, transform.rotation);
             item.UIModel = itemObject;
             itemObject.transform.Find("Remove").GetComponent<Button>().onClick.AddListener(delegate () { RemoveItem(item); });
-            itemObject.transform.Find("Name").GetComponent<Text>().text = item.Item.Name;
-            itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + item.Item.Name);
+            if (item.Item.Use == "Seed")
+            {
+                itemObject.transform.Find("Name").GetComponent<Text>().text = item.Item.Name + " seeds";
+                itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + item.Item.Name + " seeds");
+            }
+            else
+            {
+                itemObject.transform.Find("Name").GetComponent<Text>().text = item.Item.Name;
+                itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + item.Item.Name);
+            }
             itemObject.transform.Find("Price").GetComponent<Text>().text = item.Amount + "u (" + item.Amount * item.Item.Price + "€)";
             itemObject.transform.SetParent(content, false);
         }
@@ -175,7 +199,25 @@ public class Farmazon : MonoBehaviour
                 {
                     box = new DeliverySystem.DeliveryBox();
                     DeliverySystem.DeliveryList.Add(box);
-                    box.Items[0] = ItemsHandler.ItemsList.Find(x => x.Name == item.Item.Name);
+                    string use = item.Item.Use;
+                    IObject ob = new IObject();
+                    switch (use)
+                    {
+                        case "Build":
+                            if (item.Item.Name == "Shop tile") ob = new BuildableObject(5);
+                            else ob = new BuildableObject(-1);
+                            ob.Name = item.Item.Name;
+                            break;
+                        case "Farm":
+                            ob = new IObject();   
+                            ob.Name = item.Item.Name;                         
+                            break;
+                        case "Seed":
+                            ob = new Seed(item.Item.Name, 10);
+                            ob.Name = item.Item.Name + " seeds";
+                            break;
+                    }
+                    box.Items[0] = ob;
                 }
                 else
                 {
@@ -183,7 +225,25 @@ public class Farmazon : MonoBehaviour
                     {
                         if (box.Items[i] == null)
                         {
-                            box.Items[i] = ItemsHandler.ItemsList.Find(x => x.Name == item.Item.Name);
+                            string use = item.Item.Use;
+                            IObject ob = new IObject();
+                            switch (use)
+                            {
+                                case "Build":
+                                    if (item.Item.Name == "Shop tile") ob = new BuildableObject(5);
+                                    else ob = new BuildableObject(-1);
+                                    ob.Name = item.Item.Name;
+                                    break;
+                                case "Farm":
+                                    ob = new IObject();   
+                                    ob.Name = item.Item.Name;                         
+                                    break;
+                                case "Seed":
+                                    ob = new Seed(item.Item.Name, 10);
+                                    ob.Name = item.Item.Name + " seeds";
+                                    break;
+                            }
+                            box.Items[i] = ob;
                             break;
                         }
                     }

@@ -5177,12 +5177,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 583230574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a044fda10a135f24494fa22de328f558, type: 3}
+  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Hoe
-  Remaining: 0
-  OnHand: 0
+  Type: Hoe
 --- !u!61 &583230576
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5271,7 +5269,7 @@ Transform:
   m_Children:
   - {fileID: 2093750457}
   m_Father: {fileID: 1661809460}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &589390983
 GameObject:
@@ -7520,53 +7518,6 @@ Transform:
   m_Father: {fileID: 1856380700}
   m_RootOrder: 72
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &859953061
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 859953062}
-  - component: {fileID: 859953063}
-  m_Layer: 0
-  m_Name: Seed
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &859953062
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859953061}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.040001, y: -2.2800007, z: -0.1}
-  m_LocalScale: {x: 2, y: 2, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1661809460}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &859953063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859953061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 007027c36214cd849b267950389269c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Seed
-  Remaining: 0
-  OnHand: 0
-  SeedName: None
 --- !u!1 &883227683
 GameObject:
   m_ObjectHideFlags: 0
@@ -9187,7 +9138,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030100783}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -9195,10 +9146,10 @@ RectTransform:
   m_Father: {fileID: 1997053324}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 320, y: 60}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 150, y: 325}
+  m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1030100785
 MonoBehaviour:
@@ -9948,8 +9899,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1167102195}
   - component: {fileID: 1167102194}
-  - component: {fileID: 1167102193}
   - component: {fileID: 1167102192}
+  - component: {fileID: 1167102193}
   m_Layer: 0
   m_Name: Basket
   m_TagString: Untagged
@@ -9992,13 +9943,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1167102191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 963c630265a834040b08a43dcbdb0d76, type: 3}
+  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Basket
-  Remaining: 0
-  OnHand: 0
-  ProductSprite: {fileID: 1531433356}
+  Type: Basket
 --- !u!212 &1167102194
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10062,7 +10010,7 @@ Transform:
   - {fileID: 1531433358}
   - {fileID: 806874344}
   m_Father: {fileID: 1661809460}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1170194904
 GameObject:
@@ -11616,13 +11564,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 553e121a340938749b17a5ae68cb0ac6, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -13611,7 +13559,7 @@ Transform:
   m_Children:
   - {fileID: 246435659}
   m_Father: {fileID: 1661809460}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1628988099
 SpriteRenderer:
@@ -14250,7 +14198,6 @@ Transform:
   m_LocalPosition: {x: -7.45, y: 10.55, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
-  - {fileID: 859953062}
   - {fileID: 1628988098}
   - {fileID: 583230578}
   - {fileID: 1843545963}
@@ -15444,12 +15391,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1843545959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a044fda10a135f24494fa22de328f558, type: 3}
+  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Shovel
-  Remaining: 0
-  OnHand: 0
+  Type: Shovel
 --- !u!61 &1843545961
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15538,7 +15483,7 @@ Transform:
   m_Children:
   - {fileID: 1602397726}
   m_Father: {fileID: 1661809460}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1856380699
 GameObject:
@@ -15703,7 +15648,6 @@ GameObject:
   - component: {fileID: 1859907969}
   - component: {fileID: 1859907972}
   - component: {fileID: 1859907971}
-  - component: {fileID: 1859907979}
   - component: {fileID: 1859907973}
   - component: {fileID: 1859907974}
   - component: {fileID: 1859907976}
@@ -15853,19 +15797,6 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3464b2c611846f14cb7e5b9bdc46c404, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectName: None
---- !u!114 &1859907979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859907968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9533ff2b7408364cb9499ea3c8dfaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1859907980
@@ -17175,12 +17106,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1969507905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8281849e90109b84a8028b2fb50970b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Watering can
-  Remaining: 0
-  OnHand: 0
+  Type: Watering can
 --- !u!61 &1969507907
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17269,7 +17198,7 @@ Transform:
   m_Children:
   - {fileID: 61498248}
   m_Father: {fileID: 1661809460}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1972511492
 GameObject:
@@ -17816,7 +17745,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027202608}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -17824,10 +17753,10 @@ RectTransform:
   m_Father: {fileID: 1997053324}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 320, y: 60}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 150, y: 325}
+  m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2027202610
 MonoBehaviour:
@@ -18885,8 +18814,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 67fd37ef51096e746892143aa9e6f7b5, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

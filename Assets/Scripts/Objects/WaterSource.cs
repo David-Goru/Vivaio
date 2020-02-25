@@ -9,16 +9,17 @@ public class WaterSource : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (PlayerTools.ToolOnHand != null && PlayerTools.ToolOnHand.Name == "Watering can" && !EventSystem.current.IsPointerOverGameObject())
+        if (Inventory.ObjectInHand is WateringCan && !EventSystem.current.IsPointerOverGameObject())
         {
+            WateringCan wc = (WateringCan)Inventory.ObjectInHand;
             if (Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f)
             {
-                if (PlayerTools.ToolOnHand.Remaining < 10)
+                if (wc.Remaining < 10)
                 {
                     GetComponent<Animator>().SetTrigger("UseSource");
-                    WaterUsage += 10 - PlayerTools.ToolOnHand.Remaining;
-                    PlayerTools.ToolOnHand.Remaining = 10;
-                    Inventory.ChangeObject("Watering can", "Tool");
+                    WaterUsage += 10 - wc.Remaining;
+                    wc.Remaining = 10;
+                    Inventory.ChangeObject();
                 }
             }
         }

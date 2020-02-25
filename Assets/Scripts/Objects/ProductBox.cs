@@ -24,7 +24,7 @@ public class ProductBox
             if (amount <= maxItems)
             {
                 amountPlaced = amount;
-                Inventory.ChangeSubobject("None", "None");
+                Inventory.ChangeObject();
             }
             else
             { 
@@ -54,11 +54,11 @@ public class ProductBox
     public Tuple PickUp()
     {
         if (Item == null) return new Tuple("None", 0);
-        Basket basket = GameObject.Find("Tools").transform.Find("Basket").GetComponent("Basket") as Basket;
-        if (PlayerTools.ToolOnHand.Remaining > 0 && basket.Product.Name != Item.Name) return new Tuple("None", 0);
+        Basket basket = (Basket)Inventory.ObjectInHand;
+        if (basket.Amount > 0 && basket.Product.Name != Item.Name) return new Tuple("None", 0);
 
         int amount;
-        int maxAmount = 20 - PlayerTools.ToolOnHand.Remaining;
+        int maxAmount = 20 - basket.Amount;
         string itemName = Item.Name;
         if (maxAmount > itemCount)
         {

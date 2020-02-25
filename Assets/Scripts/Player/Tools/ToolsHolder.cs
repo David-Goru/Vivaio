@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class ToolsHolder : MonoBehaviour
 {
+    public static Hoe Hoe;
+    public static Shovel Shovel;
+    public static WateringCan WateringCan;
+    public static Basket Basket;
+
     void OnMouseDown()
     {
         if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1) return;
-        if (PlayerTools.ToolOnHand != null && PlayerTools.ToolOnHand.Name != "Seed") PlayerTools.ToolOnHand.LetTool();
+        if (Inventory.ObjectInHand is Tool) ((Tool)Inventory.ObjectInHand).LetTool();
     }
 
     void OnMouseOver()
     {
-        if (PlayerTools.ToolOnHand != null && PlayerTools.ToolOnHand.Name != "Seed")
+        if (Inventory.ObjectInHand is Tool)
         {
             if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1)
                 transform.Find("Let").gameObject.SetActive(false);

@@ -17,11 +17,13 @@ public class StorageHandler : MonoBehaviour
 
     public void TakeStorage()
     {
-        if (!gameObject.activeSelf || Inventory.InventorySlot.activeSelf) return;
+        if (!gameObject.activeSelf || Inventory.ObjectInHand != null) return;
         StorageSystem.StorageList.Find(x => x.BoxObject == Box).RemoveBox();
-        (GameObject.Find("Farm handler").GetComponent("Build") as Build).ObjectName = "Storage box";
+        BuildableObject bo = new BuildableObject(-1);
+        bo.Name = "Storage box";
+        Inventory.ObjectInHand = bo;
+        Inventory.ChangeObject();
         GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
-        Inventory.ChangeObject("Storage box", "Object");
         GameObject.Find("UI").transform.Find("Take storage").gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
