@@ -15,6 +15,24 @@ public class Inventory : MonoBehaviour
         InventoryText = InventorySlot.transform.parent.Find("Object info").gameObject.GetComponent<Text>();
     }
 
+    public static void RemoveObject()
+    {
+        InventorySlot.SetActive(false);
+        InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
+        InventoryText.text = "";
+        ObjectInHand = null;
+    }
+
+    public static void ChangeObject()
+    {
+        InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Inventory/" + ObjectInHand.Name);
+        InventoryText.text = ObjectInHand.Name + (ObjectInHand.IsStackable ? " (" + ObjectInHand.Amount + ")" : "");
+
+        InventorySlot.SetActive(true);
+    }
+
+    // To remove
+
     public static void ChangeObject(string objectName, string type)
     {
         switch (type)
