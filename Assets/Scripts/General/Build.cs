@@ -46,13 +46,14 @@ public class Build : MonoBehaviour
                     VertexSystem.Vertex v = new VertexSystem.Vertex(pos);
                     VertexSystem.Vertices.Add(v);
                     v.UpdateCons();
-                    bo.Amount--;
                     objectBP.name = "Shop tile";
+                    objectBP.GetComponent<BoxCollider2D>().enabled = true;
+                    buildable = false;
+                    bo.Amount--;
                     if (bo.Amount > 0)
                     {
                         Inventory.ChangeObject();
                         objectBP = null;
-                        lastPos = new Vector2(-1000, -1000);
                         return;
                     }
                 }

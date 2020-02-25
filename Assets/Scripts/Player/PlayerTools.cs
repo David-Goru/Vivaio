@@ -23,10 +23,30 @@ public class PlayerTools : MonoBehaviour
             else GameObject.Find("UI").transform.Find("Tutorial").gameObject.SetActive(true);
         }
 
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !GameObject.Find("Farm handler").GetComponent<Build>().enabled)
         {
             Vector2 mousePos;
-            if (pickableObject != null)
+
+            if (Inventory.ObjectInHand is Shovel)
+            {
+                mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
+
+                if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
+                {
+                    GameObject possibleTile = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")).gameObject;
+                    if (possibleTile.name == "Shop tile")
+                    {
+                        VertexSystem.Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(possibleTile.transform.position.x, possibleTile.transform.position.y));
+                        foreach (VertexSystem.Vertex u in v.Conns)
+                        {
+                            u.Conns.Remove(v);
+                        }
+                        VertexSystem.Vertices.Remove(v);
+                        Destroy(possibleTile);
+                    }
+                }
+            }
+            else if (pickableObject != null)
             {
                 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
 
@@ -43,6 +63,19 @@ public class PlayerTools : MonoBehaviour
                     pickableObject.GetComponent<BoxCollider2D>().enabled = true;
 
                     if (pickableObject.name == "Delivery box") DeliverySystem.DeliveryList.Find(x => x.Box == pickableObject).Point.Available = true;
+                    else if (pickableObject.name == "Shop tile")
+                    {
+                        VertexSystem.Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(firstPos.x, firstPos.y));
+                        foreach (VertexSystem.Vertex u in v.Conns)
+                        {
+                            u.Conns.Remove(v);
+                        }
+                        VertexSystem.Vertices.Remove(v);
+
+                        v = new VertexSystem.Vertex(new Vector2(pickableObject.transform.position.x, pickableObject.transform.position.y));
+                        VertexSystem.Vertices.Add(v);
+                        v.UpdateCons();
+                    }
 
                     pickableObject = null;
                 }
@@ -62,26 +95,6 @@ public class PlayerTools : MonoBehaviour
                         pickableObject.GetComponent<BoxCollider2D>().enabled = false;
                     }
                     else pickableObject = null;
-                }
-            }
-            
-            if (Inventory.ObjectInHand is Shovel)
-            {
-                mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
-                
-                if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
-                {
-                    GameObject possibleTile = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")).gameObject;
-                    if (possibleTile.name == "Shop tile")
-                    {
-                        VertexSystem.Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(possibleTile.transform.position.x, possibleTile.transform.position.y));
-                        foreach (VertexSystem.Vertex u in v.Conns)
-                        {
-                            u.Conns.Remove(v);
-                        }                        
-                        VertexSystem.Vertices.Remove(v);
-                        Destroy(possibleTile);
-                    }
                 }
             }
         }

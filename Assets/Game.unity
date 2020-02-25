@@ -5177,7 +5177,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 583230574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
+  m_Script: {fileID: 11500000, guid: f7e806d717e664e42b0e5579520b5d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: Hoe
@@ -8517,7 +8517,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.48}
+  m_Size: {x: 0.5, y: 0.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -9943,7 +9943,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1167102191}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
+  m_Script: {fileID: 11500000, guid: f7e806d717e664e42b0e5579520b5d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: Basket
@@ -14381,7 +14381,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: This is the house. At night, go inside and use the bed to start a new day.
+  m_Text: This is the house. Whenever you want to end the day and start a new one,
+    go inside and use the bed.
 --- !u!222 &1662953562
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15391,7 +15392,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1843545959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
+  m_Script: {fileID: 11500000, guid: f7e806d717e664e42b0e5579520b5d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: Shovel
@@ -17106,7 +17107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1969507905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 959f30d4981f66b4f81105eee152104f, type: 3}
+  m_Script: {fileID: 11500000, guid: f7e806d717e664e42b0e5579520b5d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: Watering can
@@ -17997,7 +17998,7 @@ SpriteRenderer:
   m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2043979723
