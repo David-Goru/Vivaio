@@ -20,9 +20,9 @@ public class FarmFloor : MonoBehaviour
     {
         if (waterUnits > 0)
         {
-            transform.Find("Drip bottle").Find(((int)Mathf.Ceil(waterUnits / 2)).ToString()).gameObject.SetActive(false);
+            transform.Find("Drip bottle").Find(waterUnits.ToString()).gameObject.SetActive(false);
             waterUnits--;
-            transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
+            transform.Find("Drip bottle").Find(waterUnits.ToString()).gameObject.SetActive(true);
             Farm.Crops.Find(x => x.GetPot() == gameObject).Water();
         }
     }
@@ -31,7 +31,7 @@ public class FarmFloor : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            if (Inventory.InventoryText.text == "Drip bottle" && !hasDripBottle)
+            if (Inventory.InventoryText.text == "Drip bottle" && !hasDripBottle && name == "Plowed soil")
             {
                 Inventory.RemoveObject();
                 hasDripBottle = true;
@@ -71,15 +71,15 @@ public class FarmFloor : MonoBehaviour
                                 PlayerTools.DoingAnim = true;
                                 StartCoroutine(PlayerTools.DoAnim("Water", (Vector2)transform.position));
                                 wc.UseTool(unitsToUse);
-                                transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(false);
+                                transform.Find("Drip bottle").Find(waterUnits.ToString()).gameObject.SetActive(false);
                                 waterUnits += unitsToUse * 2;
-                                transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
+                                transform.Find("Drip bottle").Find(waterUnits.ToString()).gameObject.SetActive(true);
 
                                 if (hasPlant && !Farm.Crops.Find(x => x.GetPot() == gameObject).Water())
                                 {
-                                    transform.Find("Drip bottle").Find(((int)Mathf.Ceil(waterUnits / 2)).ToString()).gameObject.SetActive(false);
+                                    transform.Find("Drip bottle").Find(waterUnits.ToString()).gameObject.SetActive(false);
                                     waterUnits--;
-                                    transform.Find("Drip bottle").Find(((int)Mathf.Ceil((float)waterUnits / 2)).ToString()).gameObject.SetActive(true);
+                                    transform.Find("Drip bottle").Find(waterUnits.ToString()).gameObject.SetActive(true);
                                 }
                             }
                         }
@@ -141,6 +141,7 @@ public class FarmFloor : MonoBehaviour
                     Farm.Crops.Add(new Crop(Farm.Plants[seed.Type], gameObject));
                     seed.UseSeed();
                     hasPlant = true;
+                    AutoWater();
                 }
             }
         }

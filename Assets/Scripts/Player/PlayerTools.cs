@@ -266,6 +266,7 @@ public class PlayerTools : MonoBehaviour
         letterUI.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + letter.Type);
         letterUI.transform.Find("Title").gameObject.GetComponent<Text>().text = letter.Title;
         letterUI.transform.Find("Body").gameObject.GetComponent<Text>().text = letter.Body;
+        letterUI.transform.Find("Signature").gameObject.GetComponent<Text>().text = letter.Signature;
         letterUI.SetActive(true);
     }
 

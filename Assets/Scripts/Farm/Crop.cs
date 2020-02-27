@@ -14,7 +14,6 @@ public class Crop
     bool watered;
     int daysUntilDry;
 
-
     public Crop(Plant plant, GameObject pot)
     {
         this.plant = plant;
@@ -34,7 +33,7 @@ public class Crop
         crop.transform.SetParent(pot.transform);
         crop.name = "Crop";
 
-        // Set sprite
+        // Set sprite        
         pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = Farm.UnwateredSeed;
     }
 
