@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ToolPhysical : MonoBehaviour
 {
@@ -45,14 +46,14 @@ public class ToolPhysical : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (Inventory.ObjectInHand == null && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1) Tool.TakeTool();
+        if (!EventSystem.current.IsPointerOverGameObject() && Inventory.ObjectInHand == null && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1) Tool.TakeTool();
     }
 
     void OnMouseOver()
     {
         if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1)
             transform.Find("Text").gameObject.SetActive(false);
-        else if (Inventory.ObjectInHand == null) transform.Find("Text").gameObject.SetActive(true);
+        else if (!EventSystem.current.IsPointerOverGameObject() && Inventory.ObjectInHand == null) transform.Find("Text").gameObject.SetActive(true);
     }
 
     void OnMouseExit()
