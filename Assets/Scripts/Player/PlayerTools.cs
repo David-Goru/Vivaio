@@ -251,10 +251,9 @@ public class PlayerTools : MonoBehaviour
         DoingAnim = false;
     }
 
-    public void ThrowSeeds()
+    public void ThrowItem()
     {
-        if (Inventory.ObjectInHand is Seed) Inventory.RemoveObject();
-        GameObject.Find("UI").transform.Find("Throw seeds").gameObject.SetActive(false);
+        if (Inventory.ObjectInHand is Seed || Inventory.ObjectInHand is Fertilizer) Inventory.RemoveObject();
     }
 
     public void OpenLetter()

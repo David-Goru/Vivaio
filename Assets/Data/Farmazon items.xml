@@ -59,4 +59,10 @@
 		<Price>150</Price>
 		<Description>A bottle that can water one plant during 5 days.</Description>
 	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Fertilizer</Name>
+		<Use>Fertilizer</Use>
+		<Price>50</Price>
+		<Description>A bag of 10 units of fertilizer to harvest more.</Description>
+	</FarmazonItem>
 </FarmazonItems>

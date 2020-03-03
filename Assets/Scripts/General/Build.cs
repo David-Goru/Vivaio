@@ -70,7 +70,7 @@ public class Build : MonoBehaviour
                 }
                 else if (bo.Name == "Product box")
                 {
-                    ProductStorages.PBList.Add(new ProductBox(objectBP, 50));
+                    ProductStorages.PBList.Add(new ProductBox(objectBP, 100));
                     objectBP.name = "Product box";
                     objectBP.GetComponent<BoxCollider2D>().enabled = true;
                 }

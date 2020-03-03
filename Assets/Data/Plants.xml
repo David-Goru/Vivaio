@@ -4,6 +4,7 @@
 		<Levels>6</Levels>
 		<MinAmount>4</MinAmount>
 		<MaxAmount>6</MaxAmount>
+		<FertilizerExtra>4</FertilizerExtra>
 		<DaysUntilDry>3</DaysUntilDry>
 	</Plant>
 	<Plant>
@@ -11,6 +12,7 @@
 		<Levels>4</Levels>
 		<MinAmount>2</MinAmount>
 		<MaxAmount>4</MaxAmount>
+		<FertilizerExtra>3</FertilizerExtra>
 		<DaysUntilDry>2</DaysUntilDry>
 	</Plant>
 	<Plant>
@@ -18,6 +20,7 @@
 		<Levels>3</Levels>
 		<MinAmount>3</MinAmount>
 		<MaxAmount>5</MaxAmount>
+		<FertilizerExtra>4</FertilizerExtra>
 		<DaysUntilDry>1</DaysUntilDry>
 	</Plant>
 	<Plant>
@@ -25,6 +28,7 @@
 		<Levels>6</Levels>
 		<MinAmount>1</MinAmount>
 		<MaxAmount>1</MaxAmount>
+		<FertilizerExtra>2</FertilizerExtra>
 		<DaysUntilDry>4</DaysUntilDry>
 	</Plant>
 	<Plant>
@@ -32,6 +36,7 @@
 		<Levels>3</Levels>
 		<MinAmount>3</MinAmount>
 		<MaxAmount>3</MaxAmount>
+		<FertilizerExtra>3</FertilizerExtra>
 		<DaysUntilDry>1</DaysUntilDry>
 	</Plant>
 </Plants>

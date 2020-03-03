@@ -9,6 +9,7 @@ public class Plant
     public int Levels;
     public int MinAmount;
     public int MaxAmount;
+    public int FertilizerExtra;
     public int DaysUntilDry;
 
     // Sprites
@@ -17,12 +18,13 @@ public class Plant
     public Sprite[] Dry;
 
 
-    public Plant(string name, int levels, int minAmount, int maxAmount, int daysUntilDry)
+    public Plant(string name, int levels, int minAmount, int maxAmount, int fertilizerExtra, int daysUntilDry)
     {
         Name = name;
         Levels = levels;
         MinAmount = minAmount;
         MaxAmount = maxAmount;
+        FertilizerExtra = fertilizerExtra;
         DaysUntilDry = daysUntilDry;
 
         Watered = new Sprite[levels];

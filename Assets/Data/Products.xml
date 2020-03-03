@@ -1,5 +1,9 @@
 <Products>
 	<Product>
+		<Name>Sticks</Name>
+		<MediumValue>0</MediumValue>
+	</Product>
+	<Product>
 		<Name>Tomato</Name>
 		<MediumValue>4</MediumValue>
 	</Product>

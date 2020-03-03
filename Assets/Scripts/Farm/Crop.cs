@@ -21,7 +21,7 @@ public class Crop
         this.pot = pot;
 
         // Random
-        amount = Random.Range(plant.MinAmount, plant.MaxAmount);
+        amount = Random.Range(plant.MinAmount, plant.MaxAmount + (pot.GetComponent<FarmFloor>().CheckFertilizer() ? plant.FertilizerExtra : 0));
 
         // Default
         growLevel = 0;
@@ -44,12 +44,14 @@ public class Crop
         {
             if (!watered)
             {
-                // If the plant can grow, if it wasn't watered, it will dry a bit
-                daysUntilDry--;
-                if (daysUntilDry == 0)
+                // If the plant can grow, if it wasn't watered and it wasn't a seed, it will dry a bit
+                if (growLevel > 0)
                 {
-                    if (growLevel == 0) pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = Farm.UnwateredSeed;
-                    else pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Dry[growLevel - 1];
+                    daysUntilDry--;
+                    if (daysUntilDry == 0)
+                    {
+                        pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Dry[growLevel - 1];
+                    }
                 }
             }
             else
@@ -86,13 +88,24 @@ public class Crop
     public bool Harvest()
     {
         Basket basket = (Basket)Inventory.ObjectInHand;
-        if (growLevel == plant.Levels && (basket.Amount + amount) < 20 && (basket.Product == null || basket.Product.Name == plant.Name))
+        if (daysUntilDry == 0)
+        {
+            if ((basket.Amount + 2) <= 20 && (basket.Product == null || basket.Product.Name == "Sticks"))
+            {
+                basket.Product = Products.ProductsList.Find(x => x.Name == "Sticks");
+                basket.Amount += 2;
+                Inventory.ChangeObject();
+                Delete();
+                return true;
+            }
+        }
+        if (growLevel == plant.Levels && (basket.Amount + amount) <= 20 && (basket.Product == null || basket.Product.Name == plant.Name))
         {
             basket.Product = Products.ProductsList.Find(x => x.Name == plant.Name);
             basket.Amount += amount;
             Inventory.ChangeObject();
-            MonoBehaviour.Destroy(pot.transform.Find("Crop").gameObject);
-            Farm.Crops.Remove(this);
+            daysUntilDry = 0;
+            pot.transform.Find("Crop").gameObject.GetComponent<SpriteRenderer>().sprite = plant.Dry[growLevel - 1];
             return true;
         }
         return false;
@@ -105,6 +118,8 @@ public class Crop
 
     public void Delete()
     {
+        pot.GetComponent<FarmFloor>().RemoveFertilizer();
+        pot.GetComponent<FarmFloor>().RemovePlant();
         MonoBehaviour.Destroy(pot.transform.Find("Crop").gameObject);
         Farm.Crops.Remove(this);
     }

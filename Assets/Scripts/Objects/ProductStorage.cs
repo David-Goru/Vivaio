@@ -22,7 +22,7 @@ public class ProductStorage : MonoBehaviour
                 }
                 else
                 {
-                    if (basket.Amount < 50)
+                    if (basket.Amount < 20)
                     {
                         Tuple pickUpStorage = ProductStorages.PBList.Find(x => x.Model == gameObject).PickUp();
                         if (pickUpStorage.Item2 > 0)

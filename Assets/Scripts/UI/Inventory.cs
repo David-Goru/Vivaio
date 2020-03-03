@@ -25,6 +25,7 @@ public class Inventory : MonoBehaviour
         Transform UI = GameObject.Find("UI").transform;
         UI.Find("Build button").gameObject.SetActive(false);
         UI.Find("Throw seeds").gameObject.SetActive(false);
+        UI.Find("Throw fertilizer").gameObject.SetActive(false);
         UI.Find("Letter").gameObject.SetActive(false);
         UI.Find("Open letter").gameObject.SetActive(false);
     }
@@ -40,6 +41,12 @@ public class Inventory : MonoBehaviour
             Seed seed = (Seed)ObjectInHand;
             InventoryText.text = seed.Name + " (" + seed.Amount + ")";
             UI.Find("Throw seeds").gameObject.SetActive(true);
+        }
+        else if (ObjectInHand is Fertilizer)
+        {
+            Fertilizer fertilizer = (Fertilizer)ObjectInHand;
+            InventoryText.text = "Fertilizer (" + fertilizer.Amount + ")";
+            UI.Find("Throw fertilizer").gameObject.SetActive(true);
         }
         else if (ObjectInHand is Tool)
         {

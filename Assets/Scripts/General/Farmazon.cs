@@ -215,6 +215,10 @@ public class Farmazon : MonoBehaviour
                         case "Seed":
                             ob = new Seed(item.Item.Name, 10);
                             ob.Name = item.Item.Name + " seeds";
+                            break;                            
+                        case "Fertilizer":
+                            ob = new Fertilizer(10);
+                            ob.Name = "Fertilizer";
                             break;
                     }
                     box.Items[0] = ob;
@@ -241,6 +245,10 @@ public class Farmazon : MonoBehaviour
                                 case "Seed":
                                     ob = new Seed(item.Item.Name, 10);
                                     ob.Name = item.Item.Name + " seeds";
+                                    break;
+                                case "Fertilizer":
+                                    ob = new Fertilizer(10);
+                                    ob.Name = "Fertilizer";
                                     break;
                             }
                             box.Items[i] = ob;

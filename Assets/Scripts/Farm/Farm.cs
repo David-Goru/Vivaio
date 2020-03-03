@@ -31,7 +31,7 @@ public class Farm : MonoBehaviour
         
         foreach (XmlNode plant in plants)
         {              
-            Plant currentPlant = new Plant(plant["Name"].InnerText, int.Parse(plant["Levels"].InnerText), int.Parse(plant["MinAmount"].InnerText), int.Parse(plant["MaxAmount"].InnerText), int.Parse(plant["DaysUntilDry"].InnerText));
+            Plant currentPlant = new Plant(plant["Name"].InnerText, int.Parse(plant["Levels"].InnerText), int.Parse(plant["MinAmount"].InnerText), int.Parse(plant["MaxAmount"].InnerText), int.Parse(plant["FertilizerExtra"].InnerText), int.Parse(plant["DaysUntilDry"].InnerText));
             Plants.Add(plant["Name"].InnerText, currentPlant);
         }
     }

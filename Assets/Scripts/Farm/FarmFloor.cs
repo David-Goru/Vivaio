@@ -6,14 +6,43 @@ using UnityEngine.EventSystems;
 public class FarmFloor : MonoBehaviour
 {
     bool hasPlant;
+    bool hasFertilizer;
     bool hasDripBottle;
     int waterUnits;
 
     void Start()
     {
         hasPlant = false;
+        hasFertilizer = false;
         hasDripBottle = false;
         waterUnits = 0;
+    }
+
+    public void RemovePlant()
+    {
+        hasPlant = false;
+    }
+
+    public bool CheckFertilizer()
+    {
+        return hasFertilizer;
+    }
+
+    public void RemoveFertilizer()
+    {
+        if (hasFertilizer)
+        {
+            hasFertilizer = false;
+            transform.Find("Fertilizer").gameObject.SetActive(false);
+        }
+    }
+
+    public bool AddFertilizer()
+    {
+        if (hasFertilizer) return false;
+        hasFertilizer = true;
+        transform.Find("Fertilizer").gameObject.SetActive(true);
+        return true;
     }
 
     public void AutoWater()
@@ -125,8 +154,6 @@ public class FarmFloor : MonoBehaviour
                         {  
                             PlayerTools.DoingAnim = true;  
                             StartCoroutine(PlayerTools.DoAnim("Basket", (Vector2)transform.position));
-
-                            hasPlant = false;
                         }
                         break;
                 }
@@ -142,6 +169,14 @@ public class FarmFloor : MonoBehaviour
                     seed.UseSeed();
                     hasPlant = true;
                     AutoWater();
+                }
+            }
+            else if (Inventory.ObjectInHand is Fertilizer && !PlayerTools.DoingAnim)
+            {
+                Fertilizer fertilizer = (Fertilizer)Inventory.ObjectInHand;
+                if (!hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f && name == "Plowed soil")
+                {
+                    if (AddFertilizer()) fertilizer.UseFertilizer();
                 }
             }
         }

@@ -11,6 +11,7 @@ public class StandObject : MonoBehaviour
         if (Inventory.ObjectInHand is Basket && !EventSystem.current.IsPointerOverGameObject())
         {
             Basket basket = (Basket)Inventory.ObjectInHand;
+            if (basket.Product != null && basket.Product.Name == "Sticks") return;
             if (Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f)
             {
                 if (basket.Product != null)
