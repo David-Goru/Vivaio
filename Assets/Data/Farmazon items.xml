@@ -57,12 +57,18 @@
 		<Name>Drip bottle</Name>
 		<Use>Farm</Use>
 		<Price>150</Price>
-		<Description>A bottle that can water one plant during 5 days.</Description>
+		<Description>A bottle that can water one plant during 10 days.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
 		<Name>Fertilizer</Name>
 		<Use>Fertilizer</Use>
 		<Price>50</Price>
 		<Description>A bag of 10 units of fertilizer to harvest more.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Composter</Name>
+		<Use>Build</Use>
+		<Price>300</Price>
+		<Description>A composter that lets you get fertilizer using sticks.</Description>
 	</FarmazonItem>
 </FarmazonItems>

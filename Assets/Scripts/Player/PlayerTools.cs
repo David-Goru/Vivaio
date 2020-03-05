@@ -134,7 +134,7 @@ public class PlayerTools : MonoBehaviour
                     }
                     else if (objectSelected.name == "Product box")
                     {                        
-                            if (Inventory.ObjectInHand != null) return;
+                        if (Inventory.ObjectInHand != null) return;
                         ProductBox pb = ProductStorages.PBList.Find(x => x.Model == objectSelected);
 
                         if (pb.IsEmpty())
@@ -142,6 +142,19 @@ public class PlayerTools : MonoBehaviour
                             ProductStorages.PBList.Remove(pb);
                             BuildableObject bo = new BuildableObject(-1);
                             bo.Name = "Product box";
+                            Inventory.ObjectInHand = bo;
+                            GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
+                            Inventory.ChangeObject();
+                            Destroy(objectSelected);
+                        }
+                    }
+                    else if (objectSelected.name == "Composter")
+                    {
+                        if (Inventory.ObjectInHand != null) return;
+                        if (objectSelected.GetComponent<Composter>().State == "Available")
+                        {
+                            BuildableObject bo = new BuildableObject(objectSelected.GetComponent<Composter>().Amount);
+                            bo.Name = "Composter";
                             Inventory.ObjectInHand = bo;
                             GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
                             Inventory.ChangeObject();

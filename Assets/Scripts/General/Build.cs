@@ -74,6 +74,12 @@ public class Build : MonoBehaviour
                     objectBP.name = "Product box";
                     objectBP.GetComponent<BoxCollider2D>().enabled = true;
                 }
+                else if (bo.Name == "Composter")
+                {
+                    objectBP.name = bo.Name;
+                    objectBP.GetComponent<BoxCollider2D>().enabled = true;
+                    if (bo.Amount > 0) objectBP.GetComponent<Composter>().Amount = bo.Amount;
+                }
                 objectBP = null;
                 lastPos = new Vector2(-1000, -1000);
                 Inventory.RemoveObject();
