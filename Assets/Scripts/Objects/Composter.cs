@@ -50,6 +50,7 @@ public class Composter : MonoBehaviour
                 if (!Inventory.InventorySlot.activeSelf && !EventSystem.current.IsPointerOverGameObject())
                 {
                     transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Composter/Available");
+                    Amount = 0;
                     State = "Available";
                     Inventory.ObjectInHand = new Fertilizer(10);
                     Inventory.ObjectInHand.Name = "Fertilizer";

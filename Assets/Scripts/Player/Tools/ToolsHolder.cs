@@ -11,7 +11,7 @@ public class ToolsHolder : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1) return;
+        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1.1f) return;
         if (Inventory.ObjectInHand is Tool) ((Tool)Inventory.ObjectInHand).LetTool();
     }
 
@@ -19,7 +19,7 @@ public class ToolsHolder : MonoBehaviour
     {
         if (Inventory.ObjectInHand is Tool)
         {
-            if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1)
+            if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1.1f)
                 transform.Find("Let").gameObject.SetActive(false);
             else if (!transform.Find("Let").gameObject.activeSelf) transform.Find("Let").gameObject.SetActive(true);
         }

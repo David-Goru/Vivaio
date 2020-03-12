@@ -176,6 +176,8 @@ public class FarmFloor : MonoBehaviour
                 Fertilizer fertilizer = (Fertilizer)Inventory.ObjectInHand;
                 if (!hasPlant && Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) <= 1.5f && name == "Plowed soil")
                 {
+                    PlayerTools.DoingAnim = true;
+                    StartCoroutine(PlayerTools.DoAnim("Seed", (Vector2)transform.position));
                     if (AddFertilizer()) fertilizer.UseFertilizer();
                 }
             }

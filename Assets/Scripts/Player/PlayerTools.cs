@@ -46,6 +46,7 @@ public class PlayerTools : MonoBehaviour
                     }
                 }
             }
+            else if (Inventory.ObjectInHand is Hoe) {}
             else if (pickableObject != null)
             {
                 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
@@ -77,6 +78,28 @@ public class PlayerTools : MonoBehaviour
                         v.UpdateCons();
                     }
 
+                    if (Physics2D.OverlapPoint(firstPos, 1 << LayerMask.NameToLayer("Farmland")))
+                        Physics2D.OverlapPoint(firstPos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Grass";
+
+                    pickableObject = null;
+                }
+                else if (pickableObject.name != "Shop tile"
+                    && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland"))
+                    && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name == "Grass")
+                {
+                    pickableObject.transform.position = mousePos;
+
+                    SpriteRenderer objectSprite;
+                    if (pickableObject.GetComponent<SpriteRenderer>() != null) objectSprite = pickableObject.GetComponent<SpriteRenderer>();
+                    else objectSprite = pickableObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
+                    objectSprite.color = Color.white;
+                    pickableObject.GetComponent<BoxCollider2D>().enabled = true;
+
+                    if (pickableObject.name == "Delivery box") DeliverySystem.DeliveryList.Find(x => x.Box == pickableObject).Point.Available = true;
+
+                    if (Physics2D.OverlapPoint(firstPos, 1 << LayerMask.NameToLayer("Farmland")))
+                        Physics2D.OverlapPoint(firstPos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Grass";
+                    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Built grass";
                     pickableObject = null;
                 }
             }
@@ -128,6 +151,8 @@ public class PlayerTools : MonoBehaviour
                                 Inventory.ObjectInHand = bo;
                                 GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
                                 Inventory.ChangeObject();
+                                if (Physics2D.OverlapPoint(objectSelected.transform.position, 1 << LayerMask.NameToLayer("Farmland")))
+                                    Physics2D.OverlapPoint(objectSelected.transform.position, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Grass";                                
                                 Destroy(objectSelected);
                             }
                         }
@@ -145,6 +170,8 @@ public class PlayerTools : MonoBehaviour
                             Inventory.ObjectInHand = bo;
                             GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
                             Inventory.ChangeObject();
+                            if (Physics2D.OverlapPoint(objectSelected.transform.position, 1 << LayerMask.NameToLayer("Farmland")))
+                                Physics2D.OverlapPoint(objectSelected.transform.position, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Grass";
                             Destroy(objectSelected);
                         }
                     }
@@ -158,6 +185,8 @@ public class PlayerTools : MonoBehaviour
                             Inventory.ObjectInHand = bo;
                             GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
                             Inventory.ChangeObject();
+                            if (Physics2D.OverlapPoint(objectSelected.transform.position, 1 << LayerMask.NameToLayer("Farmland")))
+                                Physics2D.OverlapPoint(objectSelected.transform.position, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Grass";
                             Destroy(objectSelected);
                         }
                     }
@@ -176,6 +205,11 @@ public class PlayerTools : MonoBehaviour
             if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Buildable area"))
                 && Vector2.Distance(transform.position, pickableObject.transform.position) <= 1.5f
                 && !Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
+                objectSprite.color = Color.green;
+            else if (pickableObject.name != "Shop tile"
+                && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland"))
+                && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name == "Grass"
+                && Vector2.Distance(transform.position, pickableObject.transform.position) <= 1.5f)
                 objectSprite.color = Color.green;
             else objectSprite.color = Color.red;
         }
@@ -216,6 +250,13 @@ public class PlayerTools : MonoBehaviour
 
         if (Input.GetAxis("Speed") != 0 && !DoingAnim) PlayerMovement.IsRunning = true;
         else PlayerMovement.IsRunning = false;
+
+        if (Input.GetKeyDown(KeyCode.B) && GameObject.Find("UI").transform.Find("Build button").gameObject.activeSelf)
+        {
+            GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(false);
+            GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(true);
+            GameObject.Find("Farm handler").GetComponent<Build>().enabled = true;
+        }
     }
 
     public bool IsMovingOrBuilding()

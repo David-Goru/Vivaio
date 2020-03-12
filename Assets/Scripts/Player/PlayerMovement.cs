@@ -13,8 +13,8 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         PlayerTools.DoingAnim = false;
-        //transform.Find("Camera").GetComponent<Camera>().orthographicSize = (float)1080 / 64 / 8;
-        transform.Find("Camera").GetComponent<Camera>().orthographicSize = (float)Screen.currentResolution.height / 64 / 8;
+        transform.Find("Camera").GetComponent<Camera>().orthographicSize = (float)1080 / 64 / 8;
+        //transform.Find("Camera").GetComponent<Camera>().orthographicSize = (float)Screen.currentResolution.height / 64 / 8;
         controller = gameObject.GetComponent<Animator>();
     }
 

@@ -28,6 +28,14 @@ public class Build : MonoBehaviour
                     objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0);
                     buildable = true;
                 }
+                else if (bo.Name != "Shop tile"
+                    && Vector2.Distance(pos, GameObject.Find("Player").transform.position) < 2
+                    && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland"))
+                    && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name == "Grass")
+                {
+                    objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0);
+                    buildable = true;
+                }
                 else
                 {
                     objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
@@ -40,6 +48,8 @@ public class Build : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && buildable && !EventSystem.current.IsPointerOverGameObject())
             {
                 objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+                if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")))
+                    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Built grass";
 
                 if (bo.Name == "Shop tile")
                 {

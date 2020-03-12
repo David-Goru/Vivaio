@@ -27,4 +27,18 @@
 		<MediumAmount>2</MediumAmount>
 		<Speed>1.1</Speed>
 	</Customer>
+	<Customer>
+		<Name>Jasmine</Name>
+		<Age>11</Age>
+		<Job>Student</Job>
+		<Priorities>
+			<Priority>Tomato</Priority>
+			<Priority>Carrot</Priority>
+			<Priority>Onion</Priority>
+			<Priority>Pumpkin</Priority>
+			<Priority>Potato</Priority>
+		</Priorities>
+		<MediumAmount>4</MediumAmount>
+		<Speed>1.2</Speed>
+	</Customer>
 </CustomersInfo>

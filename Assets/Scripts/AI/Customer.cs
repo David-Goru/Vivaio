@@ -107,7 +107,7 @@ public class Customer
                     if (Trust < 85) Trust++;
                     Master.UpdateBalance(expenses);
                 }
-                else if (Trust > 1) Trust--;
+                else if (Trust > 10) Trust--;
                 paid = true;
                 path = VertexSystem.Route(body.transform.position, AI.End);
             }                

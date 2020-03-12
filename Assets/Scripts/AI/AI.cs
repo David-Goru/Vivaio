@@ -66,6 +66,7 @@ public class AI : MonoBehaviour
                 nextCustomer = Random.Range(3, 20);
                 Customer customer = AvailableCustomers[Random.Range(0, AvailableCustomers.Count - 1)];
                 
+                Debug.Log(customer.Trust);
                 if (Random.Range(0, 100) < customer.Trust) customer.ActivateCustomer();
                 else
                 {

@@ -59,7 +59,6 @@ public class DeliverySystem : MonoBehaviour
             if (!Inventory.InventorySlot.activeSelf)
             {
                 Inventory.ObjectInHand = Items[itemID];
-                GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
                 Inventory.ChangeObject();                
                 Items[itemID] = null;
 
@@ -88,7 +87,10 @@ public class DeliverySystem : MonoBehaviour
 
         public void RemoveBox()
         {
-            Point.Available = true;
+            if (Point.Pos == Box.transform.position)
+                Point.Available = true;
+            else if (Physics2D.OverlapPoint(Box.transform.position, 1 << LayerMask.NameToLayer("Farmland")))
+                Physics2D.OverlapPoint(Box.transform.position, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Grass";
             Destroy(Box);
             DeliveryList.Remove(this);
         }
