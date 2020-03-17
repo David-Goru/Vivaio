@@ -15984,6 +15984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31448dc5259fefe43864ba6d20d285a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TotalCustomers: 3
 --- !u!114 &1859907972
 MonoBehaviour:
   m_ObjectHideFlags: 0

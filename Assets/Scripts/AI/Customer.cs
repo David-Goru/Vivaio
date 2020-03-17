@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Customer
 {
+    int id;
     public string Name;
     public int Age;
     public string Job;
@@ -23,8 +24,9 @@ public class Customer
     float speed;
     string lastDir;
 
-    public Customer(GameObject body, float speed)
+    public Customer(int id, GameObject body, float speed)
     {
+        this.id = id;
         this.body = body;
         body.SetActive(false);
         customerDesires = new Stack<CustomerDesire>();
@@ -150,8 +152,7 @@ public class Customer
 
     void RemoveCustomer()
     {
-        AI.UnavailableCustomers.Add(this);
-        AI.ActiveCustomers.Remove(this);
+        AI.ActiveCustomers.Remove(id);
         body.SetActive(false);
     }
 
@@ -179,7 +180,7 @@ public class Customer
         paid = false;
 
         body.SetActive(true);
-        AI.ActiveCustomers.Add(this);
-        AI.AvailableCustomers.Remove(this);
+        AI.ActiveCustomers.Add(id);
+        AI.AvailableCustomers.Remove(id);
     }
 }

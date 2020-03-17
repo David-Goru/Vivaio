@@ -29,7 +29,7 @@ public class PostBox : MonoBehaviour
         string signature;
 
         // Check for customers letters       
-        foreach (Customer c in AI.AvailableCustomers)
+        foreach (Customer c in AI.Customers)
         {
             if (c.Trust >= 100 && !c.LetterSent)
             {
