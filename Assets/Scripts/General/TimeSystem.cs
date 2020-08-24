@@ -16,12 +16,12 @@ public class TimeSystem : MonoBehaviour
     public GameObject ClockHand;
 
     // Sprites
-    public static Sprite HouseDay;
-    public static Sprite HouseNight;
-    public static Sprite HouseNoon;
-    public static Sprite ClockMorning;
-    public static Sprite ClockAfternoon;
-    public static Sprite ClockNight;
+    public Sprite HouseDay;
+    public Sprite HouseNoon;
+    public Sprite HouseNight;
+    public Sprite ClockMorning;
+    public Sprite ClockAfternoon;
+    public Sprite ClockNight;
 
     // Colors
     public Color EarlyBackground;
@@ -41,16 +41,8 @@ public class TimeSystem : MonoBehaviour
             Clock = GameObject.FindGameObjectWithTag("Clock");
             House = GameObject.FindGameObjectWithTag("House");
 
-            // Sprites
-            HouseDay = Resources.Load<Sprite>("DNCycle/Indoor house day");
-            HouseNight = Resources.Load<Sprite>("DNCycle/Indoor house night");
-            HouseNoon = Resources.Load<Sprite>("DNCycle/Indoor house noon");
-            ClockMorning = Resources.Load<Sprite>("DNCycle/Clock day");
-            ClockAfternoon = Resources.Load<Sprite>("DNCycle/Clock afternoon");
-            ClockNight = Resources.Load<Sprite>("DNCycle/Clock night");
-
-            Clock.GetComponent<Image>().sprite = ClockNight;
-            House.GetComponent<SpriteRenderer>().sprite = HouseNight;
+            Clock.GetComponent<Image>().sprite = GameObject.Find("Farm handler").GetComponent<TimeSystem>().ClockNight;
+            House.GetComponent<SpriteRenderer>().sprite = GameObject.Find("Farm handler").GetComponent<TimeSystem>().HouseNight;
 
             Master.Player.transform.position = Data.SleepPosition;
         }
@@ -65,20 +57,11 @@ public class TimeSystem : MonoBehaviour
     // When creating a new game
     public static bool New()
     {
-        Data = new TimeData(false, false, TimeState.MORNING, 180, 1, new List<Timer>());
-        
+        Data = new TimeData(false, false, TimeState.MORNING, 180, 1, new List<Timer>());        
             
         Background = GameObject.Find("Background");
         Clock = GameObject.FindGameObjectWithTag("Clock");
         House = GameObject.FindGameObjectWithTag("House");
-
-        // Sprites
-        HouseDay = Resources.Load<Sprite>("DNCycle/Indoor house day");
-        HouseNight = Resources.Load<Sprite>("DNCycle/Indoor house night");
-        HouseNoon = Resources.Load<Sprite>("DNCycle/Indoor house noon");
-        ClockMorning = Resources.Load<Sprite>("DNCycle/Clock day");
-        ClockAfternoon = Resources.Load<Sprite>("DNCycle/Clock afternoon");
-        ClockNight = Resources.Load<Sprite>("DNCycle/Clock night");
 
         return true;
     }
