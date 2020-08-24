@@ -30,10 +30,52 @@
 		<Description>A small bag of 10 onion seeds.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
+		<Name>Lettuce</Name>
+		<Use>Seed</Use>
+		<Price>34</Price>
+		<Description>A small bag of 10 lettuce seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Wheat</Name>
+		<Use>Seed</Use>
+		<Price>12</Price>
+		<Description>A small bag of 10 wheat seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Grass</Name>
+		<Use>Seed</Use>
+		<Price>10</Price>
+		<Description>A small bag of 10 grass seeds.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Sign</Name>
+		<Use>Build</Use>
+		<Price>25</Price>
+		<Description>Display information on a sign.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Fence gate</Name>
+		<Use>Build</Use>
+		<Price>35</Price>
+		<Description>A gate that customers can't go through.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Fence</Name>
+		<Use>Build</Use>
+		<Price>50</Price>
+		<Description>A pack of 5 wood fences.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Shop box</Name>
+		<Use>Build</Use>
+		<Price>50</Price>
+		<Description>A box to sell up to 10 things.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
 		<Name>Shop table</Name>
 		<Use>Build</Use>
-		<Price>100</Price>
-		<Description>A stand with storage to sell things.</Description>
+		<Price>200</Price>
+		<Description>A stand to sell up to 50 things.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
 		<Name>Storage box</Name>
@@ -48,15 +90,33 @@
 		<Description>A box to store one product.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
-		<Name>Shop tile</Name>
-		<Use>Build</Use>
+		<Name>Rock tile</Name>
+		<Use>Floor</Use>
 		<Price>10</Price>
-		<Description>A pack of 5 rock tiles for the shop.</Description>
+		<Description>A pack of 10 rock tiles.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Concrete tile</Name>
+		<Use>Floor</Use>
+		<Price>25</Price>
+		<Description>A pack of 10 concrete tiles.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Composite tile</Name>
+		<Use>Floor</Use>
+		<Price>28</Price>
+		<Description>A pack of 10 composite tiles.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Brick tile</Name>
+		<Use>Floor</Use>
+		<Price>32</Price>
+		<Description>A pack of 10 brick tiles.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
 		<Name>Drip bottle</Name>
 		<Use>Farm</Use>
-		<Price>150</Price>
+		<Price>75</Price>
 		<Description>A bottle that can water one plant during 10 days.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
@@ -70,5 +130,35 @@
 		<Use>Build</Use>
 		<Price>300</Price>
 		<Description>A composter that lets you get fertilizer using sticks.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Seed box</Name>
+		<Use>Build</Use>
+		<Price>500</Price>
+		<Description>An storage that can keep up to 8 slots of 25 seeds per slot.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Deseeding machine</Name>
+		<Use>Build</Use>
+		<Price>250</Price>
+		<Description>Get seeds from crops. Needs 3 days to work.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Flour machine</Name>
+		<Use>Build</Use>
+		<Price>100</Price>
+		<Description>Make 5 flour with 10 wheat in 1 hour.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Bread machine</Name>
+		<Use>Build</Use>
+		<Price>50</Price>
+		<Description>Make 3 units of bread dough with water and 5 units of flour.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Furnace</Name>
+		<Use>Build</Use>
+		<Price>200</Price>
+		<Description>Bake things.</Description>
 	</FarmazonItem>
 </FarmazonItems>

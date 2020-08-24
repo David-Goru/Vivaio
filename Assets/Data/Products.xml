@@ -4,6 +4,10 @@
 		<MediumValue>0</MediumValue>
 	</Product>
 	<Product>
+		<Name>Wheat</Name>
+		<MediumValue>0</MediumValue>
+	</Product>
+	<Product>
 		<Name>Tomato</Name>
 		<MediumValue>4</MediumValue>
 	</Product>
@@ -22,5 +26,13 @@
 	<Product>
 		<Name>Onion</Name>
 		<MediumValue>4</MediumValue>
+	</Product>
+	<Product>
+		<Name>Lettuce</Name>
+		<MediumValue>11</MediumValue>
+	</Product>
+	<Product>
+		<Name>Bread</Name>
+		<MediumValue>45</MediumValue>
 	</Product>
 </Products>

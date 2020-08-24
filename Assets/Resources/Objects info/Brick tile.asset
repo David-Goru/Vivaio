@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca796c245fab2b4b9dadd337f6d9ac1, type: 3}
+  m_Name: Brick tile
+  m_EditorClassIdentifier: 
+  Name: Brick tile
+  Icon: {fileID: 21300000, guid: 33285c9e0520e4b42a9a159884f1ffdc, type: 3}
+  RotPositions: 1
+  Sprites:
+  - {fileID: 21300000, guid: 2169dd52fc6d19b4095e882d47c69634, type: 3}
+  CollOffset:
+  - {x: 0, y: 0}
+  CollSize:
+  - {x: 0.25, y: 0.25}

@@ -4,29 +4,39 @@ using UnityEngine;
 
 public class ToolsHolder : MonoBehaviour
 {
-    public static Hoe Hoe;
-    public static Shovel Shovel;
-    public static WateringCan WateringCan;
-    public static Basket Basket;
+    public static ToolsData Data;
 
-    void OnMouseDown()
+    // When loading a game
+    public static bool Load(ToolsData data)
     {
-        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1.1f) return;
-        if (Inventory.ObjectInHand is Tool) ((Tool)Inventory.ObjectInHand).LetTool();
-    }
-
-    void OnMouseOver()
-    {
-        if (Inventory.ObjectInHand is Tool)
+        try
         {
-            if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1.1f)
-                transform.Find("Let").gameObject.SetActive(false);
-            else if (!transform.Find("Let").gameObject.activeSelf) transform.Find("Let").gameObject.SetActive(true);
+            Data = data;
+
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Tool"))
+            {
+                g.GetComponent<ToolPhysical>().Load();
+            }
+
         }
+        catch (System.Exception e)
+        {
+            GameLoader.Log.Add(string.Format("Failed loading {0}. Error: {1}", "ToolsHolder", e));
+        }
+
+        return true;
     }
 
-    void OnMouseExit()
+    // When creating a new game
+    public static bool New()
     {
-        if (transform.Find("Let").gameObject.activeSelf) transform.Find("Let").gameObject.SetActive(false);
+        Data = new ToolsData();
+
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Tool"))
+        {
+            g.GetComponent<ToolPhysical>().New();
+        }
+
+        return true;
     }
 }

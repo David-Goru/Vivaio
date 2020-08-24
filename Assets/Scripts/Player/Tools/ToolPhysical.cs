@@ -6,58 +6,103 @@ public class ToolPhysical : MonoBehaviour
     public string Type;
     public Tool Tool;
 
-    void Start()
+    // When loading a game
+    public void Load()
     {
         switch (Type)
         {
             case "Hoe":
-                ToolsHolder.Hoe = new Hoe();
-                ToolsHolder.Hoe.Name = "Hoe";
-                ToolsHolder.Hoe.OnHand = false;
-                ToolsHolder.Hoe.Model = gameObject;
-                Tool = ToolsHolder.Hoe;
-                break;
+                Tool = ToolsHolder.Data.Hoe;
+                break;            
             case "Shovel":
-                ToolsHolder.Shovel = new Shovel();
-                ToolsHolder.Shovel.Name = "Shovel";
-                ToolsHolder.Shovel.OnHand = false;
-                ToolsHolder.Shovel.Model = gameObject;
-                Tool = ToolsHolder.Shovel;
-                break;
+                Tool = ToolsHolder.Data.Shovel;
+                break;            
             case "Watering can":
-                ToolsHolder.WateringCan = new WateringCan();
-                ToolsHolder.WateringCan.Name = "Watering can";
-                ToolsHolder.WateringCan.Remaining = 0;
-                ToolsHolder.WateringCan.OnHand = false;
-                ToolsHolder.WateringCan.Model = gameObject;
-                Tool = ToolsHolder.WateringCan;
-                break;
+                Tool = ToolsHolder.Data.WateringCan;
+                break;            
             case "Basket":
-                ToolsHolder.Basket = new Basket();
-                ToolsHolder.Basket.Name = "Basket";
-                ToolsHolder.Basket.Amount = 0;
-                ToolsHolder.Basket.Product = null;
-                ToolsHolder.Basket.OnHand = false;
-                ToolsHolder.Basket.Model = gameObject;
-                Tool = ToolsHolder.Basket;
+                Tool = ToolsHolder.Data.Basket;
                 break;
         }
+        Tool.Model = gameObject;
+        if (!Tool.OnStand) Tool.Model.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<BoxCollider2D>().enabled = true;
+    }
+
+    // When creating a new game
+    public void New()
+    {
+        switch (Type)
+        {
+            case "Hoe":
+                ToolsHolder.Data.Hoe = new Hoe();
+                ToolsHolder.Data.Hoe.Name = "Hoe";
+                ToolsHolder.Data.Hoe.OnStand = true;
+                ToolsHolder.Data.Hoe.Model = gameObject;
+                Tool = ToolsHolder.Data.Hoe;
+                break;
+            case "Shovel":
+                ToolsHolder.Data.Shovel = new Shovel();
+                ToolsHolder.Data.Shovel.Name = "Shovel";
+                ToolsHolder.Data.Shovel.OnStand = true;
+                ToolsHolder.Data.Shovel.Model = gameObject;
+                Tool = ToolsHolder.Data.Shovel;
+                break;
+            case "Watering can":
+                ToolsHolder.Data.WateringCan = new WateringCan();
+                ToolsHolder.Data.WateringCan.Name = "Watering can";
+                ToolsHolder.Data.WateringCan.Remaining = 0;
+                ToolsHolder.Data.WateringCan.OnStand = true;
+                ToolsHolder.Data.WateringCan.Model = gameObject;
+                Tool = ToolsHolder.Data.WateringCan;
+                break;
+            case "Basket":
+                ToolsHolder.Data.Basket = new Basket();
+                ToolsHolder.Data.Basket.Name = "Basket";
+                ToolsHolder.Data.Basket.Amount = 0;
+                ToolsHolder.Data.Basket.Product = null;
+                ToolsHolder.Data.Basket.OnStand = true;
+                ToolsHolder.Data.Basket.Model = gameObject;
+                Tool = ToolsHolder.Data.Basket;
+                break;
+        }
+        gameObject.GetComponent<BoxCollider2D>().enabled = true;
     }    
 
     void OnMouseDown()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && Inventory.ObjectInHand == null && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1) Tool.TakeTool();
+        if (!EventSystem.current.IsPointerOverGameObject() && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1.5f)
+        {
+            if (Inventory.Data.ObjectInHand == null)
+            {
+                Tool.TakeTool();
+                transform.Find("Text").gameObject.SetActive(false);
+            }
+            else if (Inventory.Data.ObjectInHand is Tool)
+            {
+                ((Tool)Inventory.Data.ObjectInHand).LetTool();
+                transform.parent.Find("Let").gameObject.SetActive(false);
+            }
+        }
     }
 
     void OnMouseOver()
     {
-        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1)
+        if (!EventSystem.current.IsPointerOverGameObject()) 
+        {
+            if (Inventory.Data.ObjectInHand == null) transform.Find("Text").gameObject.SetActive(true);
+            else if (Inventory.Data.ObjectInHand is Tool) transform.parent.Find("Let").gameObject.SetActive(true);
+        }
+        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1.5f)
+        {
             transform.Find("Text").gameObject.SetActive(false);
-        else if (!EventSystem.current.IsPointerOverGameObject() && Inventory.ObjectInHand == null) transform.Find("Text").gameObject.SetActive(true);
+            transform.parent.Find("Let").gameObject.SetActive(false);
+        }
     }
 
     void OnMouseExit()
     {
         if (transform.Find("Text").gameObject.activeSelf) transform.Find("Text").gameObject.SetActive(false);
+        if (transform.parent.Find("Let").gameObject.activeSelf) transform.parent.Find("Let").gameObject.SetActive(false);
     }
 }

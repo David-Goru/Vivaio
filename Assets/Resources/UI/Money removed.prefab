@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "-X\u20AC"
+  m_Text: "-X\u20A1"
 --- !u!114 &6733140296415992699
 MonoBehaviour:
   m_ObjectHideFlags: 0

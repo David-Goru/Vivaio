@@ -6,7 +6,7 @@ public class Bed : MonoBehaviour
 {
     public void OnTriggerEnter2D()
     {
-        GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(true);
+        if (!TimeSystem.Data.Sleeping) GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(true);
     }
 
     public void OnTriggerExit2D()

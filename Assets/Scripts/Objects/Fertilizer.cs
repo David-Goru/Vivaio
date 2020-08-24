@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Fertilizer : IObject
 {
-    public int Amount;
-
-    public Fertilizer(int amount)
+    public Fertilizer(int stack, int maxStack) : base("Fertilizer", stack, maxStack)
     {
-        Amount = amount;
+        Name = "Fertilizer";
     }
 
     public void UseFertilizer()
     {
-        Amount--;
-        if (Amount == 0) Inventory.RemoveObject();
+        Stack--;
+        if (Stack == 0) Inventory.RemoveObject();
         else Inventory.ChangeObject();
     }
 }

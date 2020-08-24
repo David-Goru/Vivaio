@@ -13,9 +13,9 @@ public class Plant
     public int DaysUntilDry;
 
     // Sprites
-    public Sprite[] Watered;
-    public Sprite[] Unwatered;
+    public Sprite[] Normal;
     public Sprite[] Dry;
+    public Sprite Harvested;
 
 
     public Plant(string name, int levels, int minAmount, int maxAmount, int fertilizerExtra, int daysUntilDry)
@@ -26,15 +26,14 @@ public class Plant
         MaxAmount = maxAmount;
         FertilizerExtra = fertilizerExtra;
         DaysUntilDry = daysUntilDry;
-
-        Watered = new Sprite[levels];
-        Unwatered = new Sprite[levels];
-        Dry = new Sprite[levels];
+        
+        Normal = new Sprite[levels];
+        Dry = new Sprite[levels];        
+        Harvested = Resources.Load<Sprite>("Crops/" + name + "/Harvested");
 
         for (int i = 0; i < levels; i++)
         {
-            Watered[i] = Resources.Load<Sprite>("Crops/" + name + "/Watered/" + i);
-            Unwatered[i] = Resources.Load<Sprite>("Crops/" + name + "/Unwatered/" + i);
+            Normal[i] = Resources.Load<Sprite>("Crops/" + name + "/Normal/" + i);
             Dry[i] = Resources.Load<Sprite>("Crops/" + name + "/Dry/" + i);
         }
     }

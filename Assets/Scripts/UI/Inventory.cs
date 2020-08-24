@@ -7,12 +7,37 @@ public class Inventory : MonoBehaviour
 {
     public static GameObject InventorySlot;
     public static Text InventoryText;    
-    public static IObject ObjectInHand;
+    
+    public static InventoryData Data;
 
     void Start()
     {
         InventorySlot = GameObject.Find("UI").transform.Find("Inventory").Find("Object").gameObject;
         InventoryText = InventorySlot.transform.parent.Find("Object info").gameObject.GetComponent<Text>();
+    }    
+
+    // When loading a game
+    public static bool Load(InventoryData data)
+    {
+        try
+        {
+            Data = data;
+            if (data.ObjectInHand != null) ChangeObject();
+        }
+        catch (System.Exception e)
+        {
+            GameLoader.Log.Add(string.Format("Failed loading {0}. Error: {1}", "Inventory", e));
+        }
+
+        return true;
+    }
+
+    // When creating a new game
+    public static bool New()
+    {
+        Data = new InventoryData();
+
+        return true;
     }
 
     public static void RemoveObject()
@@ -20,45 +45,61 @@ public class Inventory : MonoBehaviour
         InventorySlot.SetActive(false);
         InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
         InventoryText.text = "";
-        ObjectInHand = null;
+        Data.ObjectInHand = null;
 
         Transform UI = GameObject.Find("UI").transform;
         UI.Find("Build button").gameObject.SetActive(false);
-        UI.Find("Throw seeds").gameObject.SetActive(false);
-        UI.Find("Throw fertilizer").gameObject.SetActive(false);
+        UI.Find("Throw object").gameObject.SetActive(false);
         UI.Find("Letter").gameObject.SetActive(false);
         UI.Find("Open letter").gameObject.SetActive(false);
     }
 
+    public static bool AddObject(IObject item)
+    {
+        if (Data.ObjectInHand == null)
+        {
+            Data.ObjectInHand = item;
+            ChangeObject();
+            return true;
+        }
+        else if (Data.ObjectInHand.Name == item.Name && (Data.ObjectInHand.Stack + item.Stack) <= item.MaxStack)
+        {
+            Data.ObjectInHand.Stack += item.Stack;
+            ChangeObject();
+            return true;
+        }
+        return false;
+    }
+
     public static void ChangeObject()
     {
-        InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + ObjectInHand.Name);
+        InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Data.ObjectInHand.Name);
 
         Transform UI = GameObject.Find("UI").transform;
-        InventoryText.text = ObjectInHand.Name;
-        if (ObjectInHand is Seed)
+        InventoryText.text = Data.ObjectInHand.Name;
+        UI.Find("Throw object").gameObject.SetActive(true);
+
+        if (Data.ObjectInHand is Seed)
         {
-            Seed seed = (Seed)ObjectInHand;
-            InventoryText.text = seed.Name + " (" + seed.Amount + ")";
-            UI.Find("Throw seeds").gameObject.SetActive(true);
+            Seed seed = (Seed)Data.ObjectInHand;
+            InventoryText.text = seed.Name + " (" + seed.Stack + ")";
         }
-        else if (ObjectInHand is Fertilizer)
+        else if (Data.ObjectInHand is Fertilizer)
         {
-            Fertilizer fertilizer = (Fertilizer)ObjectInHand;
-            InventoryText.text = "Fertilizer (" + fertilizer.Amount + ")";
-            UI.Find("Throw fertilizer").gameObject.SetActive(true);
+            Fertilizer fertilizer = (Fertilizer)Data.ObjectInHand;
+            InventoryText.text = "Fertilizer (" + fertilizer.Stack + ")";
         }
-        else if (ObjectInHand is Tool)
+        else if (Data.ObjectInHand is Tool)
         {
-            if (ObjectInHand is WateringCan)
+            if (Data.ObjectInHand is WateringCan)
             {
-                WateringCan wc = (WateringCan)ObjectInHand;
+                WateringCan wc = (WateringCan)Data.ObjectInHand;
                 InventoryText.text = wc.Name + " (" + wc.Remaining + "/10)";
                 if (wc.Remaining == 0) InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
             }
-            else if (ObjectInHand is Basket)
+            else if (Data.ObjectInHand is Basket)
             {
-                Basket basket = (Basket)ObjectInHand;
+                Basket basket = (Basket)Data.ObjectInHand;
                 if (basket.Product != null)
                 {
                     InventoryText.text = basket.Name + " (" + basket.Amount + "/20)";
@@ -68,18 +109,28 @@ public class Inventory : MonoBehaviour
                 else InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
             }
         }
-        else if (ObjectInHand is BuildableObject)
+        else if (Data.ObjectInHand is BuildableObject)
         {
             UI.Find("Build button").gameObject.SetActive(true);
-            if (ObjectInHand.Name == "Shop tile") InventoryText.text = ObjectInHand.Name + " (" + ((BuildableObject)ObjectInHand).Amount + ")";
+            if (Data.ObjectInHand is Floor || Data.ObjectInHand is Wall) InventoryText.text = Data.ObjectInHand.Name + " (" + ((BuildableObject)Data.ObjectInHand).Stack + ")";
         }
-        else if (ObjectInHand is Letter)
+        else if (Data.ObjectInHand is Letter)
         {
-            Letter letter = (Letter)ObjectInHand;
+            Letter letter = (Letter)Data.ObjectInHand;
             InventoryText.text = letter.Type + " letter";
             InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
             UI.Find("Open letter").gameObject.SetActive(true);
         }
+        else if (Data.ObjectInHand.Name == "Drip bottle")
+        {
+            InventoryText.text = Data.ObjectInHand.Name + " (" + ((DripBottle)Data.ObjectInHand).WaterUnits + "u)";
+            InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Drip bottle/" + ((DripBottle)Data.ObjectInHand).WaterUnits);
+        }
+        else if (Data.ObjectInHand.MaxStack > 1) // Flour, bread dough...
+        {
+            InventoryText.text = Data.ObjectInHand.Name + "(" + Data.ObjectInHand.Stack + ")";
+        }
+        
         InventorySlot.SetActive(true);
     }
 }

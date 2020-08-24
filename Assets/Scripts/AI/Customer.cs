@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using CodeTools;
 
 public class Customer
 {
@@ -15,10 +16,14 @@ public class Customer
 
     GameObject body;
     Stand nextStand;
+    Vector2 pathStart;
+    Vector2 pathEnd;
     Stack<Vector2> path;
     Stack<CustomerDesire> customerDesires;
     CustomerDesire currentDesire;
     int expenses;
+    string itemsBought;
+    int numberItemsBought;
     float desireTimer;
     bool paid;
     float speed;
@@ -35,6 +40,8 @@ public class Customer
         Trust = 95;
         LetterSent = false;
         lastDir = "Idle down";
+        itemsBought = "";
+        numberItemsBought = 0;
     }
 
     void CheckDesire()
@@ -75,7 +82,19 @@ public class Customer
         }
         else if (desireTimer <= 0)
         {
-            if (currentDesire.MaxPrice >= nextStand.ItemValue) expenses += nextStand.Take(currentDesire.Amount);
+            if (currentDesire.MaxPrice >= nextStand.ItemValue)
+            {
+                Tuple info = nextStand.Take(currentDesire.Amount);
+                string amountTaken = info.Item1;
+                int itemCost = info.Item2;
+
+                if (amountTaken != "0")
+                {
+                    expenses += itemCost;
+                    itemsBought += (currentDesire.Item.Name + " x" + amountTaken + " (" + itemCost + "₡)\n");                    
+                    numberItemsBought++;
+                }
+            }
 
             desireTimer = 1f;
             NextDesire();
@@ -88,12 +107,22 @@ public class Customer
 
         while (customerDesires.Count > 0 && nextStand == null)
         {
-            nextStand = Stands.StandsList.Find(x => x.Item == customerDesires.Peek().Item);
-            if (nextStand != null && nextStand.Available == false) nextStand = null;
+            nextStand = Master.Data.Stands.Find(x => x.Available == true && x.Item == customerDesires.Peek().Item);
+            currentDesire = customerDesires.Peek();
             customerDesires.Pop();
         }
 
-        if (nextStand == null) path = VertexSystem.Route(body.transform.position, AI.CashRegister);
+        if (nextStand == null)
+        {
+            path = VertexSystem.Route(body.transform.position, CashRegister.CustomerPos);
+            if (path.Count == 0) // Can't reach the cash register
+            {
+                if (Trust > 10) Trust--;
+                CashRegister.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
+                MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegister.CashRegisterModel.transform);
+                Master.UpdateBalance(expenses);
+            }
+        }
         else path = VertexSystem.Route(body.transform.position, nextStand.CustomerPos);
     }
 
@@ -105,13 +134,19 @@ public class Customer
             {
                 if (expenses > 0)
                 {
-                    MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"));
+                    CashRegister.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
+                    MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegister.CashRegisterModel.transform);
                     if (Trust < 85) Trust++;
                     Master.UpdateBalance(expenses);
                 }
                 else if (Trust > 10) Trust--;
                 paid = true;
-                path = VertexSystem.Route(body.transform.position, AI.End);
+                path = VertexSystem.Route(body.transform.position, pathEnd);
+                if (path.Count == 0) // Can't leave the shop
+                {
+                    if (Trust > 10) Trust--;
+                    RemoveCustomer();
+                }
             }                
             else if (paid) RemoveCustomer();
             else if (desireTimer > 0) CheckDesire();
@@ -146,7 +181,7 @@ public class Customer
                     lastDir = "Walking down";
                 }
             }
-            else body.transform.position = Vector2.MoveTowards(body.transform.position, path.Peek(), Time.deltaTime * speed);
+            else body.transform.position = Vector2.MoveTowards(body.transform.position, path.Peek(), Time.deltaTime * speed * TimeSystem.Data.TimeSpeed);
         }
     }
 
@@ -157,8 +192,29 @@ public class Customer
     }
 
     public void ActivateCustomer()
-    {        
-        body.transform.position = new Vector2(-15, -5);
+    {
+        pathStart = AI.CustomerPositions[Random.Range(0, AI.CustomerPositions.Count)];
+        pathEnd = AI.CustomerPositions[Random.Range(0, AI.CustomerPositions.Count)];
+        while (pathEnd.Equals(pathStart))
+        {
+            pathEnd = AI.CustomerPositions[Random.Range(0, AI.CustomerPositions.Count)];
+        }
+
+        body.transform.position = pathStart;
+
+        /*
+        if (Shop.Data.Inaugurated)
+        {
+            [...]
+        }
+        else
+        {
+            path = VertexSystem.Route(body.transform.position, pathEnd);
+            paid = true;
+        }
+        */
+
+        // That goes inside the [...] thing
         int totalDesires = Random.Range(1, Priorities.Length + 1);
         for (int i = 0; i < totalDesires; i++)
         {
@@ -168,19 +224,26 @@ public class Customer
         while (customerDesires.Count > 0 && nextStand == null)
         {
             currentDesire = customerDesires.Peek();
-            nextStand = Stands.StandsList.Find(x => x.Item == currentDesire.Item);
+            nextStand = Master.Data.Stands.Find(x => x.Available == true && x.Item == currentDesire.Item);
             customerDesires.Pop();
+
+            if (nextStand != null)
+            {
+                path = VertexSystem.Route(body.transform.position, nextStand.CustomerPos);
+                if (path.Count == 0) nextStand = null;
+            }
         }
 
-        if (nextStand == null) path = VertexSystem.Route(body.transform.position, AI.End);
-        else path = VertexSystem.Route(body.transform.position, nextStand.CustomerPos);
+        if (nextStand == null) path = VertexSystem.Route(body.transform.position, pathEnd);
 
         expenses = 0;
+        itemsBought = "";
+        numberItemsBought = 0;
         desireTimer = 1;
         paid = false;
+        // Until here
 
         body.SetActive(true);
         AI.ActiveCustomers.Add(id);
-        AI.AvailableCustomers.Remove(id);
     }
 }

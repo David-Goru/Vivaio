@@ -39,4 +39,20 @@
 		<FertilizerExtra>3</FertilizerExtra>
 		<DaysUntilDry>1</DaysUntilDry>
 	</Plant>
+	<Plant>
+		<Name>Lettuce</Name>
+		<Levels>4</Levels>
+		<MinAmount>1</MinAmount>
+		<MaxAmount>1</MaxAmount>
+		<FertilizerExtra>2</FertilizerExtra>
+		<DaysUntilDry>2</DaysUntilDry>
+	</Plant>
+	<Plant>
+		<Name>Wheat</Name>
+		<Levels>5</Levels>
+		<MinAmount>1</MinAmount>
+		<MaxAmount>1</MaxAmount>
+		<FertilizerExtra>1</FertilizerExtra>
+		<DaysUntilDry>4</DaysUntilDry>
+	</Plant>
 </Plants>

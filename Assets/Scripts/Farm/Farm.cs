@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
@@ -6,24 +6,59 @@ using System.Xml;
 public class Farm : MonoBehaviour
 {
     public static Dictionary<string, Plant> Plants;
+    public static Sprite SeedPlanted;
 
-    public static List<Crop> Crops;
+    public static List<PlowedSoil> PlowedSoils;
 
-    public static Sprite UnwateredSeed;
-    public static Sprite WateredSeed;
+    // When loading a game
+    public static bool Load(FarmData data)
+    {
+        try
+        {
+            Plants = new Dictionary<string, Plant>();
+            GetPlants();
 
-    void Start()
+            SeedPlanted = Resources.Load<Sprite>("Crops/Seed planted");
+
+            PlowedSoils = new List<PlowedSoil>();
+            foreach (PlowedSoilData p in data.PlowedSoils)
+            {
+                p.Load(Instantiate(Resources.Load<GameObject>("Farm/Plowed soil"), p.Pos, Quaternion.Euler(0, 0, 0)));
+            }
+        }
+        catch (Exception e)
+        {
+            GameLoader.Log.Add(string.Format("Failed loading {0}. Error: {1}", "Farm", e));
+        }
+
+        return true;
+    }
+
+    // When creating a new game
+    public static bool New()
     {
         Plants = new Dictionary<string, Plant>();
         GetPlants();
 
-        UnwateredSeed = Resources.Load<Sprite>("Crops/Unwatered seed planted");
-        WateredSeed = Resources.Load<Sprite>("Crops/Watered seed planted");
+        SeedPlanted = Resources.Load<Sprite>("Crops/Seed planted");
 
-        Crops = new List<Crop>();
+        PlowedSoils = new List<PlowedSoil>();
+
+        return true;
     }
 
-    public void GetPlants()
+    // When saving the game
+    public static FarmData Save()
+    {
+        FarmData data = new FarmData(new List<PlowedSoilData>());
+        foreach (PlowedSoil p in PlowedSoils)
+        {
+            data.PlowedSoils.Add(p.Save());
+        }
+        return data;
+    }
+
+    public static void GetPlants()
     {
         XmlDocument plantsDoc = new XmlDocument();
         plantsDoc.Load(Application.dataPath + "/Data/Plants.xml");
@@ -43,23 +78,23 @@ public class Farm : MonoBehaviour
         Collider2D currentTile;
 
         // Check left and right columns
-        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x - 0.5f, tilePos.y), 1 << LayerMask.NameToLayer("Farmland"));
-        bool left = currentTile && currentTile.gameObject.name == "Plowed soil";
-        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x + 0.5f, tilePos.y), 1 << LayerMask.NameToLayer("Farmland"));
-        bool right = currentTile && currentTile.gameObject.name == "Plowed soil";
+        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x - 0.5f, tilePos.y), 1 << LayerMask.NameToLayer("Plowed soil"));
+        bool left = currentTile;
+        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x + 0.5f, tilePos.y), 1 << LayerMask.NameToLayer("Plowed soil"));
+        bool right = currentTile;
 
         // Upper row
-        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x, tilePos.y + 0.5f), 1 << LayerMask.NameToLayer("Farmland"));
-        if (currentTile && currentTile.gameObject.name == "Plowed soil")
+        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x, tilePos.y + 0.5f), 1 << LayerMask.NameToLayer("Plowed soil"));
+        if (currentTile)
         {
-            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x - 0.5f, tilePos.y + 0.5f), 1 << LayerMask.NameToLayer("Farmland"));
-            if (currentTile && currentTile.gameObject.name == "Plowed soil" && left) sprite += "1";
+            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x - 0.5f, tilePos.y + 0.5f), 1 << LayerMask.NameToLayer("Plowed soil"));
+            if (currentTile && left) sprite += "1";
             else sprite += "0";
 
             sprite += "1";
 
-            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x + 0.5f, tilePos.y + 0.5f), 1 << LayerMask.NameToLayer("Farmland"));
-            if (currentTile && currentTile.gameObject.name == "Plowed soil" && right) sprite += "1";
+            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x + 0.5f, tilePos.y + 0.5f), 1 << LayerMask.NameToLayer("Plowed soil"));
+            if (currentTile && right) sprite += "1";
             else sprite += "0";
         }
         else sprite += "000";
@@ -73,21 +108,21 @@ public class Farm : MonoBehaviour
         else sprite += "0";
 
         // Lower row
-        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x, tilePos.y - 0.5f), 1 << LayerMask.NameToLayer("Farmland"));
-        if (currentTile && currentTile.gameObject.name == "Plowed soil")
+        currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x, tilePos.y - 0.5f), 1 << LayerMask.NameToLayer("Plowed soil"));
+        if (currentTile)
         {
-            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x - 0.5f, tilePos.y - 0.5f), 1 << LayerMask.NameToLayer("Farmland"));
-            if (currentTile && currentTile.gameObject.name == "Plowed soil" && left) sprite += "1";
+            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x - 0.5f, tilePos.y - 0.5f), 1 << LayerMask.NameToLayer("Plowed soil"));
+            if (currentTile && left) sprite += "1";
             else sprite += "0";
 
             sprite += "1";
 
-            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x + 0.5f, tilePos.y - 0.5f), 1 << LayerMask.NameToLayer("Farmland"));
-            if (currentTile && currentTile.gameObject.name == "Plowed soil" && right) sprite += "1";
+            currentTile = Physics2D.OverlapPoint(new Vector2(tilePos.x + 0.5f, tilePos.y - 0.5f), 1 << LayerMask.NameToLayer("Plowed soil"));
+            if (currentTile && right) sprite += "1";
             else sprite += "0";
         }
         else sprite += "000";
         
-        farmFloor.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Plowed soil/" + sprite);
+        farmFloor.GetComponent<PlowedSoil>().SetSprite(sprite);
     }
 }

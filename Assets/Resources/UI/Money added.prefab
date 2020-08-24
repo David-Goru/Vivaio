@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "+X\u20AC"
+  m_Text: "+X\u20A1"
 --- !u!114 &3134420476379826614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,8 +96,8 @@ MonoBehaviour:
   m_MinHeight: 20
   m_PreferredWidth: -1
   m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: 1
   m_LayoutPriority: 1
 --- !u!114 &2087645364817042272
 MonoBehaviour:

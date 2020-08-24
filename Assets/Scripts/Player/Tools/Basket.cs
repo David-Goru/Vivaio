@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Basket : Tool
 {
+    [System.NonSerialized]
     public Product Product;
-    public GameObject ProductSprite;
+    [SerializeField]
     public int Amount;
 }

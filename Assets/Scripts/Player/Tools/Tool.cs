@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Tool : IObject
 {
-    public GameObject Model;
-    public bool OnHand;
+    [SerializeField]
+    public bool OnStand;
+
+    public Tool() : base("Tool", 1, 1) {}
 
     public void ChangeVisual()
     {
-        Model.gameObject.GetComponent<BoxCollider2D>().enabled = OnHand;
-        Model.gameObject.GetComponent<SpriteRenderer>().enabled = OnHand;
-        OnHand = !OnHand;
+        OnStand = !OnStand;
+        Model.gameObject.GetComponent<SpriteRenderer>().enabled = OnStand;
     }
 
     public virtual void TakeTool()
     {
-        Inventory.ObjectInHand = this;
-        Inventory.ChangeObject();
-        ChangeVisual();
+        if (OnStand)
+        {
+            Inventory.AddObject(this);
+            ChangeVisual();
+        }
     }
 
     public virtual void UseTool(int amount) {}
@@ -30,7 +34,10 @@ public class Tool : IObject
 
     public virtual void LetTool()
     {
-        Inventory.RemoveObject();
-        ChangeVisual();
+        if (Inventory.Data.ObjectInHand == this)
+        {
+            Inventory.RemoveObject();
+            ChangeVisual();
+        }
     }
 }

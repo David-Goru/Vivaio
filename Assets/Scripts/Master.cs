@@ -1,41 +1,54 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Master : MonoBehaviour
 {
-    public static int Balance;
-    public static int Day;
-    public static int Debt;
-    public static int LastDayDebt;
-    public static int DailyDebt;
-    public static int LastDayPaid;
-    public static int LastDayWaterUsage;
+    // General
+    public static string GameVersion = "Alpha 7";
+    public static string GameName = "None";
+    public static bool LoadingGame = false;
+    public static GameObject Player;
 
-    void Start()
+    // In-game
+    public static GeneralData Data;
+
+    // When loading a game
+    public static bool Load(GeneralData data)
     {
-        Balance = 0;
-        Day = 0;
-        Debt = 3000;
-        DailyDebt = 100;
-        LastDayDebt = 0;
-        LastDayPaid = 0;
-        LastDayWaterUsage = 0;
+        try
+        {
+            Data = data;
+            Player = GameObject.Find("Player");
+            GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "₡";
+        }
+        catch (System.Exception e)
+        {
+            GameLoader.Log.Add(string.Format("Failed loading {0}. Error: {1}", "Master", e));
+        }
 
-        Application.targetFrameRate = 60;
-        UpdateBalance(2000);
+        return true;
+    }
+
+    // When creating a new game
+    public static bool New()
+    {
+        Data = new GeneralData(2000, 0, 3000, 0, 100, 0, 0, 1);
+        Player = GameObject.Find("Player");
+        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "₡";
+
+        return true;
     }
 
     public static void UpdateBalance(int money)
     {
-        Balance += money;
-        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Balance + "€";
+        Data.Balance += money;
+        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "₡";
 
         Transform MoneyHandler = GameObject.Find("UI").transform.Find("Money").Find("Money updates").Find("Viewport").Find("Content");
 
         GameObject uiElement = Instantiate<GameObject>(Resources.Load<GameObject>("UI/Money " + (money < 0 ? "removed" : "added")), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-        uiElement.GetComponent<Text>().text = (money < 0 ? "" : "+") + money + "€";
+        uiElement.GetComponent<Text>().text = (money < 0 ? "" : "+") + money + "₡";
         uiElement.transform.SetParent(MoneyHandler);
+        uiElement.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
     }
 }

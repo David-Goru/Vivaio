@@ -1,110 +1,278 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class Build : MonoBehaviour
 {
-    GameObject objectBP; // Object blueprint
-    Vector2 lastPos;
+    public float BuildRange;
+    GameObject physicalObject;
+    BuildableObject boInfo; // Only for buildingg objects
+    Vector2 savedPos; // Only for moving objects
     bool buildable;
+    bool isMoving;
 
     void Update()
     {
-        if (Inventory.ObjectInHand is BuildableObject)
+        checkPosition(new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 4.0f) / 4.0f,     // Vertex position X
+                                  Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 4.0f) / 4.0f));   // Vertex position Y
+
+        if (Input.GetMouseButtonDown(0) && buildable && !EventSystem.current.IsPointerOverGameObject()) placeObject();  // Build/place object
+
+        if (Input.GetKeyDown(KeyCode.R) && boInfo != null) updateRotation();
+    }
+
+    void updateRotation()
+    {
+        if (physicalObject == null || !boInfo.CanRot) return;
+        
+        boInfo.Rotation++;
+        ObjectInfo oi = Resources.Load<ObjectInfo>("Objects info/" + boInfo.Name);
+        if (boInfo.Rotation == oi.RotPositions) boInfo.Rotation = 0;
+        
+        physicalObject.GetComponent<BoxCollider2D>().offset = oi.CollOffset[boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)];
+        physicalObject.GetComponent<BoxCollider2D>().size = oi.CollSize[boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)];
+
+        if (boInfo is Gate) physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = oi.Sprites[boInfo.Rotation + (((Gate)boInfo).Opened ? 4 : 0)];
+        else physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = oi.Sprites[boInfo.Rotation];
+    }
+
+    void checkPosition(Vector2 pos)
+    {
+        // Object still not placed
+        if (physicalObject == null)
         {
-            BuildableObject bo = (BuildableObject)Inventory.ObjectInHand;
-            Vector2 mousePos = new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 2.0f) / 2.0f, Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 2.0f) / 2.0f);
-            Vector2 pos = new Vector3(Mathf.Round(mousePos.x * 2.0f) / 2.0f, Mathf.Round(mousePos.y * 2.0f) / 2.0f); // Exact position
+            physicalObject = Instantiate(Resources.Load<GameObject>("Objects/" + Inventory.Data.ObjectInHand.Name), pos, Quaternion.Euler(0, 0, 0));
+            boInfo.Model = physicalObject;
+            if (boInfo is Gate) physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + boInfo.Name).Sprites[boInfo.Rotation + (((Gate)boInfo).Opened ? 4 : 0)];
+            else physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + boInfo.Name).Sprites[boInfo.Rotation];
+        }
 
-            if (lastPos != pos)
+        // Check if object can be built at position
+        if (Vector2.Distance(pos, GameObject.Find("Player").transform.position) < BuildRange)
+        {
+            buildable = true;
+            
+            Transform tParent;
+            if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + boInfo.Rotation);
+            else tParent = physicalObject.transform.Find("Vertices");
+            foreach (Transform t in tParent)
             {
-                if (objectBP == null) objectBP = (GameObject)Instantiate(Resources.Load("Objects/" + Inventory.ObjectInHand.Name), pos, Quaternion.Euler(0, 0, 0));
+                Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
 
-                if (Vector2.Distance(pos, GameObject.Find("Player").transform.position) < 2
-                    && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Buildable area")) 
-                    && !Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
+                if (v == null) buildable = false;
+                else if (boInfo is Floor)
                 {
-                    objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0);
-                    buildable = true;
+                    if (v.Floor != "None") buildable = false;
                 }
-                else if (bo.Name != "Shop tile"
-                    && Vector2.Distance(pos, GameObject.Find("Player").transform.position) < 2
-                    && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland"))
-                    && Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name == "Grass")
-                {
-                    objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 0);
-                    buildable = true;
-                }
-                else
-                {
-                    objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
-                    buildable = false;
-                }
-                objectBP.transform.position = pos;
-                lastPos = pos;
+                else if (v.State == VertexState.Occuppied || v.State == VertexState.Walkable) buildable = false;
             }
 
-            if (Input.GetMouseButtonDown(0) && buildable && !EventSystem.current.IsPointerOverGameObject())
-            {
-                objectBP.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-                if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")))
-                    Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Farmland")).gameObject.name = "Built grass";
+            if (physicalObject.CompareTag("Cash register") && pos.x > -9.7f) buildable = false;
 
-                if (bo.Name == "Shop tile")
+            if (buildable) physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        else
+        {
+            buildable = false;
+            physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        
+        // Update position values
+        physicalObject.transform.position = pos;
+    }
+
+    void placeObject()
+    {
+        // Update color
+        physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        
+        if (physicalObject.transform.Find("Obstacle 0") != null) physicalObject.transform.Find("Obstacle " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0))).gameObject.SetActive(true);
+        else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(true);
+
+        Transform tParent;
+        if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)));
+        else tParent = physicalObject.transform.Find("Vertices");
+        foreach (Transform t in tParent)
+        {                            
+            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            if (v != null)
+            {
+                if (boInfo is Floor)
                 {
-                    VertexSystem.Vertex v = new VertexSystem.Vertex(pos);
-                    VertexSystem.Vertices.Add(v);
-                    v.UpdateCons();
-                    objectBP.name = "Shop tile";
-                    objectBP.GetComponent<BoxCollider2D>().enabled = true;
-                    buildable = false;
-                    bo.Amount--;
-                    if (bo.Amount > 0)
-                    {
-                        Inventory.ChangeObject();
-                        objectBP = null;
-                        return;
-                    }
+                    v.Floor = boInfo.Name;
+                    v.Rot = boInfo.Rotation;
                 }
-                else if (bo.Name == "Shop table")
-                {
-                    Stands.StandsList.Add(new Stand(objectBP, 10));
-                    objectBP.name = "Shop table";
-                    objectBP.GetComponent<BoxCollider2D>().enabled = true;
-                }
-                else if (bo.Name == "Storage box")
-                {
-                    objectBP.name = "Storage box";
-                    objectBP.GetComponent<BoxCollider2D>().enabled = true;
-                }
-                else if (bo.Name == "Product box")
-                {
-                    ProductStorages.PBList.Add(new ProductBox(objectBP, 100));
-                    objectBP.name = "Product box";
-                    objectBP.GetComponent<BoxCollider2D>().enabled = true;
-                }
-                else if (bo.Name == "Composter")
-                {
-                    objectBP.name = bo.Name;
-                    objectBP.GetComponent<BoxCollider2D>().enabled = true;
-                    if (bo.Amount > 0) objectBP.GetComponent<Composter>().Amount = bo.Amount;
-                }
-                objectBP = null;
-                lastPos = new Vector2(-1000, -1000);
-                Inventory.RemoveObject();
-                GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(false);
-                this.enabled = false;
+                else v.State = VertexState.Occuppied;
             }
         }
+
+        if (!isMoving)
+        {
+            physicalObject.name = boInfo.Name;
+            physicalObject.GetComponent<BoxCollider2D>().enabled = true;
+
+            if (boInfo is Floor)
+            {
+                boInfo.Stack--;
+                if (boInfo.Stack > 0)
+                {
+                    Inventory.ChangeObject();
+                    physicalObject = null;
+                    return;
+                }
+            }
+
+            switch (boInfo.Name)
+            {
+                case "Shop table":
+                case "Shop box": // Can be optimized
+                    boInfo.Model = physicalObject;
+                    ObjectsHandler.Data.Objects.Add(boInfo);
+                    boInfo.Placed = true;
+
+                    Stand s = (Stand)boInfo;
+                    s.CustomerPos = new List<Vector2>();
+                    foreach (Transform t in physicalObject.transform.Find("Customer position"))
+                    {
+                        s.CustomerPos.Add(t.position);
+                    }
+
+                    Master.Data.Stands.Add((Stand)boInfo);
+                    break;
+                case "Product box":
+                case "Composter":
+                case "Storage box":
+                case "Seed box":
+                case "Deseeding machine":
+                case "Flour machine":
+                case "Bread machine":
+                case "Furnace":
+                case "Sign":
+                case "Fence gate":
+                    boInfo.Model = physicalObject;
+                    ObjectsHandler.Data.Objects.Add(boInfo);
+                    boInfo.Placed = true;
+                    break;
+                case "Fence":
+                    Wall fence = new Wall("Fence", 1, 10);
+                    fence.Model = physicalObject;
+                    fence.Placed = true;
+                    fence.Rotation = boInfo.Rotation;
+                    ObjectsHandler.Data.Objects.Add(fence);
+
+                    boInfo.Stack--;
+                    if (boInfo.Stack > 0)
+                    {
+                        Inventory.ChangeObject();
+                        physicalObject = null;
+                        return;
+                    }
+                    break;
+            }
+
+            Inventory.RemoveObject();          
+        }
+        else 
+        {
+            physicalObject.GetComponent<BoxCollider2D>().enabled = true;
+            if (physicalObject.name == "Delivery box" || physicalObject.name == "Present box") ((Box)ObjectsHandler.Data.Objects.Find(x => x.Model == physicalObject)).UpdatePoint();
+            else if (boInfo is Stand) 
+            {
+                Stand s = (Stand)boInfo;                
+                s.CustomerPos = new List<Vector2>();
+                foreach (Transform t in physicalObject.transform.Find("Customer position"))
+                {
+                    s.CustomerPos.Add(t.position);
+                }
+            }
+            else if (boInfo.Name == "Cash register")
+            {                             
+                CashRegister.CustomerPos = new List<Vector2>();
+                foreach (Transform t in physicalObject.transform.Find("Customer position"))
+                {
+                    CashRegister.CustomerPos.Add(t.position);
+                }
+            }            
+        }
+
+        if (boInfo != null)
+        {
+            boInfo.WorldPosition = physicalObject.transform.position;
+            boInfo = null;
+        }
+        GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(false);  
+        physicalObject = null;
+        this.enabled = false;
+    }
+
+    public void StartBuild(GameObject objectToMove)
+    {
+        physicalObject = objectToMove;
+        savedPos = objectToMove.transform.position;        
+        objectToMove.GetComponent<BoxCollider2D>().enabled = false;
+        
+        IObject bo = ObjectsHandler.Data.Objects.Find(x => x.Model == objectToMove);
+        boInfo = (BuildableObject)bo;
+
+        if (physicalObject.transform.Find("Obstacle 0") != null) physicalObject.transform.Find("Obstacle " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0))).gameObject.SetActive(false);
+        else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(false);
+        
+        Transform tParent;
+        if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)));
+        else tParent = physicalObject.transform.Find("Vertices");
+        foreach (Transform t in tParent)
+        {                            
+            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            if (v != null) v.State = VertexState.Available;
+        }
+
+        isMoving = true;
+        this.enabled = true;
+        GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(true);
+    }
+
+    public void StartBuild(GameObject objectToBuild, BuildableObject bo)
+    {
+        physicalObject = objectToBuild;
+        boInfo = bo;
+        isMoving = false;
+        this.enabled = true;
+        GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(true);
+        GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(false);
     }
 
     public void CancelBuild()
     {
         GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(false);
-        GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
-        Destroy(objectBP);
-        lastPos = new Vector2(-1000, -1000);
+
+        if (isMoving)
+        {
+            physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            physicalObject.GetComponent<BoxCollider2D>().enabled = true;
+            
+            if (physicalObject.transform.Find("Obstacle 0") != null) physicalObject.transform.Find("Obstacle " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0))).gameObject.SetActive(true);  
+            else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(true);  
+
+            physicalObject.transform.position = savedPos;  
+
+            Transform tParent;
+            if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)));
+            else tParent = physicalObject.transform.Find("Vertices");
+            foreach (Transform t in tParent)
+            {                            
+                Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+                if (v != null) v.State = VertexState.Occuppied;
+            }
+            physicalObject = null;
+        }
+        else
+        {
+            GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
+            boInfo.Model = null;
+            Destroy(physicalObject);
+        }
+
         this.enabled = false;
     }
 }

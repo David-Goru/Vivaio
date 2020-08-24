@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class WateringCan : Tool
 {
+    [SerializeField]
     public int Remaining;
 
     public override void UseTool(int amount)

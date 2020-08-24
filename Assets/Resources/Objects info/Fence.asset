@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca796c245fab2b4b9dadd337f6d9ac1, type: 3}
+  m_Name: Fence
+  m_EditorClassIdentifier: 
+  Name: Fence
+  Icon: {fileID: 21300000, guid: 5e9e6328ca9907743bbf48ea6b4d20a9, type: 3}
+  RotPositions: 16
+  Sprites:
+  - {fileID: 21300000, guid: 72cf7f4cc340e85439e904ecf94764a8, type: 3}
+  - {fileID: 21300000, guid: 105668cbad117d747b435f1080755423, type: 3}
+  - {fileID: 21300000, guid: 5b88e7ee048db66458c2a9491021b130, type: 3}
+  - {fileID: 21300000, guid: 92d8c4ab292e59740afbdb3470eb39df, type: 3}
+  - {fileID: 21300000, guid: df9ae6c954e53dd428f0b81167d9f20c, type: 3}
+  - {fileID: 21300000, guid: 34a48cee663c78a4495b8594534f4ab8, type: 3}
+  - {fileID: 21300000, guid: df1e10aeb9222f049b0e8fb98de7460c, type: 3}
+  - {fileID: 21300000, guid: b07fbd347346f7a4dbfec279e653f34c, type: 3}
+  - {fileID: 21300000, guid: a42db4c2c5982ea45b3553a8e45c7a34, type: 3}
+  - {fileID: 21300000, guid: 0ec94763016726a4e9a95c5273599b6b, type: 3}
+  - {fileID: 21300000, guid: 84526553cf5a33840877c43215f268fa, type: 3}
+  - {fileID: 21300000, guid: b683348054d02ff479f0e9b89bbcf04b, type: 3}
+  - {fileID: 21300000, guid: db374a37e8b405e488ea215d2faa145b, type: 3}
+  - {fileID: 21300000, guid: 8d03e42c9a5d1de469756b39bef15a28, type: 3}
+  - {fileID: 21300000, guid: fc8a48284b2fb5f4ca0fad3d52d831b9, type: 3}
+  - {fileID: 21300000, guid: 4003eb8709fadc045a55b50ac26ecfb2, type: 3}
+  CollOffset:
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  - {x: 0, y: 0.1175}
+  CollSize:
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}
+  - {x: 0.155, y: 0.455}

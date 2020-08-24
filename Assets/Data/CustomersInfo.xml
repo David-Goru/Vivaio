@@ -5,9 +5,11 @@
 		<Job>Cook</Job>
 		<Priorities>
 			<Priority>Tomato</Priority>
+			<Priority>Bread</Priority>
 			<Priority>Carrot</Priority>
 			<Priority>Potato</Priority>
 			<Priority>Onion</Priority>
+			<Priority>Lettuce</Priority>
 			<Priority>Pumpkin</Priority>
 		</Priorities>
 		<MediumAmount>10</MediumAmount>
@@ -19,8 +21,10 @@
 		<Job>Teacher</Job>
 		<Priorities>
 			<Priority>Pumpkin</Priority>
+			<Priority>Bread</Priority>
 			<Priority>Potato</Priority>
 			<Priority>Onion</Priority>
+			<Priority>Lettuce</Priority>
 			<Priority>Carrot</Priority>
 			<Priority>Tomato</Priority>
 		</Priorities>
@@ -33,6 +37,8 @@
 		<Job>Student</Job>
 		<Priorities>
 			<Priority>Tomato</Priority>
+			<Priority>Bread</Priority>
+			<Priority>Lettuce</Priority>
 			<Priority>Carrot</Priority>
 			<Priority>Onion</Priority>
 			<Priority>Pumpkin</Priority>
@@ -40,5 +46,37 @@
 		</Priorities>
 		<MediumAmount>4</MediumAmount>
 		<Speed>1.2</Speed>
+	</Customer>
+	<Customer>
+		<Name>Lauren</Name>
+		<Age>32</Age>
+		<Job>Computer engineer</Job>
+		<Priorities>
+			<Priority>Lettuce</Priority>
+			<Priority>Bread</Priority>
+			<Priority>Potato</Priority>
+			<Priority>Onion</Priority>
+			<Priority>Pumpkin</Priority>
+			<Priority>Carrot</Priority>
+			<Priority>Tomato</Priority>
+		</Priorities>
+		<MediumAmount>7</MediumAmount>
+		<Speed>1.1</Speed>
+	</Customer>
+	<Customer>
+		<Name>Phil</Name>
+		<Age>54</Age>
+		<Job>Cleaner</Job>
+		<Priorities>
+			<Priority>Pumpkin</Priority>
+			<Priority>Bread</Priority>
+			<Priority>Carrot</Priority>
+			<Priority>Tomato</Priority>
+			<Priority>Potato</Priority>
+			<Priority>Lettuce</Priority>
+			<Priority>Onion</Priority>
+		</Priorities>
+		<MediumAmount>5</MediumAmount>
+		<Speed>0.9</Speed>
 	</Customer>
 </CustomersInfo>

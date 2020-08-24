@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Mailbox
+  - Clock
+  - House
+  - Bed
+  - Cash register
+  - Customer end
+  - Tool
+  - Customer start
   layers:
   - Default
   - TransparentFX
@@ -13,14 +21,14 @@ TagManager:
   - UI
   - 
   - 
-  - Farmland
+  - Plowed soil
   - Plant
-  - Buildable area
+  - Shop area
   - Object
   - Pickable
-  - 
-  - 
-  - 
+  - Tool
+  - Farm land
+  - Floor
   - 
   - 
   - 

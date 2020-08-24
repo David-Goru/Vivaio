@@ -1,81 +1,101 @@
 ﻿using UnityEngine;
-using CodeTools;
 
-public class ProductBox
+[System.Serializable]
+public class ProductBox : BuildableObject
 {
-    public GameObject Model;
+    [SerializeField]
+    public string ItemName;
+    [System.NonSerialized]
     public Product Item;
-    int itemCount;
-    int maxItems;
+    [SerializeField]
+    public int Amount;
+    [SerializeField]
+    public int MaxAmount;
 
-    public ProductBox(GameObject model, int maxItems)
+    public ProductBox(int amount, int maxAmount) : base("Product box", 1, 1)
     {
-        Model = model;
-        this.maxItems = maxItems;
-        itemCount = 0;
+        Amount = amount;
+        MaxAmount = maxAmount;
+        ItemName = "None";
     }
 
-    public int AddProduct(string item, int amount)
+    public void AddProduct()
     {
+        if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
+        Basket basket = (Basket)Inventory.Data.ObjectInHand;
+        if (basket.Amount == 0) return;
         if (Item == null)
         {
-            Item = Products.ProductsList.Find(x => x.Name == item);
+            Item = basket.Product;
+            ItemName = basket.Product.Name;
             int amountPlaced;
-            if (amount <= maxItems)
+            if (basket.Amount <= MaxAmount)
             {
-                amountPlaced = amount;
+                amountPlaced = basket.Amount;
+                basket.Amount = 0;
+                basket.Product = null;
                 Inventory.ChangeObject();
             }
             else
             { 
-                amountPlaced = maxItems;
+                amountPlaced = MaxAmount;
+                basket.Amount -= amountPlaced;
             }
-            itemCount = amountPlaced;
+            Amount += amountPlaced;
 
-            Model.transform.Find("Item").gameObject.SetActive(true);
-            Model.transform.Find("Item").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/" + Item.Name);
+            Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Big display/" + Item.Name);
             Model.transform.Find("Product").gameObject.SetActive(true);
-            Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Products box/" + Item.Name);
-            
-            return amountPlaced;
         }
-        else if (Item.Name == item)
+        else if (Item.Name == basket.Product.Name)
         {
             int amountPlaced;
-            if (amount <= (maxItems - itemCount)) amountPlaced = amount;
-            else amountPlaced = maxItems - itemCount;
+            if (basket.Amount <= (MaxAmount - Amount)) amountPlaced = basket.Amount;
+            else amountPlaced = MaxAmount - Amount;
 
-            itemCount += amountPlaced;
-            return amountPlaced; 
+            Amount += amountPlaced;
+            basket.Amount -= amountPlaced;
+            if (basket.Amount == 0)
+            {
+                basket.Product = null;
+                Inventory.ChangeObject();
+            }
         }
-        return 0;
     }
 
-    public Tuple PickUp()
+    public void TakeProduct()
     {
-        if (Item == null) return new Tuple("None", 0);
-        Basket basket = (Basket)Inventory.ObjectInHand;
-        if (basket.Amount > 0 && basket.Product.Name != Item.Name) return new Tuple("None", 0);
+        if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
+        Basket basket = (Basket)Inventory.Data.ObjectInHand;
+        if (basket.Amount > 0 && basket.Product != Item) return;
+        if (Item == null) return;
 
         int amount;
         int maxAmount = 20 - basket.Amount;
-        string itemName = Item.Name;
-        if (maxAmount > itemCount)
+        if (maxAmount >= Amount)
         {
-            amount = itemCount;
+            amount = Amount;
+            if (amount > 0) basket.Product = Item;
             Item = null;
-            Model.transform.Find("Item").gameObject.SetActive(false);
+            ItemName = "None";
             Model.transform.Find("Product").gameObject.SetActive(false);
         }
-        else amount = maxAmount;
-        itemCount -= amount;
-
-        return new Tuple(itemName, amount);
+        else
+        {
+            amount = maxAmount;
+            if (amount > 0) basket.Product = Item;
+        }
+        Amount -= amount;
+        basket.Amount += amount;
+        Inventory.ChangeObject();
     }
 
-    public bool IsEmpty()
+    public override void ActionOne()
     {
-        if (itemCount <= 0) return true;
-        return false;
+        AddProduct();
+    }
+
+    public override void ActionTwo()
+    {
+        TakeProduct();
     }
 }

@@ -1,28 +1,84 @@
 ﻿using System.Globalization;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
 
 public class AI : MonoBehaviour
 {
-    public int TotalCustomers;
-    public static Customer[] Customers;
+    public static List<Customer> Customers;
     public static List<int> AvailableCustomers;
     public static List<int> ActiveCustomers;
-    public static Vector3 End;
-    public static Vector3 CashRegister;
+    public static float NextCustomer;
 
-    float nextCustomer;
+    public static List<Vector2> CustomerPositions;
 
-    void Start()
+    // When loading a game
+    public static bool Load(AIData data)
     {
-        End = new Vector3(9.5f, 12.5f, 0);
-        CashRegister = new Vector3(-13.5f, 10.5f, 0);
+        try
+        {
+            CustomerPositions = new List<Vector2>();
+            foreach (Transform t in GameObject.Find("Initializer").transform.Find("Customer positions"))
+            {
+                CustomerPositions.Add(t.position);
+            }
 
-        nextCustomer = Random.Range(3, 20);
+            GetCustomers();
 
-        Customers = new Customer[TotalCustomers];
+            foreach (Customer c in Customers)
+            {
+                CustomerData d = data.Customers.Find(x => x.Name == c.Name);
+                if (d != null)
+                {
+                    c.Trust = d.Trust;
+                    c.LetterSent = d.LetterSent;
+                }
+            }
+
+            GameObject.Find("Farm handler").GetComponent<AI>().enabled = true;
+        }
+        catch (System.Exception e)
+        {
+            GameLoader.Log.Add(string.Format("Failed loading {0}. Error: {1}", "AI", e));
+        }
+
+        return true;
+    }
+
+    // When creating a new game
+    public static bool New()
+    {
+        CustomerPositions = new List<Vector2>();
+        foreach (Transform t in GameObject.Find("Initializer").transform.Find("Customer positions"))
+        {
+            CustomerPositions.Add(t.position);
+        }
+        
+        GetCustomers();
+        GameObject.Find("Farm handler").GetComponent<AI>().enabled = true;
+
+        return true;
+    }
+
+    // When saving the game
+    public static AIData Save()
+    {
+        AIData data = new AIData();
+        data.Customers = new List<CustomerData>();
+
+        foreach (Customer c in Customers)
+        {
+            data.Customers.Add(new CustomerData(c.Name, c.Trust, c.LetterSent));
+        }
+
+        return data;
+    }
+
+    public static void GetCustomers()
+    {
+        NextCustomer = Random.Range(3, 20);
+
+        Customers = new List<Customer>();
         AvailableCustomers = new List<int>();
         ActiveCustomers = new List<int>();
 
@@ -54,7 +110,7 @@ public class AI : MonoBehaviour
 
             c.MediumAmount = int.Parse(customer["MediumAmount"].InnerText);
 
-            Customers[customerCount] = c;
+            Customers.Add(c);
             AvailableCustomers.Add(customerCount);
             customerCount++;
         }
@@ -62,18 +118,16 @@ public class AI : MonoBehaviour
 
     void Update()
     {
-        nextCustomer -= Time.deltaTime;
-        if (AvailableCustomers.Count > 0 && nextCustomer <= 0)
+        NextCustomer -= Time.deltaTime * TimeSystem.Data.TimeSpeed;
+        if (AvailableCustomers.Count > 0 && NextCustomer <= 0 && (TimeSystem.Data.TimeState == TimeState.SHOP_OPEN || TimeSystem.Data.TimeState == TimeState.EVENING))
         {
-            if (TimeSystem.TimeState == "Shop open")
-            {
-                nextCustomer = Random.Range(3, 20);
-                int customerID = AvailableCustomers[Random.Range(0, AvailableCustomers.Count - 1)];
-                Customer customer = Customers[customerID];
-                
-                if (Random.Range(0, 100) < customer.Trust) customer.ActivateCustomer();
-                else AvailableCustomers.Remove(customerID);
-            }
+            int customerID = AvailableCustomers[Random.Range(0, AvailableCustomers.Count - 1)];
+            Customer customer = Customers[customerID];
+            
+            AvailableCustomers.Remove(customerID);
+            NextCustomer = Random.Range(3, 20);
+
+            if (Random.Range(0, 100) < customer.Trust) customer.ActivateCustomer();
         }
 
         foreach (int i in ActiveCustomers.ToArray())
@@ -82,10 +136,11 @@ public class AI : MonoBehaviour
         }
     }
 
-    public void NewDay()
+    public static void NewDay()
     {
-        nextCustomer = Random.Range(3, 20);
-        for (int i = 0; i < Customers.Length; i++)
+        NextCustomer = Random.Range(3, 20);
+        AvailableCustomers = new List<int>();
+        for (int i = 0; i < Customers.Count; i++)
         {
             if (!ActiveCustomers.Contains(i)) AvailableCustomers.Add(i);
         }
