@@ -38,28 +38,17 @@ public class ObjectsHandler : MonoBehaviour
                     {
                         if (o is Gate) model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + o.Name).Sprites[o.Rotation + (((Gate)o).Opened ? 2 : 0)];
                         else model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + o.Name).Sprites[o.Rotation];
-
-                        if (model.transform.Find("Obstacle 0") != null) model.transform.Find("Obstacle " + o.Rotation).gameObject.SetActive(true);
                     }
+
+                    if (model.transform.Find("Obstacle 0") != null) model.transform.Find("Obstacle " + o.Rotation).gameObject.SetActive(true);
                     else if (model.transform.Find("Obstacle") != null) model.transform.Find("Obstacle").gameObject.SetActive(true);
+
                     o.Model = model;
                     if (o is Composter)
                     {
                         Composter c = (Composter)o;
                         switch (c.State)
                         {
-                            case MachineState.AVAILABLE:
-                                /* Fix for Alpha 5 to Alpha 6 conversion */
-                                if (c.Amount == c.MaxAmount)
-                                {
-                                    c.State = MachineState.WORKING;
-                                    c.Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Composter/Working");
-                                    OnTimeReached createFertilizer = c.CreateFertilizer;
-                                    c.Timer = new Timer(createFertilizer, 120);
-                                    TimeSystem.Data.Timers.Add(c.Timer);
-                                }
-                                /* End fix */
-                                break;
                             case MachineState.WORKING:
                                 c.Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Composter/Working");
                                 break;
@@ -170,6 +159,11 @@ public class ObjectsHandler : MonoBehaviour
                         Sign s = (Sign)o;
                         s.UpdateIcon(s.Icon);
                     }
+                    else if (o is Lamp)
+                    {
+                        Lamp l = (Lamp)o;
+                        l.Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + l.Name).Sprites[l.On ? 1 : 0];
+                    }
                 }
                 else // Item on the floor
                 {                    
@@ -207,6 +201,7 @@ public class ObjectsHandler : MonoBehaviour
         Data = new ObjectsData();
         Data.Objects = new List<IObject>();
 
+        // Add bed
         BuildableObject bed = new BuildableObject("Bed", 1, 1);
         bed.Placed = true;
         bed.Model = Instantiate(Resources.Load<GameObject>("Objects/Bed"), new Vector2(-48.25f, 7.75f), Quaternion.Euler(0, 0, 0));     
@@ -221,6 +216,7 @@ public class ObjectsHandler : MonoBehaviour
         Data.Objects.Add(bed);
         TimeSystem.Bed = bed.Model;
 
+        // Add cash register
         BuildableObject cashRegister = new BuildableObject("Cash register", 1, 1);
         cashRegister.Placed = true;
         cashRegister.Model = Instantiate(Resources.Load<GameObject>("Objects/Cash register"), new Vector2(-13.75f, 9.25f), Quaternion.Euler(0, 0, 0));     
@@ -240,6 +236,20 @@ public class ObjectsHandler : MonoBehaviour
 
         Data.Objects.Add(cashRegister);
         CashRegister.CashRegisterModel = cashRegister.Model;
+
+        // Add house lamp
+        BuildableObject lamp = new Lamp("House lamp");
+        lamp.Placed = true;
+        lamp.Model = Instantiate(Resources.Load<GameObject>("Objects/House lamp"), new Vector2(-51, 8), Quaternion.Euler(0, 0, 0));     
+        lamp.WorldPosition = lamp.Model.transform.position;
+
+        foreach (Transform t in lamp.Model.transform.Find("Vertices"))
+        {
+            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            v.State = VertexState.Occuppied;
+        }
+
+        Data.Objects.Add(lamp);
 
         return true;
     }
