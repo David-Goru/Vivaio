@@ -114,6 +114,12 @@
 		<Description>A pack of 10 brick tiles.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
+		<Name>Wood tile</Name>
+		<Use>Floor</Use>
+		<Price>40</Price>
+		<Description>A pack of 10 wood tiles.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
 		<Name>Drip bottle</Name>
 		<Use>Farm</Use>
 		<Price>75</Price>
@@ -160,5 +166,11 @@
 		<Use>Build</Use>
 		<Price>200</Price>
 		<Description>Bake things.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Water pump</Name>
+		<Use>Build</Use>
+		<Price>500</Price>
+		<Description>Get water from... Water... Places.</Description>
 	</FarmazonItem>
 </FarmazonItems>

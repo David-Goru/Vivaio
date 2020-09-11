@@ -11,6 +11,9 @@ public class Save
     // Game system (Master)
     public GeneralData GeneralData;
 
+    // Management system
+    public ManagementData ManagementData;
+
     // Time system
     public TimeData TimeData;
 

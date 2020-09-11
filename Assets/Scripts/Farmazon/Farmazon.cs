@@ -197,10 +197,11 @@ public class Farmazon : MonoBehaviour
                         else if (fi.Name == "Sign") box.Items[slotCounter] = new Sign();
                         else if (fi.Name == "Fence gate") box.Items[slotCounter] = new Gate("Fence gate");
                         else if (fi.Name == "Fence") box.Items[slotCounter] = new Wall(fi.Name, 5, 10);
+                        else if (fi.Name == "Water pump") box.Items[slotCounter] = new WaterPump();
                         else box.Items[slotCounter] = new BuildableObject(fi.Name, 1, 1);
                         break;
                     case "Floor":
-                        if (fi.Name == "Composite tile") box.Items[slotCounter] = new Floor(fi.Name, 10, 10, true);
+                        if (fi.Name == "Composite tile" || fi.Name == "Wood tile") box.Items[slotCounter] = new Floor(fi.Name, 10, 10, true);
                         else box.Items[slotCounter] = new Floor(fi.Name, 10, 10);
                         break;
                     case "Farm":

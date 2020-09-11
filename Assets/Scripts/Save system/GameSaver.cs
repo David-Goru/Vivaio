@@ -17,6 +17,9 @@ public class GameSaver : MonoBehaviour
         // Game system (Master)
         save.GeneralData = Master.Data;
 
+        // Management system
+        save.ManagementData = Management.Data;
+
         // Time system
         save.TimeData = TimeSystem.Data;
 

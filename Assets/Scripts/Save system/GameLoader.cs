@@ -39,6 +39,11 @@ public class GameLoader : MonoBehaviour
         yield return new WaitUntil(() => Master.New());
         yield return new WaitForSeconds(0.05f);
 
+        // Management system
+        loadingText.text = string.Format("Creating {0}...", "management");
+        yield return new WaitUntil(() => Management.New());
+        yield return new WaitForSeconds(0.05f);
+
         // Time system
         loadingText.text = string.Format("Creating {0}...", "time");
         yield return new WaitUntil(() => TimeSystem.New());
@@ -141,6 +146,11 @@ public class GameLoader : MonoBehaviour
         // Game system (Master)
         loadingText.text = string.Format("Loading {0}...", "master");
         yield return new WaitUntil(() => Master.Load(saveFile.GeneralData));
+        yield return new WaitForSeconds(0.05f);
+
+        // Management system
+        loadingText.text = string.Format("Loading {0}...", "management");
+        yield return new WaitUntil(() => Management.Load(saveFile.ManagementData));
         yield return new WaitForSeconds(0.05f);
 
         // Time system

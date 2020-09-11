@@ -50,24 +50,27 @@ public class Build : MonoBehaviour
         // Check if object can be built at position
         if (Vector2.Distance(pos, GameObject.Find("Player").transform.position) < BuildRange)
         {
-            buildable = true;
-            
-            Transform tParent;
-            if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + boInfo.Rotation);
-            else tParent = physicalObject.transform.Find("Vertices");
-            foreach (Transform t in tParent)
-            {
-                Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
-
-                if (v == null) buildable = false;
-                else if (boInfo is Floor)
-                {
-                    if (v.Floor != "None") buildable = false;
-                }
-                else if (v.State == VertexState.Occuppied || v.State == VertexState.Walkable) buildable = false;
-            }
+            buildable = true;            
 
             if (physicalObject.CompareTag("Cash register") && pos.x > -9.7f) buildable = false;
+            else if (physicalObject.CompareTag("Water pump") && pos.x != -3.25f) buildable = false;
+            else
+            {                
+                Transform tParent;
+                if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + boInfo.Rotation);
+                else tParent = physicalObject.transform.Find("Vertices");
+                foreach (Transform t in tParent)
+                {
+                    Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+
+                    if (v == null) buildable = false;
+                    else if (boInfo is Floor)
+                    {
+                        if (v.Floor != "None") buildable = false;
+                    }
+                    else if (v.State == VertexState.Occuppied || v.State == VertexState.Walkable) buildable = false;
+                }
+            }
 
             if (buildable) physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
             else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
@@ -150,6 +153,7 @@ public class Build : MonoBehaviour
                 case "Furnace":
                 case "Sign":
                 case "Fence gate":
+                case "Water pump":
                     boInfo.Model = physicalObject;
                     ObjectsHandler.Data.Objects.Add(boInfo);
                     boInfo.Placed = true;

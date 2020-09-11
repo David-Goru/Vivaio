@@ -15,7 +15,10 @@ public class WaterSource : MonoBehaviour
                 if (wc.Remaining < 10)
                 {
                     GetComponent<Animator>().SetTrigger("UseSource");
-                    Master.Data.LastDayWaterUsage += 10 - wc.Remaining;
+                    GameObject waterPump = GameObject.FindGameObjectWithTag("Water pump");
+                    if (waterPump != null) ((WaterPump)ObjectsHandler.Data.Objects.Find(x => x.Model == waterPump)).GetWater(10 - wc.Remaining);
+                    else Master.Data.LastDayWaterUsage += 10 - wc.Remaining;
+
                     wc.Remaining = 10;
                     Inventory.ChangeObject();
                 }

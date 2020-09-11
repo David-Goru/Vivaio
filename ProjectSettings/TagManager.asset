@@ -12,6 +12,7 @@ TagManager:
   - Customer end
   - Tool
   - Customer start
+  - Water pump
   layers:
   - Default
   - TransparentFX

@@ -38,7 +38,7 @@ public class Mailbox : MonoBehaviour
         // Send first letter ever (debt information letter)
         string type = "SDPF"; // State Department of Plants and Farms
         string title = "Debt information";
-        string body = string.Format("Hello sir,\nfrom the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}₡</b>. The debt will be paid in amounts of <b>{2}₡</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "New farm bought", Master.Data.Debt, Master.Data.DailyDebt);
+        string body = string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}₡</b>. The debt will be paid in amounts of <b>{2}₡</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "New farm bought", Master.Data.Debt, Master.Data.DailyDebt);
         string signature = "<i>SDFP</i>";
         NewLetter(type, title, body, signature);
 
@@ -60,7 +60,7 @@ public class Mailbox : MonoBehaviour
                 c.LetterSent = true;
                 type = "Customer";
                 title = "Happy customer";
-                body = string.Format("Hello,\nI am {0}, one of your closest customers. I would like to tell you that your shop is just… amazing. You have had me coming over and over, and always had what I needed. Please, keep doing what you do. I would love to see how far your shop goes.", c.Name);
+                body = string.Format("Hello,\n        I am {0}, one of your closest customers. I would like to tell you that your shop is just… amazing. You have had me coming over and over, and always had what I needed. Please, keep doing what you do. I would love to see how far your shop goes.", c.Name);
                 signature = string.Format("<i>Your happy customer, {0}</i>", c.Name);
                 NewLetter(type, title, body, signature);
             }
@@ -69,7 +69,7 @@ public class Mailbox : MonoBehaviour
                 c.LetterSent = true;
                 type = "Customer";
                 title = "Unhappy customer";
-                body = string.Format("Hello,\nI am {0}, and I am writing this just as a warning. After coming to your shop several days, I have realized that your shop is not supplying your customers with the right products. I would love to see you improve and learn from your mistakes. Please, focus on what you do. Ask for help if you need, there are a lot of farmers that would love to teach you how to build a good shop. Do not hate me, I am writing this to help, to make a constructive critic. And, as so, please, take into consideration what I have said. Success comes from knowing that you did your best to become the best that you are capable of becoming.", c.Name);
+                body = string.Format("Hello,\n        I am {0}, and I am writing this as a warning. After coming to your shop several days, I have realized that your shop is not supplying your customers with the right products. I would love to see you improving and learning from your mistakes. Please, focus on what you do. Ask for help if you need, there are a lot of farmers that would love to teach you how to build a good shop. Do not hate me, this is a constructive critic. And, as so, please, take into consideration what I have said. Success comes from knowing that you did your best to become the best that you are capable of becoming.", c.Name);
                 signature = string.Format("<i>Your unhappy customer, {0}</i>", c.Name);
                 NewLetter(type, title, body, signature);
             }
@@ -91,9 +91,18 @@ public class Mailbox : MonoBehaviour
             type = "SDPF";
             title = "Debt paid";
             // When upgrades are available:
-            //body = "Hello sir,\nfrom the <b>State Department of Farms and Plants</b>, we thank you for paying properly the last debt, and so, we inform you that you are able to request a new upgrade for your farm.";
-            // Delete:
-            body = "Hello sir,\nfrom the <b>State Department of Farms and Plants</b>, we thank you for paying properly the last debt.";
+            body = "Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we thank you for paying properly the last debt, and so, we inform you that you are able to request a new upgrade for your farm.";
+            signature = "<i>SDFP</i>";
+            NewLetter(type, title, body, signature);
+        }
+
+        // New debt
+        if (Management.Data.ExpandField)
+        {
+            type = "SDPF";
+            title = "Debt paid";
+            // When upgrades are available:
+            body =  string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}₡</b>. The debt will be paid in amounts of <b>{2}₡</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "Farm expansion", Master.Data.Debt, Master.Data.DailyDebt);
             signature = "<i>SDFP</i>";
             NewLetter(type, title, body, signature);
         }

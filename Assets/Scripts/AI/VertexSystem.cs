@@ -63,13 +63,7 @@ public class VertexSystem : MonoBehaviour
             }
         }
 
-        // Update vertices connections
-        foreach (Vertex v in Vertices)
-        {
-            v.UpdateCons();
-        }
-
-        // Add farm vertices (that won't be connected)
+        // Add farm vertices
         Vector3 firstVfarm = vertices.Find("First vertex farm").position;
         Vector3 lastVfarm = vertices.Find("Last vertex farm").position;
         for (float i = firstVfarm.x; i <= lastVfarm.x; i += 0.25f)
@@ -80,22 +74,11 @@ public class VertexSystem : MonoBehaviour
             }
         }
 
-        // Create vertices net (sidewalk)
-        /*foreach (Transform t in vertices.Find("Sidewalk"))
+        // Update vertices connections
+        foreach (Vertex v in Vertices)
         {
-            Vertices.Add(new Vertex(new Vector2(t.position.x, t.position.y)));
+            v.UpdateCons();
         }
-
-        foreach (Transform t in vertices.Find("Sidewalk"))
-        {
-            Vertex v = Vertices.Find(x => x.Pos == new Vector2(t.position.x, t.position.y));
-            foreach (Transform c in t)
-            {
-                Vertex vc = Vertices.Find(x => x.Pos == new Vector2(c.position.x, c.position.y));
-                v.Conns.Add(vc.ID);
-                vc.Conns.Add(v.ID);
-            }
-        }*/
 
         Vector3 firstVhouse = vertices.Find("First vertex house").position;
         Vector3 lastVhouse = vertices.Find("Last vertex house").position;

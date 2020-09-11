@@ -178,7 +178,7 @@ public class PlayerControls : MonoBehaviour
                 else
                 {
                     IObject o = ObjectsHandler.Data.Objects.Find(x => x.Model == objectClicked);
-                    if (o is Gate || o is Wall || o is Lamp) o.ActionTwo();
+                    if (o is Gate || o is Wall || o is Lamp || o is WaterPump) o.ActionTwo();
                     else ObjectUI.OpenUI(o);
                 }
             }

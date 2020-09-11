@@ -20,7 +20,8 @@ public class TimeSystem : MonoBehaviour
     public Sprite HouseNoon;
     public Sprite HouseNight;
     public Sprite ClockMorning;
-    public Sprite ClockAfternoon;
+    public Sprite ClockDay;
+    public Sprite ClockEvening;
     public Sprite ClockNight;
 
     // Colors
@@ -165,7 +166,6 @@ public class TimeSystem : MonoBehaviour
                 Master.Data.LastDayDebt = Master.Data.DailyDebt;
                 Master.Data.LastDayPaid += Master.Data.DailyDebt;
             }
-            else Master.Data.LastDayDebt = 0;
         }
         else if (Master.Data.Debt > 0)
         {
@@ -175,15 +175,15 @@ public class TimeSystem : MonoBehaviour
                 Master.Data.LastDayPaid += Master.Data.Debt;
                 Master.Data.Debt = 0;
             }
-            else Master.Data.LastDayDebt = 0;
         }
-        else Master.Data.LastDayDebt = 0;
         Master.UpdateBalance(-Master.Data.LastDayPaid);
 
         AI.NewDay();
-        GameObject.FindGameObjectWithTag("Mailbox").GetComponent<Mailbox>().UpdateLetters();
+        GameObject.FindGameObjectWithTag("Mailbox").GetComponent<Mailbox>().UpdateLetters();        
+        if (Management.Data.ExpandField) Management.ExpandField();
 
         Master.Data.Day++;
+        Master.Data.LastDayDebt = 0;
         Master.Data.LastDayPaid = 0;
         Master.Data.LastDayWaterUsage = 0;
         Master.Data.LastDayEnergyUsage = 1; // The house needs light...
@@ -229,9 +229,8 @@ public class TimeSystem : MonoBehaviour
         Data.TimeState = TimeState.SHOP_OPEN;
         if (Data.Sleeping) Background.GetComponent<SpriteRenderer>().color = ShopOpenBackground;
         else StartCoroutine(ColorTransition(MorningBackground, ShopOpenBackground));
-        
 
-        Clock.GetComponent<Image>().sprite = ClockAfternoon;
+        Clock.GetComponent<Image>().sprite = ClockDay;
     }
 
     void setEvening()
@@ -240,6 +239,7 @@ public class TimeSystem : MonoBehaviour
         if (Data.Sleeping) Background.GetComponent<SpriteRenderer>().color = EveningBackground;
         else StartCoroutine(ColorTransition(ShopOpenBackground, EveningBackground));
         
+        Clock.GetComponent<Image>().sprite = ClockEvening;
         House.GetComponent<SpriteRenderer>().sprite = HouseNoon;
     }
 
