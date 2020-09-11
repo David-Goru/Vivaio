@@ -19,7 +19,7 @@ public class Master : MonoBehaviour
         {
             Data = data;
             Player = GameObject.Find("Player");
-            GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "₡";
+            GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "$";
         }
         catch (System.Exception e)
         {
@@ -34,7 +34,7 @@ public class Master : MonoBehaviour
     {
         Data = new GeneralData(2000, 0, 3000, 0, 100, 0, 0, 1);
         Player = GameObject.Find("Player");
-        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "₡";
+        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "$";
 
         return true;
     }
@@ -42,12 +42,12 @@ public class Master : MonoBehaviour
     public static void UpdateBalance(int money)
     {
         Data.Balance += money;
-        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "₡";
+        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "$";
 
         Transform MoneyHandler = GameObject.Find("UI").transform.Find("Money").Find("Money updates").Find("Viewport").Find("Content");
 
         GameObject uiElement = Instantiate<GameObject>(Resources.Load<GameObject>("UI/Money " + (money < 0 ? "removed" : "added")), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-        uiElement.GetComponent<Text>().text = (money < 0 ? "" : "+") + money + "₡";
+        uiElement.GetComponent<Text>().text = (money < 0 ? "" : "+") + money + "$";
         uiElement.transform.SetParent(MoneyHandler);
         uiElement.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
     }

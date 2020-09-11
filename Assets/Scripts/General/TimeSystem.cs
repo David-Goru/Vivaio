@@ -251,6 +251,14 @@ public class TimeSystem : MonoBehaviour
         
         Clock.GetComponent<Image>().sprite = ClockNight;
         House.GetComponent<SpriteRenderer>().sprite = HouseNight;
+
+        if (GameObject.FindGameObjectWithTag("Water pump") != null)
+        {
+            foreach (PlowedSoil p in Farm.PlowedSoils)
+            {
+                p.AutoWaterKit();
+            }
+        }
     }
 }
 

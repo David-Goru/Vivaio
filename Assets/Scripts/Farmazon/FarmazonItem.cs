@@ -29,7 +29,7 @@ public class FarmazonItem
             farmazonButton.transform.Find("Name").GetComponent<Text>().text = name;
             farmazonButton.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + name).Icon;
         }
-        farmazonButton.transform.Find("Price").GetComponent<Text>().text = price + "₡/u";
+        farmazonButton.transform.Find("Price").GetComponent<Text>().text = price + "$/u";
         farmazonButton.transform.SetParent(Farmazon.FarmazonListHandler, false);
         farmazonButton.name = name;
     }

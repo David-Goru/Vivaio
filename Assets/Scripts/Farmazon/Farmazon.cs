@@ -83,7 +83,7 @@ public class Farmazon : MonoBehaviour
 
         amount = 0;
         ItemUI.transform.Find("Item").Find("Amount info").Find("Amount").GetComponent<Text>().text = "0";
-        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = "0₡";
+        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = "0$";
 
         ItemUI.transform.Find("Item").gameObject.SetActive(true);
         if (selectedItem.Use == "Seed")
@@ -105,14 +105,14 @@ public class Farmazon : MonoBehaviour
         if (amount >= 99) return;
         amount++;
         ItemUI.transform.Find("Item").Find("Amount info").Find("Amount").GetComponent<Text>().text = amount.ToString();
-        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "₡";
+        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "$";
     }
     public void RemoveAmount()
     {
         if (amount <= 0) return;
         amount--;
         ItemUI.transform.Find("Item").Find("Amount info").Find("Amount").GetComponent<Text>().text = amount.ToString();
-        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "₡";
+        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "$";
     }
 
     public void AddToCart()
@@ -128,7 +128,7 @@ public class Farmazon : MonoBehaviour
 
     public void OpenCart()
     {
-        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "₡";
+        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "$";
 
         Transform content = transform.Find("Chart").Find("Viewport").Find("Content");
 
@@ -155,7 +155,7 @@ public class Farmazon : MonoBehaviour
                 itemObject.transform.Find("Name").GetComponent<Text>().text = fi.Name;
                 itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + fi.Name).Icon;
             }
-            itemObject.transform.Find("Price").GetComponent<Text>().text = item.Amount + "u (" + item.Amount * fi.Price + "₡)";
+            itemObject.transform.Find("Price").GetComponent<Text>().text = item.Amount + "u (" + item.Amount * fi.Price + "$)";
             itemObject.transform.SetParent(content, false);
         }
     }
@@ -163,7 +163,7 @@ public class Farmazon : MonoBehaviour
     public void RemoveItem(CartItem item)
     {
         TotalPrice -= item.Amount * FarmazonItems[item.Item].Price;
-        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "₡";
+        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "$";
         item.RemoveIt();
         CheckState();
     }
@@ -206,6 +206,7 @@ public class Farmazon : MonoBehaviour
                         break;
                     case "Farm":
                         if (fi.Name == "Drip bottle") box.Items[slotCounter] = new DripBottle(0);
+                        else if (fi.Name == "Drip irrigation kit") box.Items[slotCounter] = new DripIrrigationKit();
                         else box.Items[slotCounter] = new IObject(fi.Name, 1, 1);
                         break;
                     case "Seed":
@@ -233,6 +234,6 @@ public class Farmazon : MonoBehaviour
 
         Master.UpdateBalance(-TotalPrice);
         TotalPrice = 0;
-        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = "0₡";
+        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = "0$";
     }
 }

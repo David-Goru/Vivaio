@@ -70,7 +70,7 @@ public class CashRegister : MonoBehaviour
             string itemsList = Data.CashLog[i].ItemsBought;
             int totalLines = Data.CashLog[i].TotalLines;
 
-            itemsList += string.Format("Total amount: {0}₡", Data.CashLog[i].Total);
+            itemsList += string.Format("Total amount: {0}$", Data.CashLog[i].Total);
 
             ticket.transform.Find("Items list").GetComponent<Text>().text = itemsList;
 

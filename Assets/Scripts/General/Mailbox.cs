@@ -38,7 +38,7 @@ public class Mailbox : MonoBehaviour
         // Send first letter ever (debt information letter)
         string type = "SDPF"; // State Department of Plants and Farms
         string title = "Debt information";
-        string body = string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}₡</b>. The debt will be paid in amounts of <b>{2}₡</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "New farm bought", Master.Data.Debt, Master.Data.DailyDebt);
+        string body = string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}$</b>. The debt will be paid in amounts of <b>{2}$</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "New farm bought", Master.Data.Debt, Master.Data.DailyDebt);
         string signature = "<i>SDFP</i>";
         NewLetter(type, title, body, signature);
 
@@ -79,9 +79,9 @@ public class Mailbox : MonoBehaviour
         // Daily debt
         type = "SDPF";
         title = "Last day expenses";
-        body = string.Format("From the <b>State Department of Farms and Plants</b> we inform you that the day {0} expenses are as follows:\n        Energy usage: -{1}₡\n        Water usage: -{2}₡\n", Master.Data.Day, Master.Data.LastDayEnergyUsage, Master.Data.LastDayWaterUsage);
-        if (Master.Data.LastDayDebt > 0) body += string.Format("        Debt: -{0}₡\n        ------------------\n        Total: -{1}₡\n        Remaining debt: {2}₡", Master.Data.LastDayDebt, Master.Data.LastDayPaid, Master.Data.Debt);
-        else body += string.Format("        ------------------\n        Total: -{0}₡", Master.Data.LastDayPaid);
+        body = string.Format("From the <b>State Department of Farms and Plants</b> we inform you that the day {0} expenses are as follows:\n        Energy usage: -{1}$\n        Water usage: -{2}$\n", Master.Data.Day, Master.Data.LastDayEnergyUsage, Master.Data.LastDayWaterUsage);
+        if (Master.Data.LastDayDebt > 0) body += string.Format("        Debt: -{0}$\n        ------------------\n        Total: -{1}$\n        Remaining debt: {2}$", Master.Data.LastDayDebt, Master.Data.LastDayPaid, Master.Data.Debt);
+        else body += string.Format("        ------------------\n        Total: -{0}$", Master.Data.LastDayPaid);
         signature = "<i>SDFP</i>";
         NewLetter(type, title, body, signature);
 
@@ -102,7 +102,7 @@ public class Mailbox : MonoBehaviour
             type = "SDPF";
             title = "Debt paid";
             // When upgrades are available:
-            body =  string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}₡</b>. The debt will be paid in amounts of <b>{2}₡</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "Farm expansion", Master.Data.Debt, Master.Data.DailyDebt);
+            body =  string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}$</b>. The debt will be paid in amounts of <b>{2}$</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "Farm expansion", Master.Data.Debt, Master.Data.DailyDebt);
             signature = "<i>SDFP</i>";
             NewLetter(type, title, body, signature);
         }

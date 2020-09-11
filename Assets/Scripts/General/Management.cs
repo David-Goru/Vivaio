@@ -23,10 +23,10 @@ public class Management : MonoBehaviour
             }
 
             ManagementUI = GameObject.Find("UI").transform.Find("Management").gameObject;
-            ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}₡.", 4500 + 1500 * data.ExpansionLevel);
-            ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}₡", 4500 + 1500 * data.ExpansionLevel);
-            ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}₡.", Master.Data.Debt);
-            ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}₡", Master.Data.Debt);
+            ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}$.", 4500 + 1500 * data.ExpansionLevel);
+            ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}$", 4500 + 1500 * data.ExpansionLevel);
+            ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
+            ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
 
             if (Master.Data.Debt > 0) ManagementUI.transform.Find("Debt").gameObject.SetActive(true);
             else ManagementUI.transform.Find("Expansion").gameObject.SetActive(true);
@@ -48,10 +48,10 @@ public class Management : MonoBehaviour
         Data.ExpandField = false;
 
         ManagementUI = GameObject.Find("UI").transform.Find("Management").gameObject;
-        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}₡.", 4500 + 1500 * Data.ExpansionLevel);
-        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}₡", 4500 + 1500 * Data.ExpansionLevel);
-        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}₡.", Master.Data.Debt);
-        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}₡", Master.Data.Debt);
+        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}$.", 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}$", 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
+        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
 
         ManagementUI.transform.Find("Debt").gameObject.SetActive(true);
 
@@ -118,10 +118,10 @@ public class Management : MonoBehaviour
             }
         }
 
-        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}₡.", Master.Data.Debt);
-        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}₡", Master.Data.Debt);
-        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}₡.", 4500 + 1500 * Data.ExpansionLevel);
-        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}₡", 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
+        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
+        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}$.", 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}$", 4500 + 1500 * Data.ExpansionLevel);
         ManagementUI.transform.Find("Expansion").Find("Expand button").gameObject.SetActive(true);
         ManagementUI.transform.Find("Expansion").gameObject.SetActive(false);
         ManagementUI.transform.Find("Debt").gameObject.SetActive(true);

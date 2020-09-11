@@ -3558,7 +3558,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d6972de75de4a8847ae4b1f66875ce46, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9a2bf39f0a232c449818288b44057f0b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7390,7 +7390,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 553e121a340938749b17a5ae68cb0ac6, type: 3}
+    m_Font: {fileID: 12800000, guid: 6fcab021ef8b0ad41b3c880ff2e41bac, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 1
@@ -7402,7 +7402,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "2000\u20A1"
+  m_Text: 2000$
 --- !u!222 &366560107
 CanvasRenderer:
   m_ObjectHideFlags: 0

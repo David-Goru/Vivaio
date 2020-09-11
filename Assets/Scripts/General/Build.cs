@@ -142,6 +142,16 @@ public class Build : MonoBehaviour
                     }
 
                     Master.Data.Stands.Add((Stand)boInfo);
+                    break;                
+                case "Water pump": // Very optimizable
+                    boInfo.Model = physicalObject;
+                    ObjectsHandler.Data.Objects.Add(boInfo);
+                    boInfo.Placed = true;
+
+                    foreach (PlowedSoil p in Farm.PlowedSoils)
+                    {
+                        p.CheckDripIrrigationWarning(false);
+                    }
                     break;
                 case "Product box":
                 case "Composter":
@@ -153,7 +163,6 @@ public class Build : MonoBehaviour
                 case "Furnace":
                 case "Sign":
                 case "Fence gate":
-                case "Water pump":
                     boInfo.Model = physicalObject;
                     ObjectsHandler.Data.Objects.Add(boInfo);
                     boInfo.Placed = true;

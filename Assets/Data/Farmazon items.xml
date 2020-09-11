@@ -126,6 +126,12 @@
 		<Description>A bottle that can water one plant during 10 days.</Description>
 	</FarmazonItem>
 	<FarmazonItem>
+		<Name>Drip irrigation kit</Name>
+		<Use>Farm</Use>
+		<Price>50</Price>
+		<Description>With a water pump built, waters every night one plant.</Description>
+	</FarmazonItem>
+	<FarmazonItem>
 		<Name>Fertilizer</Name>
 		<Use>Fertilizer</Use>
 		<Price>50</Price>
@@ -170,7 +176,7 @@
 	<FarmazonItem>
 		<Name>Water pump</Name>
 		<Use>Build</Use>
-		<Price>500</Price>
+		<Price>1000</Price>
 		<Description>Get water from... Water... Places.</Description>
 	</FarmazonItem>
 </FarmazonItems>

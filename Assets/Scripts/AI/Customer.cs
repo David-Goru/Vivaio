@@ -91,7 +91,7 @@ public class Customer
                 if (amountTaken != "0")
                 {
                     expenses += itemCost;
-                    itemsBought += (currentDesire.Item.Name + " x" + amountTaken + " (" + itemCost + "₡)\n");                    
+                    itemsBought += (currentDesire.Item.Name + " x" + amountTaken + " (" + itemCost + "$)\n");                    
                     numberItemsBought++;
                 }
             }

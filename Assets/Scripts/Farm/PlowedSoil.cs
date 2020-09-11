@@ -7,11 +7,12 @@ public class PlowedSoil : MonoBehaviour
     bool hasCrop = false;
     bool hasFertilizer = false;
     bool hasDripBottle = false;
+    bool hasDripIrrigationKit = false;
     string sprite;
 
     public PlowedSoilData Save()
     {
-        return new PlowedSoilData(crop, hasCrop, hasFertilizer, hasDripBottle, waterUnits, transform.position, sprite);
+        return new PlowedSoilData(crop, hasCrop, hasFertilizer, hasDripBottle, hasDripIrrigationKit, waterUnits, transform.position, sprite);
     }
 
     public void Load(PlowedSoilData f)
@@ -26,6 +27,7 @@ public class PlowedSoil : MonoBehaviour
         waterUnits = f.WaterUnits;
         if (f.HasFertilizer) AddFertilizer();
         if (f.HasDripBottle) AddDripBottle(waterUnits);
+        if (f.HasDripIrrigationKit) AddDripIrrigationKit();
     }
 
     public void RemovePlant()
@@ -57,7 +59,7 @@ public class PlowedSoil : MonoBehaviour
 
     public bool AddDripBottle(int units)
     {
-        if (hasDripBottle) return false;
+        if (hasDripBottle || hasDripIrrigationKit) return false;
         hasDripBottle = true;
         waterUnits = units;
         GameObject bottle = Instantiate<GameObject>(Resources.Load<GameObject>("Farm/Drip bottle"), transform.position, transform.rotation);
@@ -74,6 +76,30 @@ public class PlowedSoil : MonoBehaviour
         return true;
     }
 
+    public bool AddDripIrrigationKit()
+    {
+        if (hasDripBottle || hasDripIrrigationKit) return false;
+        hasDripIrrigationKit = true;
+        GameObject kit = Instantiate<GameObject>(Resources.Load<GameObject>("Farm/Drip irrigation kit"), transform.position, transform.rotation);
+        kit.transform.SetParent(transform);
+        kit.name = "Drip irrigation kit";
+        if (GameObject.FindGameObjectWithTag("Water pump") == null) kit.transform.Find("Warning").gameObject.SetActive(true);
+        else
+        {
+            kit.transform.Find("Warning").gameObject.SetActive(false);
+            if (TimeSystem.Data.CurrentMinute >= 630 && TimeSystem.Data.CurrentMinute < 720) AutoWaterKit();
+        }
+        return true;
+    }
+
+    public void CheckDripIrrigationWarning(bool newState)
+    {
+        if (hasDripIrrigationKit)
+        {
+            transform.Find("Drip irrigation kit").Find("Warning").gameObject.SetActive(newState);
+        }
+    }
+
     public void AutoWater()
     {
         if (hasDripBottle && waterUnits > 0 && hasCrop && !crop.Water())
@@ -86,9 +112,22 @@ public class PlowedSoil : MonoBehaviour
         }
     }
 
+    public void AutoWaterKit()
+    {
+        if (hasDripIrrigationKit && hasCrop && !crop.Water())
+        {
+            ((WaterPump)ObjectsHandler.Data.Objects.Find(x => x.Name == "Water pump")).GetWater(1);
+            transform.Find("Drip irrigation kit").Find("Sprite").gameObject.GetComponent<Animator>().SetBool("Watering", true);
+        }
+    }
+
     public void TakeDripBottle()
     {
-        if (!hasDripBottle) return;
+        if (!hasDripBottle)
+        {
+            TakeDripIrrigationKit();
+            return;
+        }
 
         if (Inventory.AddObject(new DripBottle(waterUnits)))
         {
@@ -98,9 +137,21 @@ public class PlowedSoil : MonoBehaviour
         }
     }
 
+    public void TakeDripIrrigationKit()
+    {
+        if (!hasDripIrrigationKit) return;
+
+        if (Inventory.AddObject(new DripIrrigationKit()))
+        {
+            hasDripIrrigationKit = false;
+            Destroy(transform.Find("Drip irrigation kit").gameObject);
+        }
+    }
+
     public void NewDay()
     {
         if (hasCrop) crop.NewDay();
+        if (hasDripIrrigationKit) transform.Find("Drip irrigation kit").Find("Sprite").gameObject.GetComponent<Animator>().SetBool("Watering", false);
     }
 
     public void SetSprite(string sprite)
@@ -117,7 +168,10 @@ public class PlowedSoil : MonoBehaviour
         {
             case "Drip bottle":
                 if (AddDripBottle(((DripBottle)Inventory.Data.ObjectInHand).WaterUnits)) Inventory.RemoveObject();
-                break;           
+                break;
+            case "Drip irrigation kit":
+                if (AddDripIrrigationKit()) Inventory.RemoveObject();
+                break;  
             case "Shovel":
                 if (hasCrop)
                 {

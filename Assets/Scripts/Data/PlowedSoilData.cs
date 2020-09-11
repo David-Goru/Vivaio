@@ -12,18 +12,21 @@ public class PlowedSoilData
     [SerializeField]
     public bool HasDripBottle;
     [SerializeField]
+    public bool HasDripIrrigationKit;
+    [SerializeField]
     public int WaterUnits;
     [SerializeField]
     public Vector2 Pos;
     [SerializeField]
     public string Sprite;
 
-    public PlowedSoilData(Crop crop, bool hasCrop, bool hasFertilizer, bool hasDripBottle, int waterUnits, Vector2 pos, string sprite)
+    public PlowedSoilData(Crop crop, bool hasCrop, bool hasFertilizer, bool hasDripBottle, bool hasDripIrrigationKit, int waterUnits, Vector2 pos, string sprite)
     {
         Crop = crop;
         HasCrop = hasCrop;
         HasFertilizer = hasFertilizer;
         HasDripBottle = hasDripBottle;
+        HasDripIrrigationKit = hasDripIrrigationKit;
         WaterUnits = waterUnits;
         Pos = pos;
         Sprite = sprite;
