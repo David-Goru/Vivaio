@@ -14,7 +14,7 @@ public class DeliverySystem : MonoBehaviour
     {
         try
         {
-            Data = data;
+            Data = data; 
         }
         catch (System.Exception e)
         {
@@ -59,7 +59,7 @@ public class DeliverySystem : MonoBehaviour
     public static void UpdatePackages()
     {
         foreach (Box box in Data.DeliveryList.ToArray())
-        {            
+        {
             DeliveryPoint point = null;
             List<DeliveryPoint> pointsChecked = new List<DeliveryPoint>();
 

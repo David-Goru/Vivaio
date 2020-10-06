@@ -115,6 +115,17 @@ public class Stand : BuildableObject
 
     public void TakeProduct()
     {
+        if (Item.Name == "Bread")
+        {
+            if (Inventory.AddObject(new IObject("Bread", Amount, 10)))
+            {
+                Model.transform.Find("Display").gameObject.SetActive(false);
+                Item = null;
+                ItemName = "None";
+                Amount = 0;
+                return;
+            }
+        }
         if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
         Basket basket = (Basket)Inventory.Data.ObjectInHand;
         if (basket.Amount > 0 && basket.Product != Item) return;

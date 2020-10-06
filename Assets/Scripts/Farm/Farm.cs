@@ -21,6 +21,7 @@ public class Farm : MonoBehaviour
             SeedPlanted = Resources.Load<Sprite>("Crops/Seed planted");
 
             PlowedSoils = new List<PlowedSoil>();
+
             foreach (PlowedSoilData p in data.PlowedSoils)
             {
                 p.Load(Instantiate(Resources.Load<GameObject>("Farm/Plowed soil"), p.Pos, Quaternion.Euler(0, 0, 0)));

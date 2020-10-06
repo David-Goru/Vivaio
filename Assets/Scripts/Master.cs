@@ -4,9 +4,11 @@ using UnityEngine.UI;
 public class Master : MonoBehaviour
 {
     // General
-    public static string GameVersion = "Alpha 7";
+    public static string GameVersion = "Alpha 8"; // Update every version?
     public static string GameName = "None";
+    public static string PlayerName = "Nobody";
     public static bool LoadingGame = false;
+    public static string Language = "en_EN";
     public static GameObject Player;
 
     // In-game
@@ -32,7 +34,7 @@ public class Master : MonoBehaviour
     // When creating a new game
     public static bool New()
     {
-        Data = new GeneralData(2000, 0, 3000, 0, 100, 0, 0, 1);
+        Data = new GeneralData(PlayerName, 2000, 0, 3000, 0, 100, 0, 0, 1);
         Player = GameObject.Find("Player");
         GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "$";
 

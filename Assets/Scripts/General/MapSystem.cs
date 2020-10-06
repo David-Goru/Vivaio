@@ -32,7 +32,7 @@ public class MapSystem : MonoBehaviour
     // When creating a new game
     public static bool New()
     {
-        Data = new MapData(new List<Vector2>());     
+        Data = new MapData(new List<Vector2>());
 
         Transform verticesHandler = GameObject.Find("Initializer").transform.Find("Vertices");   
       
@@ -54,5 +54,23 @@ public class MapSystem : MonoBehaviour
         }
 
         return true;
+    }
+
+    public static void ExpandFarm(Vector2 firstV, Vector2 lastV)
+    {
+        GameObject farmFloor = Resources.Load<GameObject>("Farm/Farm land");
+        Transform ground = GameObject.Find("Farm").transform;
+        Vector3 farmMin = new Vector3(firstV.x + 0.125f, firstV.y + 0.125f, 0);
+        Vector3 farmMax = new Vector3(lastV.x - 0.125f, lastV.y - 0.125f, 0);
+
+        for (float i = farmMin.x; i <= farmMax.x; i += 0.5f)
+        {
+            for (float j = farmMin.y; j <= farmMax.y; j += 0.5f)
+            {
+                GameObject tile = (GameObject)Instantiate(farmFloor, new Vector2(i, j), Quaternion.Euler(0, 0, 0));
+                tile.transform.SetParent(ground);
+                Data.FarmLands.Add(tile.transform.position);
+            }
+        }
     }
 }

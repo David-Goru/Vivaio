@@ -173,6 +173,7 @@ public class Build : MonoBehaviour
                     fence.Placed = true;
                     fence.Rotation = boInfo.Rotation;
                     ObjectsHandler.Data.Objects.Add(fence);
+                    fence.WorldPosition = physicalObject.transform.position;
 
                     boInfo.Stack--;
                     if (boInfo.Stack > 0)
@@ -189,7 +190,7 @@ public class Build : MonoBehaviour
         else 
         {
             physicalObject.GetComponent<BoxCollider2D>().enabled = true;
-            if (physicalObject.name == "Delivery box" || physicalObject.name == "Present box") ((Box)ObjectsHandler.Data.Objects.Find(x => x.Model == physicalObject)).UpdatePoint();
+            if (boInfo.Name == "Delivery box" || boInfo.Name == "Present box") ((Box)ObjectsHandler.Data.Objects.Find(x => x.Model == physicalObject)).UpdatePoint();
             else if (boInfo is Stand) 
             {
                 Stand s = (Stand)boInfo;                

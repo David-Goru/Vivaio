@@ -101,8 +101,7 @@ public class Mailbox : MonoBehaviour
         {
             type = "SDPF";
             title = "Debt paid";
-            // When upgrades are available:
-            body =  string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}$</b>. The debt will be paid in amounts of <b>{2}$</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "Farm expansion", Master.Data.Debt, Master.Data.DailyDebt);
+            body =  string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}$</b>. The debt will be paid in amounts of <b>{2}$</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "Farm expansion", 3000 + 1500 * Management.Data.ExpansionLevel, Master.Data.DailyDebt);
             signature = "<i>SDFP</i>";
             NewLetter(type, title, body, signature);
         }

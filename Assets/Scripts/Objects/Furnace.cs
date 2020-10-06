@@ -82,4 +82,19 @@ public class Furnace : BuildableObject
         Model.transform.Find("Warning").gameObject.SetActive(true);
         Master.Data.LastDayEnergyUsage++;
     }
+
+    public override void ActionOne()
+    {
+        if (State == MachineState.AVAILABLE)
+        {
+            AddProduct();
+
+            if (Amount == MaxAmount) TurnOn();
+        }
+    }
+
+    public override void ActionTwo()
+    {
+        if (Amount > 0 && State == MachineState.FINISHED) TakeProduct();
+    }
 }

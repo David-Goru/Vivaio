@@ -137,8 +137,8 @@ public class ObjectUI : MonoBehaviour
                 else if (f.State == MachineState.FINISHED && !FurnaceUI.transform.Find("Finished").gameObject.activeSelf)
                 {
                     FurnaceUI.transform.Find("Working").gameObject.SetActive(false);
-                    FurnaceUI.transform.Find("Finished").transform.Find("Take bread").Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Bread");
-                    FurnaceUI.transform.Find("Finished").transform.Find("Take bread").Find("Image").Find("Amount").GetComponent<Text>().text = "x 5";
+                    FurnaceUI.transform.Find("Finished").transform.Find("Take product").Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Bread");
+                    FurnaceUI.transform.Find("Finished").transform.Find("Take product").Find("Image").Find("Amount").GetComponent<Text>().text = "x 5";
                     FurnaceUI.transform.Find("Finished").gameObject.SetActive(true);
                 }
                 break;
@@ -577,7 +577,11 @@ public class ObjectUI : MonoBehaviour
 
     public static void ChangePrice(Stand s, InputField input)
     {
-        if (input.text != "") s.ItemValue = int.Parse(input.text);
+        if (input.text != "")
+        {
+            s.ItemValue = int.Parse(input.text);
+            input.text = "";
+        }
     }
 
     public static void ChangeState(Stand s)

@@ -128,7 +128,7 @@
 	<FarmazonItem>
 		<Name>Drip irrigation kit</Name>
 		<Use>Farm</Use>
-		<Price>50</Price>
+		<Price>100</Price>
 		<Description>With a water pump built, waters every night one plant.</Description>
 	</FarmazonItem>
 	<FarmazonItem>

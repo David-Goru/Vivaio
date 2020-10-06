@@ -15,4 +15,6 @@ public class OptionsData
     public float MinuteValue;
     [SerializeField]
     public bool FullScreen;
+    [SerializeField]
+    public float Volume;
 }

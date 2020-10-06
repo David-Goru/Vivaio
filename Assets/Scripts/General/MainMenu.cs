@@ -7,6 +7,24 @@ using System.IO;
 
 public class MainMenu : MonoBehaviour
 {
+    public Animator CreateGameController;
+    public Text GameName;
+    public Text PlayerName;
+
+    // Texts
+    public Text NewGameText;
+    public Text LoadGameText;
+    public Text ExitText;
+    public Text AlphaDateText;
+
+    void Start()
+    {
+        NewGameText.text = Localization.Translations["mainMenu_newGame"];
+        LoadGameText.text = Localization.Translations["mainMenu_loadGame"];
+        ExitText.text = Localization.Translations["mainMenu_exit"];
+        AlphaDateText.text = string.Format(Localization.Translations["mainMenu_alphaDate"], 8, 29, 10, 2020); // Update every version?
+    }
+
     public void New()
     {
         transform.Find("Initial screen").gameObject.SetActive(false);
@@ -44,12 +62,13 @@ public class MainMenu : MonoBehaviour
 
     public void CreateGame()
     {
-        string name = transform.Find("Create screen").Find("Game input").Find("Text").GetComponent<Text>().text;
-        if (name != "")
+        if (GameName.text != "" && PlayerName.text != "")
         {
             Master.LoadingGame = false;
-            Master.GameName = name;
-            SceneManager.LoadScene("Game");
+            Master.GameName = GameName.text;
+            Master.PlayerName = PlayerName.text;
+
+            CreateGameController.SetTrigger("StartGame");
         }
     }
 

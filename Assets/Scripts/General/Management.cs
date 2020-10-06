@@ -22,6 +22,8 @@ public class Management : MonoBehaviour
                 Instantiate(Resources.Load("Middle module"), pos, Quaternion.Euler(0, 0, 0));
             }
 
+            GameObject.Find("Environment").transform.Find("Last module").position = new Vector2(-10.25f, 3.375f - data.ExpansionLevel * 2.5f);
+
             ManagementUI = GameObject.Find("UI").transform.Find("Management").gameObject;
             ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}$.", 4500 + 1500 * data.ExpansionLevel);
             ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}$", 4500 + 1500 * data.ExpansionLevel);
@@ -95,6 +97,8 @@ public class Management : MonoBehaviour
             if (AI.CustomerPositions[i].y < 5) AI.CustomerPositions[i] = new Vector2(AI.CustomerPositions[i].x, AI.CustomerPositions[i].y - 2.5f);
         }
 
+        List<Vertex> verticesToUpdate = new List<Vertex>();
+
         // Add new vertices
         Transform t = newModule.transform.Find("Vertices");
         Vector3 firstV = t.Find("First vertex").position;
@@ -103,7 +107,9 @@ public class Management : MonoBehaviour
         {
             for (float j = firstV.y; j <= lastV.y; j += 0.25f)
             {
-                VertexSystem.Vertices.Add(new Vertex(new Vector2(i, j)));
+                Vertex v = new Vertex(new Vector2(i, j));
+                VertexSystem.Vertices.Add(v);
+                verticesToUpdate.Add(v);
             }
         }
 
@@ -114,8 +120,29 @@ public class Management : MonoBehaviour
         {
             for (float j = firstV.y; j <= lastV.y; j += 0.25f)
             {
-                VertexSystem.Vertices.Add(new Vertex(new Vector2(i, j), VertexState.Walkable));
+                Vertex v = new Vertex(new Vector2(i, j), VertexState.Walkable);
+                VertexSystem.Vertices.Add(v);
+                verticesToUpdate.Add(v);
             }
+        }
+        
+        // Add farm plots
+        firstV = t.Find("First farm vertex").position;
+        lastV = t.Find("Last farm vertex").position;
+        for (float i = firstV.x; i <= lastV.x; i += 0.25f)
+        {
+            for (float j = firstV.y; j <= lastV.y; j += 0.25f)
+            {
+                Vertex v = new Vertex(new Vector2(i, j));
+                VertexSystem.Vertices.Add(v);
+                verticesToUpdate.Add(v);
+            }
+        }
+        MapSystem.ExpandFarm(firstV, lastV);
+        
+        foreach (Vertex v in verticesToUpdate)
+        {
+            v.UpdateCons();
         }
 
         ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
@@ -126,5 +153,11 @@ public class Management : MonoBehaviour
         ManagementUI.transform.Find("Expansion").gameObject.SetActive(false);
         ManagementUI.transform.Find("Debt").gameObject.SetActive(true);
         Data.ExpandField = false;
+    }
+
+    public static void UpdateDebt()
+    {
+        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
+        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
     }
 }

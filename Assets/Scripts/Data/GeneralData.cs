@@ -5,6 +5,8 @@ using UnityEngine;
 public class GeneralData
 { 
     [SerializeField]
+    public string PlayerName;
+    [SerializeField]
     public int Balance;
     [SerializeField]
     public int Day;
@@ -23,8 +25,9 @@ public class GeneralData
     [SerializeField]
     public List<Stand> Stands;
 
-    public GeneralData(int balance, int day, int debt, int lastDayDebt, int dailyDebt, int lastDayPaid, int lastDayWaterUsage, int lastDayEnergyUsage)
+    public GeneralData(string playerName, int balance, int day, int debt, int lastDayDebt, int dailyDebt, int lastDayPaid, int lastDayWaterUsage, int lastDayEnergyUsage)
     {
+        PlayerName = playerName;
         Balance = balance;
         Day = day;
         Debt = debt;

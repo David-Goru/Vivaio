@@ -164,6 +164,13 @@ public class ObjectsHandler : MonoBehaviour
                         Lamp l = (Lamp)o;
                         l.Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + l.Name).Sprites[l.On ? 1 : 0];
                     }
+                    else if (o is WaterPump)
+                    {
+                        foreach (PlowedSoil p in Farm.PlowedSoils)
+                        {
+                            p.CheckDripIrrigationWarning(false);
+                        }
+                    }
                 }
                 else // Item on the floor
                 {                    

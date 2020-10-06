@@ -228,6 +228,7 @@ public class VertexSystem : MonoBehaviour
                     {
                         pathFinished = true;
                         lastPosIndex = vertex;
+                        father[vertex] = thisIndex;
                         break;
                     }
                 }

@@ -39,6 +39,7 @@ public class Options : MonoBehaviour
         Data.FPS = 60;  
         Data.MinuteValue = 1;
         Data.FullScreen = Screen.fullScreen;
+        Data.Volume = 0.25f;
 
         OptionsUI = GameObject.Find("UI").transform.Find("Options").gameObject;
         SetOptions();
@@ -72,6 +73,8 @@ public class Options : MonoBehaviour
             Directory.CreateDirectory(Options.Data.DataPath + "/Saves/");
             Directory.CreateDirectory(Options.Data.DataPath + "/Screenshots/");
         }
+
+        OptionsUI.transform.Find("Volume").GetComponent<Slider>().value = Data.Volume;
     }
 
     public void ChangeMinuteValue(float value)
@@ -149,6 +152,12 @@ public class Options : MonoBehaviour
                 break;
         }
         Screen.SetResolution(Data.Width, Data.Height, Data.FullScreen);
+    }
+
+    public void ChangeVolume()
+    {
+        Data.Volume = OptionsUI.transform.Find("Volume").GetComponent<Slider>().value;
+        GameObject.Find("Music handler").GetComponent<AudioSource>().volume = Data.Volume;
     }
 
     public void LeaveGame()
