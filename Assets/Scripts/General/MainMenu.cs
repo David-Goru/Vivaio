@@ -4,25 +4,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System;
 
 public class MainMenu : MonoBehaviour
 {
     public Animator CreateGameController;
+
+    [Header("Player input")]
     public Text GameName;
     public Text PlayerName;
 
-    // Texts
+    [Header("Translations")]
     public Text NewGameText;
     public Text LoadGameText;
     public Text ExitText;
     public Text AlphaDateText;
+    public Text CreateFarmText;
+    public Text FarmNamePlaceholderText;
+    public Text PlayerNamePlaceholderText;
+    public Text NewGameLetterTextPart1;
+    public Text NewGameLetterTextPart2;
+    public Text NewGameLetterTextSign;
+
+    [Header("Extras")]
+    public GameObject GameVersions;
 
     void Start()
     {
+        Localization.LoadTranslations();
         NewGameText.text = Localization.Translations["mainMenu_newGame"];
         LoadGameText.text = Localization.Translations["mainMenu_loadGame"];
         ExitText.text = Localization.Translations["mainMenu_exit"];
         AlphaDateText.text = string.Format(Localization.Translations["mainMenu_alphaDate"], 8, 29, 10, 2020); // Update every version?
+        CreateFarmText.text = Localization.Translations["mainMenu_createFarm"];
+        FarmNamePlaceholderText.text = Localization.Translations["mainMenu_farmNamePlaceholder"];
+        PlayerNamePlaceholderText.text = Localization.Translations["mainMenu_playerNamePlaceholder"];
+        NewGameLetterTextPart1.text = Localization.Translations["mainMenu_newGameLetterTextPart1"];
+        NewGameLetterTextPart2.text = Localization.Translations["mainMenu_newGameLetterTextPart2"];
+        NewGameLetterTextSign.text = Localization.Translations["mainMenu_newGameLetterTextSign"];
     }
 
     public void New()
