@@ -10,6 +10,11 @@ public class Localization : MonoBehaviour
     {
         Translations = new Dictionary<string, string>();
 
+        if (PlayerPrefs.GetString("Language") != null)
+            Master.Language = PlayerPrefs.GetString("Language");
+        else
+            PlayerPrefs.SetString("Language", "en_EN");
+
         // Load translations from files depending on the Master.Language.
         // Those are for en_EN (as a test):
         Translations.Add("mainMenu_newGame", "NEW GAME");
@@ -25,5 +30,11 @@ public class Localization : MonoBehaviour
         Translations.Add("mainMenu_loadFarm", "LOAD FARM");
         Translations.Add("mainMenu_loadGameLetterTextPart1", "Dear farm, I have decided that is time to come back and work harder than ever. I'm sorry for abandoning you,");
         Translations.Add("mainMenu_loadGameLetterTextPart2", "but mistakes where made. I'm a human, you know... I just needed a break. But now, I'm stronger... Just let me help you. Again.");
+        Translations.Add("Vanilla", "Vanilla");
+        Translations.Add("VanillaUnlocked", "Vanilla Edition");
+        Translations.Add("VanillaLocked", "Vanilla Edition");
+        Translations.Add("Halloween", "Halloween");
+        Translations.Add("HalloweenUnlocked", "Halloween Edition");
+        Translations.Add("HalloweenLocked", "Click to buy");
     }
 }

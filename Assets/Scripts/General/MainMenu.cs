@@ -12,43 +12,100 @@ public class MainMenu : MonoBehaviour
     public Animator LoadGameController;
     public FileInfo[] SavedGames;
     private int savedGamesIndex = 0;
+    public GameObject InitialScreenGameType;
+    public GameObject LoadScreenGameType;
+    public GameObject NewScreenGameType;
 
     [Header("Player input")]
     public Text GameName;
     public Text PlayerName;
 
     [Header("Translations")]
-    public Text NewGameText;
-    public Text LoadGameText;
-    public Text ExitText;
-    public Text AlphaDateText;
-    public Text CreateFarmText;
     public Text FarmNamePlaceholderText;
     public Text PlayerNamePlaceholderText;
     public Text NewGameLetterTextPart1;
     public Text NewGameLetterTextPart2;
     public Text NewGameLetterTextSign;
-    public Text LoadFarmText;
     public Text LoadGameLetterTextPart1;
     public Text LoadGameLetterTextPart2;
+
+    [Header("Vanilla translations")]
+    public Text VanillaText;
+    public Text VanillaUnlockedText;
+    public Text VanillaLockedText;
+    public Text NewGameText;
+    public Text LoadGameText;
+    public Text ExitText;
+    public Text AlphaDateText;
+    public Text CreateFarmText;
+    public Text LoadFarmText;
+
+    [Header("Halloween translations")]
+    public Text HalloweenText;
+    public Text HalloweenUnlockedText;
+    public Text HalloweenLockedText;
+    public Text HWNewGameText;
+    public Text HWLoadGameText;
+    public Text HWExitText;
+    public Text HWAlphaDateText;
+    public Text HWCreateFarmText;
+    public Text HWLoadFarmText;
 
     [Header("Extras")]
     public GameObject GameVersions;
 
     void Start()
     {
+        // Special Edition
+        if (PlayerPrefs.GetString("Edition") != null)
+        {
+            Master.GameEdition = PlayerPrefs.GetString("Edition");
+            
+            InitialScreenGameType.transform.Find("Vanilla").gameObject.SetActive(false);
+            LoadScreenGameType.transform.Find("Vanilla").gameObject.SetActive(false);
+            NewScreenGameType.transform.Find("Vanilla").gameObject.SetActive(false);
+            InitialScreenGameType.transform.Find(Master.GameEdition).gameObject.SetActive(true);
+            LoadScreenGameType.transform.Find(Master.GameEdition).gameObject.SetActive(true);
+            NewScreenGameType.transform.Find(Master.GameEdition).gameObject.SetActive(true);
+        }
+
+        if (Master.SpecialEdition)
+        {
+            transform.Find("Initial screen").Find("Special Edition").Find("Unlocked").gameObject.SetActive(true);
+            transform.Find("Initial screen").Find("Special Edition").Find("Locked").gameObject.SetActive(false);
+        }
+
+        // Localization
         Localization.LoadTranslations();
+
+        // Vanilla
+        VanillaText.text = Localization.Translations["Vanilla"];
+        VanillaUnlockedText.text = Localization.Translations["VanillaUnlocked"];
+        VanillaLockedText.text = Localization.Translations["VanillaLocked"];
         NewGameText.text = Localization.Translations["mainMenu_newGame"];
         LoadGameText.text = Localization.Translations["mainMenu_loadGame"];
         ExitText.text = Localization.Translations["mainMenu_exit"];
         AlphaDateText.text = string.Format(Localization.Translations["mainMenu_alphaDate"], 8, 29, 10, 2020); // Update every version?
         CreateFarmText.text = Localization.Translations["mainMenu_createFarm"];
+        LoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
+
+        // Halloween
+        HalloweenText.text = Localization.Translations["Halloween"];
+        HalloweenUnlockedText.text = Localization.Translations["HalloweenUnlocked"];
+        HalloweenLockedText.text = Localization.Translations["HalloweenLocked"];
+        HWNewGameText.text = Localization.Translations["mainMenu_newGame"];
+        HWLoadGameText.text = Localization.Translations["mainMenu_loadGame"];
+        HWExitText.text = Localization.Translations["mainMenu_exit"];
+        HWAlphaDateText.text = string.Format(Localization.Translations["mainMenu_alphaDate"], 8, 29, 10, 2020);
+        HWCreateFarmText.text = Localization.Translations["mainMenu_createFarm"];
+        HWLoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
+
+        // General
         FarmNamePlaceholderText.text = Localization.Translations["mainMenu_farmNamePlaceholder"];
         PlayerNamePlaceholderText.text = Localization.Translations["mainMenu_playerNamePlaceholder"];
         NewGameLetterTextPart1.text = Localization.Translations["mainMenu_newGameLetterTextPart1"];
         NewGameLetterTextPart2.text = Localization.Translations["mainMenu_newGameLetterTextPart2"];
         NewGameLetterTextSign.text = Localization.Translations["mainMenu_newGameLetterTextSign"];
-        LoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
         LoadGameLetterTextPart1.text = Localization.Translations["mainMenu_loadGameLetterTextPart1"];
         LoadGameLetterTextPart2.text = Localization.Translations["mainMenu_loadGameLetterTextPart2"];
     }
@@ -107,6 +164,11 @@ public class MainMenu : MonoBehaviour
 
     public void LoadGame()
     {
+        LoadGameController.SetTrigger("Load");
+    }
+
+    public void LoadGameNow()
+    {        
         string name = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name);
         Master.LoadingGame = true;
         Master.GameName = name;
@@ -137,6 +199,24 @@ public class MainMenu : MonoBehaviour
             transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Farm name").GetComponent<Text>().text = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name) + ",";
             transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Date").GetComponent<Text>().text = SavedGames[savedGamesIndex].LastWriteTime.ToString();
         }
+    }
+
+    public void BuyGame()
+    {
+        Application.OpenURL("https://vivaio.itch.io/game/purchase");
+    }
+
+    public void ChangeEdition(string edition)
+    {
+        InitialScreenGameType.transform.Find(Master.GameEdition).gameObject.SetActive(false);
+        LoadScreenGameType.transform.Find(Master.GameEdition).gameObject.SetActive(false);
+        NewScreenGameType.transform.Find(Master.GameEdition).gameObject.SetActive(false);
+        InitialScreenGameType.transform.Find(edition).gameObject.SetActive(true);
+        LoadScreenGameType.transform.Find(edition).gameObject.SetActive(true);
+        NewScreenGameType.transform.Find(edition).gameObject.SetActive(true);
+
+        PlayerPrefs.SetString("Edition", edition);
+        Master.GameEdition = edition;
     }
 
     public void Exit()

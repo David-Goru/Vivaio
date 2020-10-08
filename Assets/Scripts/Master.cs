@@ -4,6 +4,8 @@ using UnityEngine.UI;
 public class Master : MonoBehaviour
 {
     // General
+    public static bool SpecialEdition = true;
+    public static string GameEdition = "Vanilla";
     public static string GameVersion = "Alpha 8"; // Update every version?
     public static string GameName = "None";
     public static string PlayerName = "Nobody";
