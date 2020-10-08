@@ -9,6 +9,9 @@ using System;
 public class MainMenu : MonoBehaviour
 {
     public Animator CreateGameController;
+    public Animator LoadGameController;
+    public FileInfo[] SavedGames;
+    private int savedGamesIndex = 0;
 
     [Header("Player input")]
     public Text GameName;
@@ -25,6 +28,9 @@ public class MainMenu : MonoBehaviour
     public Text NewGameLetterTextPart1;
     public Text NewGameLetterTextPart2;
     public Text NewGameLetterTextSign;
+    public Text LoadFarmText;
+    public Text LoadGameLetterTextPart1;
+    public Text LoadGameLetterTextPart2;
 
     [Header("Extras")]
     public GameObject GameVersions;
@@ -42,6 +48,9 @@ public class MainMenu : MonoBehaviour
         NewGameLetterTextPart1.text = Localization.Translations["mainMenu_newGameLetterTextPart1"];
         NewGameLetterTextPart2.text = Localization.Translations["mainMenu_newGameLetterTextPart2"];
         NewGameLetterTextSign.text = Localization.Translations["mainMenu_newGameLetterTextSign"];
+        LoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
+        LoadGameLetterTextPart1.text = Localization.Translations["mainMenu_loadGameLetterTextPart1"];
+        LoadGameLetterTextPart2.text = Localization.Translations["mainMenu_loadGameLetterTextPart2"];
     }
 
     public void New()
@@ -55,20 +64,25 @@ public class MainMenu : MonoBehaviour
         transform.Find("Initial screen").gameObject.SetActive(false);
         transform.Find("Load screen").gameObject.SetActive(true);
 
-        Transform content = transform.Find("Load screen").Find("Games").Find("Viewport").Find("Content");
-
-        foreach(Transform t in content)
-        {
-            Destroy(t.gameObject);
-        }
-
         DirectoryInfo saves = new DirectoryInfo(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "/Vivaio/Saves");
-        foreach (FileInfo f in saves.GetFiles())
+        SavedGames = saves.GetFiles();
+        savedGamesIndex = 0;
+
+        if (SavedGames.Length == 0)
         {
-            GameObject b = Instantiate(Resources.Load<GameObject>("Game button"), transform.position, transform.rotation);
-            b.transform.Find("Text").GetComponent<Text>().text = Path.GetFileNameWithoutExtension(f.Name);
-            b.GetComponent<Button>().onClick.AddListener(() => LoadGame(Path.GetFileNameWithoutExtension(f.Name)));
-            b.transform.SetParent(content);
+            Transform t = transform.Find("Load screen").Find("Start animation").Find("Loaded stuff");
+            t.Find("Previous").gameObject.SetActive(false);
+            t.Find("Next").gameObject.SetActive(false);
+            t.Find("First part").gameObject.SetActive(false);
+            t.Find("Second part").gameObject.SetActive(false);
+            t.Find("Load").gameObject.SetActive(false);
+            t.Find("Date").gameObject.SetActive(false);
+            t.Find("Farm name").GetComponent<Text>().text = "No farms found";
+        }
+        else
+        {
+            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Farm name").GetComponent<Text>().text = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name) + ",";
+            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Date").GetComponent<Text>().text = SavedGames[savedGamesIndex].LastWriteTime.ToString();
         }
     }
 
@@ -91,11 +105,38 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void LoadGame(string name)
+    public void LoadGame()
     {
+        string name = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name);
         Master.LoadingGame = true;
         Master.GameName = name;
         SceneManager.LoadScene("Game");
+    }
+
+    public void ChangeSaveGame(bool next)
+    {
+        if (next) // To the left
+        {            
+            LoadGameController.SetTrigger("Next");
+            
+            savedGamesIndex--;
+            if (savedGamesIndex == -1)
+                savedGamesIndex = SavedGames.Length - 1;
+
+            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Farm name").GetComponent<Text>().text = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name) + ",";
+            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Date").GetComponent<Text>().text = SavedGames[savedGamesIndex].LastWriteTime.ToString();
+        }
+        else // To the right
+        {
+            LoadGameController.SetTrigger("Previous");
+
+            savedGamesIndex++;
+            if (savedGamesIndex == SavedGames.Length)
+                savedGamesIndex = 0;
+
+            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Farm name").GetComponent<Text>().text = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name) + ",";
+            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Date").GetComponent<Text>().text = SavedGames[savedGamesIndex].LastWriteTime.ToString();
+        }
     }
 
     public void Exit()
