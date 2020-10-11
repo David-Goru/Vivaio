@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -95,15 +96,31 @@ public class PlayerControls : MonoBehaviour
             GameObject floor = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Floor")).gameObject;
             if (Inventory.Data.ObjectInHand is Shovel)
             {
-                Transform tParent;
-                if (floor.transform.Find("Vertices 0") != null) tParent = floor.transform.Find("Vertices 0");
-                else tParent = floor.transform.Find("Vertices");
+                Transform tParent = floor.transform.Find("Vertices");
+                List<GameObject> floorsToUpdate = null;
+                string floorName = "None";
                 foreach (Transform t in tParent)
                 {                            
                     Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
-                    if (v != null) v.Floor = "None";
+                    if (v != null)
+                    {
+                        if (v.Floor == "Composite tile")
+                        {
+                            floorsToUpdate = Floor.GetCollidingFloors(floor);
+                            floorName = v.Floor;
+                        }
+                        v.Floor = "None";
+                    }
                 }
                 Destroy(floor);
+
+                if (floorName != "None")
+                {
+                    foreach (GameObject f in floorsToUpdate)
+                    {
+                        Floor.UpdateFloorSprite(f, floorName);
+                    }
+                }
             }
         }
         else if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Plowed soil")))
@@ -172,16 +189,7 @@ public class PlayerControls : MonoBehaviour
         if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
         {
             GameObject objectClicked = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")).gameObject;
-            if (Vector2.Distance(transform.position, objectClicked.transform.position) <= ObjectRange)
-            {
-                if (objectClicked.CompareTag("Cash register")) CashRegister.OpenCashLog();
-                else
-                {
-                    IObject o = ObjectsHandler.Data.Objects.Find(x => x.Model == objectClicked);
-                    if (o is Gate || o is Wall || o is Lamp || o is WaterPump) o.ActionTwo();
-                    else ObjectUI.OpenUI(o);
-                }
-            }
+            if (Vector2.Distance(transform.position, objectClicked.transform.position) <= ObjectRange) ObjectsHandler.Data.Objects.Find(x => x.Model == objectClicked).ActionTwo();
         }
     }
 
@@ -191,7 +199,7 @@ public class PlayerControls : MonoBehaviour
         if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
         {
             GameObject objectClicked = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")).gameObject;
-            if (Vector2.Distance(transform.position, objectClicked.transform.position) <= ObjectRange) ObjectsHandler.Data.Objects.Find(x => x.Model == objectClicked).ActionTwo();
+            if (Vector2.Distance(transform.position, objectClicked.transform.position) <= ObjectRange) ObjectsHandler.Data.Objects.Find(x => x.Model == objectClicked).ActionTwoHard();
         }  
     }
 

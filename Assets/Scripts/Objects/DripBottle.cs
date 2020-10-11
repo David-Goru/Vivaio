@@ -12,4 +12,9 @@ public class DripBottle : IObject
     {
         WaterUnits = waterUnits;
     }
+
+    public override void LoadObjectCustom()
+    {
+        Model.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/Drip bottle/" + WaterUnits);
+    }
 }

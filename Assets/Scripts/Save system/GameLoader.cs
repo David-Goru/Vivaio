@@ -15,6 +15,8 @@ public class GameLoader : MonoBehaviour
 
     void Start()
     {
+        if (Localization.Translations == null) Localization.LoadTranslations();
+
         Log = new List<string>();
         loadingText = GameObject.Find("UI").transform.Find("Load screen").Find("Text").gameObject.GetComponent<Text>();
 
@@ -86,7 +88,7 @@ public class GameLoader : MonoBehaviour
 
         // Cash register system
         loadingText.text = string.Format("Creating {0}...", "cash register data");
-        yield return new WaitUntil(() => CashRegister.New());
+        yield return new WaitUntil(() => CashRegisterHandler.New());
         yield return new WaitForSeconds(0.05f);
 
         // Delivery system
@@ -195,7 +197,7 @@ public class GameLoader : MonoBehaviour
 
         // Cash register system
         loadingText.text = string.Format("Loading {0}...", "cash register data");
-        yield return new WaitUntil(() => CashRegister.Load(saveFile.CashRegisterData));
+        yield return new WaitUntil(() => CashRegisterHandler.Load(saveFile.CashRegisterData));
         yield return new WaitForSeconds(0.05f);
 
         // Delivery system

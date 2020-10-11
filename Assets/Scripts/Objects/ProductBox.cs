@@ -92,10 +92,27 @@ public class ProductBox : BuildableObject
     public override void ActionOne()
     {
         AddProduct();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.ProductBoxUI.activeSelf) ObjectUI.OpenUI(this);
+    }
+
+    public override void ActionTwoHard()
+    {
+        TakeProduct();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.ProductBoxUI.activeSelf) ObjectUI.OpenUI(this);
     }
 
     public override void ActionTwo()
     {
-        TakeProduct();
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        if (Amount > 0)
+        {
+            Item = Products.ProductsList.Find(x => x.Name == ItemName);
+            Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Big display/" + Item.Name);
+            Model.transform.Find("Product").gameObject.SetActive(true);
+        }
     }
 }

@@ -17,10 +17,11 @@ public class Localization : MonoBehaviour
 
         // Load translations from files depending on the Master.Language.
         // Those are for en_EN (as a test):
+
+        // Main menu
         Translations.Add("mainMenu_newGame", "NEW GAME");
         Translations.Add("mainMenu_loadGame", "LOAD GAME");
         Translations.Add("mainMenu_exit", "EXIT");
-        Translations.Add("mainMenu_alphaDate", "Alpha {0} - {1}/{2}/{3}");
         Translations.Add("mainMenu_createFarm", "CREATE FARM");
         Translations.Add("mainMenu_farmNamePlaceholder", "Farm name");
         Translations.Add("mainMenu_playerNamePlaceholder", "Player name");
@@ -36,5 +37,10 @@ public class Localization : MonoBehaviour
         Translations.Add("Halloween", "Halloween");
         Translations.Add("HalloweenUnlocked", "Halloween Edition");
         Translations.Add("HalloweenLocked", "Click to buy");
+
+        // General
+        Translations.Add("Day", "Day {0}");
+
+        // Objects
     }
 }

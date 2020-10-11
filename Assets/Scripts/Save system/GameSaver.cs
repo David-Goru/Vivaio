@@ -45,7 +45,7 @@ public class GameSaver : MonoBehaviour
         save.ObjectsData = ObjectsHandler.Data;
 
         // Cash register system
-        save.CashRegisterData = CashRegister.Data;
+        save.CashRegisterData = CashRegisterHandler.Data;
 
         // Delivery system
         save.DeliverySystemData = DeliverySystem.Data;

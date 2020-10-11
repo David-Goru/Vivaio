@@ -14,6 +14,7 @@ public class TimeSystem : MonoBehaviour
     public static GameObject Clock;
     public static GameObject Bed;
     public GameObject ClockHand;
+    public GameObject DayDisplay;
 
     // Sprites
     public Sprite HouseDay;
@@ -45,6 +46,7 @@ public class TimeSystem : MonoBehaviour
             Background.GetComponent<SpriteRenderer>().color = GameObject.Find("Farm handler").GetComponent<TimeSystem>().EarlyBackground;
             Clock.GetComponent<Image>().sprite = GameObject.Find("Farm handler").GetComponent<TimeSystem>().ClockNight;
             House.GetComponent<SpriteRenderer>().sprite = GameObject.Find("Farm handler").GetComponent<TimeSystem>().HouseNight;
+            GameObject.Find("Farm handler").GetComponent<TimeSystem>().DayDisplay.GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
 
             Master.Player.transform.position = Data.SleepPosition;
 
@@ -66,6 +68,7 @@ public class TimeSystem : MonoBehaviour
         Background = GameObject.Find("Background");
         Clock = GameObject.FindGameObjectWithTag("Clock");
         House = GameObject.FindGameObjectWithTag("House");
+        GameObject.Find("Farm handler").GetComponent<TimeSystem>().DayDisplay.GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
 
         MusicHandler.StartTransition(SongType.Morning);
 
@@ -201,6 +204,7 @@ public class TimeSystem : MonoBehaviour
             p.NewDay();
         }
         DeliverySystem.UpdatePackages();
+        DayDisplay.GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
 
         GameSaver.SaveGame();
     }

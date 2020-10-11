@@ -201,7 +201,7 @@ public class Farmazon : MonoBehaviour
                         else box.Items[slotCounter] = new BuildableObject(fi.Name, 1, 1);
                         break;
                     case "Floor":
-                        if (fi.Name == "Composite tile" || fi.Name == "Wood tile") box.Items[slotCounter] = new Floor(fi.Name, 10, 10, true);
+                        if (fi.Name == "Composite tile" || fi.Name == "Wood tile") box.Items[slotCounter] = new Floor(fi.Name, 10, 10);
                         else box.Items[slotCounter] = new Floor(fi.Name, 10, 10);
                         break;
                     case "Farm":

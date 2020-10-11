@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class CashRegister : MonoBehaviour
+public class CashRegisterHandler : MonoBehaviour
 {
     public static CashRegisterData Data;
     public static GameObject CashRegisterModel;
@@ -19,7 +19,7 @@ public class CashRegister : MonoBehaviour
         }
         catch (Exception e)
         {
-            GameLoader.Log.Add(string.Format("Failed loading {0}. Error: {1}", "CashRegister", e));
+            GameLoader.Log.Add(string.Format("Failed loading {0}. Error: {1}", "CashRegisterHandler", e));
         }
 
         return true;
@@ -82,6 +82,6 @@ public class CashRegister : MonoBehaviour
         }
 
         ui.transform.Find("Cash register").gameObject.SetActive(true);
-        CashRegisterModel.GetComponent<CashRegister>().enabled = true;
+        CashRegisterModel.GetComponent<CashRegisterHandler>().enabled = true;
     }
 }

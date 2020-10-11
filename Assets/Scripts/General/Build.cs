@@ -18,22 +18,7 @@ public class Build : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && buildable && !EventSystem.current.IsPointerOverGameObject()) placeObject();  // Build/place object
 
-        if (Input.GetKeyDown(KeyCode.R) && boInfo != null) updateRotation();
-    }
-
-    void updateRotation()
-    {
-        if (physicalObject == null || !boInfo.CanRot) return;
-        
-        boInfo.Rotation++;
-        ObjectInfo oi = Resources.Load<ObjectInfo>("Objects info/" + boInfo.Name);
-        if (boInfo.Rotation == oi.RotPositions) boInfo.Rotation = 0;
-        
-        physicalObject.GetComponent<BoxCollider2D>().offset = oi.CollOffset[boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)];
-        physicalObject.GetComponent<BoxCollider2D>().size = oi.CollSize[boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)];
-
-        if (boInfo is Gate) physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = oi.Sprites[boInfo.Rotation + (((Gate)boInfo).Opened ? 4 : 0)];
-        else physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = oi.Sprites[boInfo.Rotation];
+        if (Input.GetKeyDown(KeyCode.R) && boInfo != null && physicalObject != null) boInfo.RotateObject();
     }
 
     void checkPosition(Vector2 pos)
@@ -43,8 +28,6 @@ public class Build : MonoBehaviour
         {
             physicalObject = Instantiate(Resources.Load<GameObject>("Objects/" + Inventory.Data.ObjectInHand.Name), pos, Quaternion.Euler(0, 0, 0));
             boInfo.Model = physicalObject;
-            if (boInfo is Gate) physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + boInfo.Name).Sprites[boInfo.Rotation + (((Gate)boInfo).Opened ? 4 : 0)];
-            else physicalObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + boInfo.Name).Sprites[boInfo.Rotation];
         }
 
         // Check if object can be built at position
@@ -57,8 +40,7 @@ public class Build : MonoBehaviour
             else
             {                
                 Transform tParent;
-                if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + boInfo.Rotation);
-                else tParent = physicalObject.transform.Find("Vertices");
+                tParent = physicalObject.transform.Find("Vertices");
                 foreach (Transform t in tParent)
                 {
                     Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
@@ -72,13 +54,18 @@ public class Build : MonoBehaviour
                 }
             }
 
-            if (buildable) physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.green;
-            else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            if (boInfo is Wall) ((Wall)boInfo).CheckRotation();
+            else if (boInfo.Name == "Composite tile") ((Floor)boInfo).CheckRotation();
+
+            if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = buildable ? Color.green : Color.red;
+            else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = buildable ? Color.green : Color.red;
         }
         else
         {
             buildable = false;
-            physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            
+            if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         }
         
         // Update position values
@@ -88,14 +75,14 @@ public class Build : MonoBehaviour
     void placeObject()
     {
         // Update color
-        physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-        
-        if (physicalObject.transform.Find("Obstacle 0") != null) physicalObject.transform.Find("Obstacle " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0))).gameObject.SetActive(true);
-        else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(true);
+        if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
 
+        if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").Find("Obstacle").gameObject.SetActive(true);
+        else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(true);
+        
         Transform tParent;
-        if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)));
-        else tParent = physicalObject.transform.Find("Vertices");
+        tParent = physicalObject.transform.Find("Vertices");        
         foreach (Transform t in tParent)
         {                            
             Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
@@ -104,7 +91,7 @@ public class Build : MonoBehaviour
                 if (boInfo is Floor)
                 {
                     v.Floor = boInfo.Name;
-                    v.Rot = boInfo.Rotation;
+                    v.FloorType = ((Floor)boInfo).SpriteType;
                 }
                 else v.State = VertexState.Occuppied;
             }
@@ -117,6 +104,8 @@ public class Build : MonoBehaviour
 
             if (boInfo is Floor)
             {
+                if (boInfo.Name == "Composite tile") ((Floor)boInfo).CheckRotation(true);
+                
                 boInfo.Stack--;
                 if (boInfo.Stack > 0)
                 {
@@ -171,9 +160,9 @@ public class Build : MonoBehaviour
                     Wall fence = new Wall("Fence", 1, 10);
                     fence.Model = physicalObject;
                     fence.Placed = true;
-                    fence.Rotation = boInfo.Rotation;
                     ObjectsHandler.Data.Objects.Add(fence);
                     fence.WorldPosition = physicalObject.transform.position;
+                    fence.CheckRotation(true);
 
                     boInfo.Stack--;
                     if (boInfo.Stack > 0)
@@ -202,12 +191,23 @@ public class Build : MonoBehaviour
             }
             else if (boInfo.Name == "Cash register")
             {                             
-                CashRegister.CustomerPos = new List<Vector2>();
+                CashRegisterHandler.CustomerPos = new List<Vector2>();
                 foreach (Transform t in physicalObject.transform.Find("Customer position"))
                 {
-                    CashRegister.CustomerPos.Add(t.position);
+                    CashRegisterHandler.CustomerPos.Add(t.position);
                 }
-            }            
+            }
+            else if (boInfo is Wall)
+            {
+                Wall fence = (Wall)boInfo;
+                List<Wall> wallsToCheck = fence.GetCollidingWalls();
+                fence.WorldPosition = physicalObject.transform.position;
+                fence.CheckRotation(true);
+                foreach (Wall w in wallsToCheck)
+                {
+                    w.CheckRotation();
+                }
+            }
         }
 
         if (boInfo != null)
@@ -229,12 +229,11 @@ public class Build : MonoBehaviour
         IObject bo = ObjectsHandler.Data.Objects.Find(x => x.Model == objectToMove);
         boInfo = (BuildableObject)bo;
 
-        if (physicalObject.transform.Find("Obstacle 0") != null) physicalObject.transform.Find("Obstacle " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0))).gameObject.SetActive(false);
+        if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").Find("Obstacle").gameObject.SetActive(false);
         else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(false);
         
         Transform tParent;
-        if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)));
-        else tParent = physicalObject.transform.Find("Vertices");
+        tParent = physicalObject.transform.Find("Vertices");        
         foreach (Transform t in tParent)
         {                            
             Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
@@ -250,6 +249,7 @@ public class Build : MonoBehaviour
     {
         physicalObject = objectToBuild;
         boInfo = bo;
+        boInfo.Model = objectToBuild;
         isMoving = false;
         this.enabled = true;
         GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(true);
@@ -262,17 +262,16 @@ public class Build : MonoBehaviour
 
         if (isMoving)
         {
-            physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
             physicalObject.GetComponent<BoxCollider2D>().enabled = true;
-            
-            if (physicalObject.transform.Find("Obstacle 0") != null) physicalObject.transform.Find("Obstacle " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0))).gameObject.SetActive(true);  
-            else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(true);  
-
             physicalObject.transform.position = savedPos;  
 
-            Transform tParent;
-            if (boInfo.CanRot && physicalObject.transform.Find("Vertices " + boInfo.Rotation)) tParent = physicalObject.transform.Find("Vertices " + (boInfo.Rotation + (boInfo is Gate ? (((Gate)boInfo).Opened ? 4 : 0) : 0)));
-            else tParent = physicalObject.transform.Find("Vertices");
+            if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").Find("Obstacle").gameObject.SetActive(true);
+            else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(true);
+
+            Transform tParent;  
+            tParent = physicalObject.transform.Find("Vertices");            
             foreach (Transform t in tParent)
             {                            
                 Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));

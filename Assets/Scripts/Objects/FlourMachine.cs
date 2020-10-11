@@ -125,10 +125,31 @@ public class FlourMachine : BuildableObject
     public override void ActionOne()
     {
         AddWheat();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.FlourMachineUI.activeSelf) ObjectUI.OpenUI(this);
+    }
+
+    public override void ActionTwoHard()
+    {
+        if (!TakeFlour()) TakeCompost();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.FlourMachineUI.activeSelf) ObjectUI.OpenUI(this);
     }
 
     public override void ActionTwo()
     {
-        if (!TakeFlour()) TakeCompost();
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        switch (State)
+        {
+            case MachineState.WORKING:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Flour machine/Working");
+                break;
+            case MachineState.FINISHED:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Flour machine/Finished");
+                Model.transform.Find("Warning").gameObject.SetActive(true);
+                break;
+        }
     }
 }

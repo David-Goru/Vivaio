@@ -16,7 +16,7 @@ public class Vertex
     [SerializeField]
     public string Floor;
     [SerializeField]
-    public int Rot;
+    public string FloorType;
 
     public Vertex(Vector2 pos)
     {
@@ -25,7 +25,7 @@ public class Vertex
         Conns = new List<int>();
         State = VertexState.Available;
         Floor = "None";
-        Rot = 0;
+        FloorType = "None";
     }
 
     public Vertex(Vector2 pos, VertexState state)
@@ -35,7 +35,7 @@ public class Vertex
         Conns = new List<int>();
         State = state;
         Floor = "None";
-        Rot = 0;
+        FloorType = "None";
     }
 
     public void UpdateCons()

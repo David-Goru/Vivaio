@@ -18,4 +18,14 @@ public class Sign : BuildableObject
         Icon = newIcon;
         Model.transform.Find("Icon").gameObject.GetComponent<SpriteRenderer>().sprite = IconsHandler.Icons.Find(x => x.Name == newIcon).Sprite;
     }
+
+    public override void ActionTwo()
+    {
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        UpdateIcon(Icon);
+    }
 }

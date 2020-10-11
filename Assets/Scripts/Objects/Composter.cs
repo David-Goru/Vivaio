@@ -78,10 +78,31 @@ public class Composter : BuildableObject
     public override void ActionOne()
     {
         AddCompost();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.ComposterUI.activeSelf) ObjectUI.OpenUI(this);
+    }
+
+    public override void ActionTwoHard()
+    {
+        TakeFertilizer();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.ComposterUI.activeSelf) ObjectUI.OpenUI(this);
     }
 
     public override void ActionTwo()
     {
-        TakeFertilizer();
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        switch (State)
+        {
+            case MachineState.WORKING:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Composter/Working");
+                break;
+            case MachineState.FINISHED:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Composter/Finished");
+                Model.transform.Find("Warning").gameObject.SetActive(true);
+                break;
+        }
     }
 }

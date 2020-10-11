@@ -104,10 +104,31 @@ public class DeseedingMachine : BuildableObject
     public override void ActionOne()
     {
         AddSeed();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.DeseedingMachineUI.activeSelf) ObjectUI.OpenUI(this);
+    }
+
+    public override void ActionTwoHard()
+    {
+        if (!TakeSeeds()) TakeCompost();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.DeseedingMachineUI.activeSelf) ObjectUI.OpenUI(this);
     }
 
     public override void ActionTwo()
     {
-        if (!TakeSeeds()) TakeCompost();
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        switch (State)
+        {
+            case MachineState.WORKING:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Deseeding machine/Working");
+                break;
+            case MachineState.FINISHED:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Deseeding machine/Finished");
+                Model.transform.Find("Warning").gameObject.SetActive(true);
+                break;
+        }
     }
 }

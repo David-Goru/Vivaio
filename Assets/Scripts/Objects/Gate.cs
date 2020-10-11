@@ -8,20 +8,44 @@ public class Gate : BuildableObject
     [SerializeField]
     public bool Opened;
 
-    public Gate(string name) : base(name, 1, 1, true)
+    public Gate(string name) : base(name, 1, 1)
     {
         Opened = false;
     }
 
     public override void ActionTwo()
     {
+        Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject.SetActive(false);
         Opened = !Opened;
-        Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + Name).Sprites[Rotation + (Opened ? 4 : 0)];
-        Model.transform.Find("Obstacle " + Rotation).gameObject.SetActive(!Opened);
-        Model.transform.Find("Obstacle " + (Rotation + 4)).gameObject.SetActive(Opened);
+
+        GameObject gateState = Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject;        
+        gateState.SetActive(true);
         
-        ObjectInfo oi = Resources.Load<ObjectInfo>("Objects info/" + Name);
-        Model.GetComponent<BoxCollider2D>().offset = oi.CollOffset[Rotation + (Opened ? 4 : 0)];
-        Model.GetComponent<BoxCollider2D>().size = oi.CollSize[Rotation + (Opened ? 4 : 0)];
+        Model.GetComponent<BoxCollider2D>().offset = gateState.GetComponent<BoxCollider2D>().offset;
+        Model.GetComponent<BoxCollider2D>().size = gateState.GetComponent<BoxCollider2D>().size;
+    }
+
+    public override void LoadObjectCustom()
+    {
+        Model.transform.Find("Rotation 0").Find("Closed").gameObject.SetActive(false);
+        GameObject gateState = Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject;        
+        gateState.SetActive(true);
+
+        Model.GetComponent<BoxCollider2D>().offset = gateState.GetComponent<BoxCollider2D>().offset;
+        Model.GetComponent<BoxCollider2D>().size = gateState.GetComponent<BoxCollider2D>().size;
+    }
+
+    public override void RotateObject()
+    {
+        Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject.SetActive(false);
+
+        Rotation++;
+        if (Rotation == 4) Rotation = 0;
+
+        GameObject gateState = Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject;        
+        gateState.SetActive(true);
+
+        Model.GetComponent<BoxCollider2D>().offset = gateState.GetComponent<BoxCollider2D>().offset;
+        Model.GetComponent<BoxCollider2D>().size = gateState.GetComponent<BoxCollider2D>().size;
     }
 }

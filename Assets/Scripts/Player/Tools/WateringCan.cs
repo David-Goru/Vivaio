@@ -19,4 +19,9 @@ public class WateringCan : Tool
         if (Remaining > 0) return true;
         return false;
     }
+
+    public override void LoadObjectCustom()
+    {
+        if (Remaining == 0) Model.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
+    }
 }

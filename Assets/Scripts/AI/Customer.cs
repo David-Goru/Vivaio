@@ -114,12 +114,12 @@ public class Customer
 
         if (nextStand == null)
         {
-            path = VertexSystem.Route(body.transform.position, CashRegister.CustomerPos);
+            path = VertexSystem.Route(body.transform.position, CashRegisterHandler.CustomerPos);
             if (path.Count == 0) // Can't reach the cash register
             {
                 if (Trust > 10) Trust--;
-                CashRegister.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
-                MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegister.CashRegisterModel.transform);
+                CashRegisterHandler.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
+                MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegisterHandler.CashRegisterModel.transform);
                 Master.UpdateBalance(expenses);
             }
         }
@@ -134,8 +134,8 @@ public class Customer
             {
                 if (expenses > 0)
                 {
-                    CashRegister.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
-                    MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegister.CashRegisterModel.transform);
+                    CashRegisterHandler.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
+                    MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegisterHandler.CashRegisterModel.transform);
                     if (Trust < 85) Trust++;
                     Master.UpdateBalance(expenses);
                 }
@@ -189,6 +189,7 @@ public class Customer
     {
         AI.ActiveCustomers.Remove(id);
         body.SetActive(false);
+        lastDir = "Idle down";
     }
 
     public void ActivateCustomer()

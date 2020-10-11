@@ -25,7 +25,6 @@ public class SeedBox : BuildableObject
                 Model.transform.Find("Slots").Find("Slot " + pos).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Farm/Seeds box/" + s.Type + " bag");
                 Model.transform.Find("Slots").Find("Slot " + pos).gameObject.SetActive(true);
                 Inventory.RemoveObject();
-
             }
             else if (Seeds[pos].Type == s.Type)
             {
@@ -78,6 +77,58 @@ public class SeedBox : BuildableObject
                 Model.transform.Find("Slots").Find("Slot " + pos).gameObject.SetActive(false);
             }
             Inventory.AddObject(s);
+        }
+    }
+
+    public override void ActionTwoHard()
+    {
+        if (!(Inventory.Data.ObjectInHand is Seed)) return;
+
+        Seed s = (Seed)Inventory.Data.ObjectInHand;
+
+        // First we check the slots with the same seeds
+        for (int i = 0; i < Seeds.Length; i++)
+        {
+            if (Seeds[i] != null && Seeds[i].Type == s.Type)
+            {
+                ClickSlot(i);
+                if (!(Inventory.Data.ObjectInHand is Seed))
+                {
+                    if (ObjectUI.ObjectHandling == this && ObjectUI.SeedBoxUI.activeSelf) ObjectUI.OpenUI(this);
+                    return;
+                }
+            }
+        }
+
+        // Then we check the slots with the different seeds
+        for (int i = 0; i < Seeds.Length; i++)
+        {
+            if (Seeds[i] == null)
+            {
+                ClickSlot(i);
+                if (!(Inventory.Data.ObjectInHand is Seed))
+                {
+                    if (ObjectUI.ObjectHandling == this && ObjectUI.SeedBoxUI.activeSelf) ObjectUI.OpenUI(this);
+                    return;
+                }
+            }
+        }
+    }
+
+    public override void ActionTwo()
+    {
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        for (int i = 0; i < Seeds.Length; i++)
+        {
+            if (Seeds[i] != null) 
+            {
+                Model.transform.Find("Slots").Find("Slot " + i).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Farm/Seeds box/" + Seeds[i].Type + " bag");
+                Model.transform.Find("Slots").Find("Slot " + i).gameObject.SetActive(true);
+            }
         }
     }
 }

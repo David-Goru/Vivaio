@@ -56,6 +56,10 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        Master.GameVersion = GameObject.Find("Version Handler").GetComponent<VersionHandler>().GameVersion;
+        Master.VersionDate = GameObject.Find("Version Handler").GetComponent<VersionHandler>().VersionDate;
+        Master.SpecialEdition = GameObject.Find("Version Handler").GetComponent<VersionHandler>().SpecialEdition;
+
         // Special Edition
         if (PlayerPrefs.GetString("Edition") != null)
         {
@@ -85,7 +89,7 @@ public class MainMenu : MonoBehaviour
         NewGameText.text = Localization.Translations["mainMenu_newGame"];
         LoadGameText.text = Localization.Translations["mainMenu_loadGame"];
         ExitText.text = Localization.Translations["mainMenu_exit"];
-        AlphaDateText.text = string.Format(Localization.Translations["mainMenu_alphaDate"], 8, 29, 10, 2020); // Update every version?
+        AlphaDateText.text = string.Format(Master.GameVersion + " - " + Master.VersionDate);
         CreateFarmText.text = Localization.Translations["mainMenu_createFarm"];
         LoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
 
@@ -96,7 +100,7 @@ public class MainMenu : MonoBehaviour
         HWNewGameText.text = Localization.Translations["mainMenu_newGame"];
         HWLoadGameText.text = Localization.Translations["mainMenu_loadGame"];
         HWExitText.text = Localization.Translations["mainMenu_exit"];
-        HWAlphaDateText.text = string.Format(Localization.Translations["mainMenu_alphaDate"], 8, 29, 10, 2020);
+        HWAlphaDateText.text = string.Format(Master.GameVersion + " - " + Master.VersionDate);
         HWCreateFarmText.text = Localization.Translations["mainMenu_createFarm"];
         HWLoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
 

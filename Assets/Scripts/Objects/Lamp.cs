@@ -16,6 +16,11 @@ public class Lamp : BuildableObject
     public override void ActionTwo()
     {
         On = !On;
-        Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + Name).Sprites[On ? 1 : 0];
+        Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Model.transform.Find(On ? "On" : "Off").GetComponent<SpriteRenderer>().sprite;
+    }
+
+    public override void LoadObjectCustom()
+    {
+        Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Model.transform.Find(On ? "On" : "Off").GetComponent<SpriteRenderer>().sprite;
     }
 }

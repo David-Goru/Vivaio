@@ -120,10 +120,31 @@ public class BreadMachine : BuildableObject
     {
         AddFlour();
         AddWater();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.BreadMachineUI.activeSelf) ObjectUI.OpenUI(this);
+    }
+
+    public override void ActionTwoHard()
+    {
+        TakeBreadDough();
+        if (ObjectUI.ObjectHandling == this && ObjectUI.BreadMachineUI.activeSelf) ObjectUI.OpenUI(this);
     }
 
     public override void ActionTwo()
     {
-        TakeBreadDough();
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        switch (State)
+        {
+            case MachineState.WORKING:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Bread machine/Working");
+                break;
+            case MachineState.FINISHED:
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Bread machine/Finished");
+                Model.transform.Find("Warning").gameObject.SetActive(true);
+                break;
+        }
     }
 }

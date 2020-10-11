@@ -1,16 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bed : MonoBehaviour
+[System.Serializable]
+public class Bed : BuildableObject
 {
-    public void OnTriggerEnter2D()
-    {
-        if (!TimeSystem.Data.Sleeping) GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(true);
-    }
+    public Bed() : base("Bed", 1, 1) {}
 
-    public void OnTriggerExit2D()
+    public override void LoadObjectCustom()
     {        
-        GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(false);
+        TimeSystem.Bed = Model;
+        TimeSystem.Sleep();
     }
 }

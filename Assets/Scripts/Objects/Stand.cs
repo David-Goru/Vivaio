@@ -179,8 +179,29 @@ public class Stand : BuildableObject
         AddProduct();
     }
 
-    public override void ActionTwo()
+    public override void ActionTwoHard()
     {
         TakeProduct();
+    }
+
+    public override void ActionTwo()
+    {
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        if (Amount > 0)
+        {
+            Item = Products.ProductsList.Find(x => x.Name == ItemName);
+            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/" + DisplayType + "/" + Item.Name);
+            Model.transform.Find("Display").gameObject.SetActive(true);
+        }                        
+
+        CustomerPos = new List<Vector2>();
+        foreach (Transform t in Model.transform.Find("Customer position"))
+        {
+            CustomerPos.Add(t.position);
+        }
     }
 }

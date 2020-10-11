@@ -46,4 +46,12 @@ public class WaterPump : BuildableObject
             }
         }
     }
+
+    public override void LoadObjectCustom()
+    {        
+        foreach (PlowedSoil p in Farm.PlowedSoils)
+        {
+            p.CheckDripIrrigationWarning(false);
+        }
+    }
 }

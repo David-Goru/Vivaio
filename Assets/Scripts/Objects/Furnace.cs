@@ -88,13 +88,37 @@ public class Furnace : BuildableObject
         if (State == MachineState.AVAILABLE)
         {
             AddProduct();
-
             if (Amount == MaxAmount) TurnOn();
+            if (ObjectUI.ObjectHandling == this && ObjectUI.FurnaceUI.activeSelf) ObjectUI.OpenUI(this);
+        }
+    }
+
+    public override void ActionTwoHard()
+    {
+        if (Amount > 0 && State == MachineState.FINISHED)
+        {
+            TakeProduct();
+            if (ObjectUI.ObjectHandling == this && ObjectUI.FurnaceUI.activeSelf) ObjectUI.OpenUI(this);
         }
     }
 
     public override void ActionTwo()
     {
-        if (Amount > 0 && State == MachineState.FINISHED) TakeProduct();
+        ObjectUI.OpenUI(this);
+    }
+
+    public override void LoadObjectCustom()
+    {
+        switch (State)
+        {
+            case MachineState.WORKING:
+                Model.transform.Find("Sprite").gameObject.SetActive(false);
+                Model.transform.Find("Working").gameObject.SetActive(true);
+                Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Deseeding machine/Working");
+                break;
+            case MachineState.FINISHED:
+                Model.transform.Find("Warning").gameObject.SetActive(true);
+                break;
+        }
     }
 }

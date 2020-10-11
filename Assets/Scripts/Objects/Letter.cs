@@ -22,4 +22,9 @@ public class Letter : IObject
         Signature = signature;
         Read = false;
     }
+
+    public override void LoadObjectCustom()
+    {
+        Model.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/" + (Read ? "Open" : "Closed") + " letter");
+    }
 }

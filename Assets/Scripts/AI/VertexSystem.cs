@@ -19,7 +19,9 @@ public class VertexSystem : MonoBehaviour
                 {
                     GameObject floor = Instantiate(Resources.Load<GameObject>("Objects/" + v.Floor), v.Pos, Quaternion.Euler(0, 0, 0));
                     floor.GetComponent<BoxCollider2D>().enabled = true;
-                    floor.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<ObjectInfo>("Objects info/" + v.Floor).Sprites[v.Rot];
+
+                    if (v.Floor == "Composite tile")
+                        floor.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/" + v.Floor + "/" + v.FloorType);
                 }
             }
         }

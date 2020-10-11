@@ -1,7 +1,7 @@
 ﻿[System.Serializable]
 public class BuildableObject : IObject
 {
-    public BuildableObject(string name, int stack, int maxStack, bool canRot = false) : base(name, stack, maxStack, canRot)
+    public BuildableObject(string name, int stack, int maxStack) : base(name, stack, maxStack)
     { 
         Name = name;
     }

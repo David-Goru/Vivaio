@@ -30,11 +30,8 @@ public class Box : BuildableObject
     {
         GameObject storageUI = GameObject.Find("UI").transform.Find("Storage").gameObject;
 
-        if (Inventory.Data.ObjectInHand == null)
+        if (Inventory.AddObject(Items[itemID]))
         {
-            Inventory.Data.ObjectInHand = Items[itemID];
-            Inventory.ChangeObject();            
-            
             Items[itemID] = null;
 
             bool hasItems = false;
@@ -110,5 +107,10 @@ public class Box : BuildableObject
             if (v != null) v.State = VertexState.Available;
         }
         MonoBehaviour.Destroy(Model);
+    }
+
+    public override void ActionTwo()
+    {
+        ObjectUI.OpenUI(this);
     }
 }
