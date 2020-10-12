@@ -8,7 +8,7 @@ public class Gate : BuildableObject
     [SerializeField]
     public bool Opened;
 
-    public Gate(string name) : base(name, 1, 1)
+    public Gate(string name, string translationKey) : base(name, 1, 1, translationKey)
     {
         Opened = false;
     }

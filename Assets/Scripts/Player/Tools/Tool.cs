@@ -8,7 +8,7 @@ public class Tool : IObject
     [SerializeField]
     public bool OnStand;
 
-    public Tool() : base("Tool", 1, 1) {}
+    public Tool(string translationKey) : base("Tool", 1, 1, translationKey) {}
 
     public void ChangeVisual()
     {

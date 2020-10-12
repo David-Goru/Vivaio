@@ -22,7 +22,7 @@ public class Stand : BuildableObject
     [SerializeField]
     public int MaxAmount;
 
-    public Stand(int amount, int maxAmount, string name, string displayType) : base(name, 1, 1)
+    public Stand(int amount, int maxAmount, string name, string displayType, string translationKey) : base(name, 1, 1, translationKey)
     {
         ItemName = "None";
         Amount = amount;
@@ -117,7 +117,7 @@ public class Stand : BuildableObject
     {
         if (Item.Name == "Bread")
         {
-            if (Inventory.AddObject(new IObject("Bread", Amount, 10)))
+            if (Inventory.AddObject(new IObject("Bread", Amount, 10, "Bread")))
             {
                 Model.transform.Find("Display").gameObject.SetActive(false);
                 Item = null;

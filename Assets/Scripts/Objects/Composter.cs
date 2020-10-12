@@ -13,7 +13,7 @@ public class Composter : BuildableObject
     [SerializeField]
     public int Amount;
 
-    public Composter() : base("Composter", 1, 1)
+    public Composter(string translationKey) : base("Composter", 1, 1, translationKey)
     {
         State = MachineState.AVAILABLE;
         MaxAmount = 10;
@@ -57,7 +57,7 @@ public class Composter : BuildableObject
     public bool TakeFertilizer()
     {
         if (State != MachineState.FINISHED) return false;
-        if (Inventory.AddObject(new Fertilizer(5, 10)))
+        if (Inventory.AddObject(new Fertilizer(5, 10, "Fertilizer")))
         {
             Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Composter/Available");
             Amount = 0;

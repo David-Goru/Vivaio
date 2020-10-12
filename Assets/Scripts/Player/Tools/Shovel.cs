@@ -5,5 +5,5 @@ using UnityEngine;
 [System.Serializable]
 public class Shovel : Tool
 {
-    
+    public Shovel() : base("Shovel") {}
 }

@@ -7,13 +7,17 @@ public class FarmazonItem
     public string Use;
     public int Price;
     public string Description;
+    public string Category;
+    public string TranslationKey;
 
-    public FarmazonItem(string name, string use, int price, string description)
+    public FarmazonItem(string name, string use, int price, string description, string category, string translationKey)
     {
         Name = name;
         Use = use;
         Price = price;
         Description = description;
+        Category = category;
+        TranslationKey = translationKey;
 
         // Add to Farmazon shop list
         GameObject farmazonButton = MonoBehaviour.Instantiate(Resources.Load<GameObject>("UI/Farmazon item"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));

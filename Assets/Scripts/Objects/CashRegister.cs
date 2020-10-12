@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class CashRegister : BuildableObject
 {
-    public CashRegister() : base("CashRegister", 1, 1) {}
+    public CashRegister(string translationKey) : base("CashRegister", 1, 1, translationKey) {}
 
     public override void LoadObjectCustom()
     {        

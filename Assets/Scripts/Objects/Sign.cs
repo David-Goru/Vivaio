@@ -8,7 +8,7 @@ public class Sign : BuildableObject
     [SerializeField]
     public string Icon;
 
-    public Sign() : base("Sign", 1, 1)
+    public Sign(string translationKey) : base("Sign", 1, 1, translationKey)
     {
         Icon = "None";
     }

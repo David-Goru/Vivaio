@@ -8,7 +8,7 @@ public class Wall : BuildableObject
     [SerializeField]
     public string SpriteType = "None";
 
-    public Wall(string name, int stack, int maxStack) : base(name, stack, maxStack) { }
+    public Wall(string name, int stack, int maxStack, string translationKey) : base(name, stack, maxStack, translationKey) { }
 
     public override void ActionTwo()
     {

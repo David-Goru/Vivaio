@@ -17,12 +17,15 @@ public class IObject
     public GameObject Model;
     [SerializeField]
     public int Rotation;
+    [SerializeField]
+    public string TranslationKey;
 
-    public IObject(string name, int stack, int maxStack)
+    public IObject(string name, int stack, int maxStack, string translationKey)
     {
         Name = name;
         Stack = stack;
         MaxStack = maxStack;
+        TranslationKey = translationKey;
         Placed = false;
         Rotation = 0;
     }

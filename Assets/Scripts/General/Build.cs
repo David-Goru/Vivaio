@@ -157,7 +157,7 @@ public class Build : MonoBehaviour
                     boInfo.Placed = true;
                     break;
                 case "Fence":
-                    Wall fence = new Wall("Fence", 1, 10);
+                    Wall fence = new Wall("Fence", 1, 10, "Fence");
                     fence.Model = physicalObject;
                     fence.Placed = true;
                     ObjectsHandler.Data.Objects.Add(fence);

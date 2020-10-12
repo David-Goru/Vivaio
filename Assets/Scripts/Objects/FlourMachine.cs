@@ -18,7 +18,7 @@ public class FlourMachine : BuildableObject
     [SerializeField]
     public int Compost;
 
-    public FlourMachine() : base("Flour machine", 1, 1)
+    public FlourMachine(string translationKey) : base("Flour machine", 1, 1, translationKey)
     {
         State = MachineState.AVAILABLE;
         MaxAmount = 10;
@@ -66,7 +66,7 @@ public class FlourMachine : BuildableObject
         if (State != MachineState.FINISHED) return false;
         if (HasFlour)
         {
-            if (Inventory.AddObject(new IObject("Flour", 5, 10)))
+            if (Inventory.AddObject(new IObject("Flour", 5, 10, "Flour")))
             {
                 HasFlour = false;
                 if (Compost == 0)

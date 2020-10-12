@@ -76,25 +76,17 @@ public class Inventory : MonoBehaviour
         InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Data.ObjectInHand.Name);
 
         Transform UI = GameObject.Find("UI").transform;
-        InventoryText.text = Data.ObjectInHand.Name;
+        InventoryText.text = Localization.Translations[Data.ObjectInHand.TranslationKey];
         UI.Find("Throw object").gameObject.SetActive(true);
 
-        if (Data.ObjectInHand is Seed)
-        {
-            Seed seed = (Seed)Data.ObjectInHand;
-            InventoryText.text = seed.Name + " (" + seed.Stack + ")";
-        }
-        else if (Data.ObjectInHand is Fertilizer)
-        {
-            Fertilizer fertilizer = (Fertilizer)Data.ObjectInHand;
-            InventoryText.text = "Fertilizer (" + fertilizer.Stack + ")";
-        }
-        else if (Data.ObjectInHand is Tool)
+        if (Data.ObjectInHand.MaxStack > 1) InventoryText.text = Localization.Translations[Data.ObjectInHand.TranslationKey] + " (" + Data.ObjectInHand.Stack + ")";
+
+        if (Data.ObjectInHand is Tool)
         {
             if (Data.ObjectInHand is WateringCan)
             {
                 WateringCan wc = (WateringCan)Data.ObjectInHand;
-                InventoryText.text = wc.Name + " (" + wc.Remaining + "/10)";
+                InventoryText.text = Localization.Translations[wc.TranslationKey] + " (" + wc.Remaining + "/10)";
                 if (wc.Remaining == 0) InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
             }
             else if (Data.ObjectInHand is Basket)
@@ -102,34 +94,26 @@ public class Inventory : MonoBehaviour
                 Basket basket = (Basket)Data.ObjectInHand;
                 if (basket.Product != null)
                 {
-                    InventoryText.text = basket.Name + " (" + basket.Amount + "/20)";
+                    InventoryText.text = Localization.Translations[basket.TranslationKey] + " (" + basket.Amount + "/20)";
                     InventorySlot.transform.Find("Subobject").gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + basket.Product.Name);
                     InventorySlot.transform.Find("Subobject").gameObject.SetActive(true);
                 }
                 else InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
             }
         }
-        else if (Data.ObjectInHand is BuildableObject)
-        {
-            UI.Find("Build button").gameObject.SetActive(true);
-            if (Data.ObjectInHand is Floor || Data.ObjectInHand is Wall) InventoryText.text = Data.ObjectInHand.Name + " (" + ((BuildableObject)Data.ObjectInHand).Stack + ")";
-        }
         else if (Data.ObjectInHand is Letter)
         {
             Letter letter = (Letter)Data.ObjectInHand;
-            InventoryText.text = letter.Type + " letter";
             InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
             UI.Find("Open letter").gameObject.SetActive(true);
         }
         else if (Data.ObjectInHand.Name == "Drip bottle")
         {
-            InventoryText.text = Data.ObjectInHand.Name + " (" + ((DripBottle)Data.ObjectInHand).WaterUnits + "u)";
+            InventoryText.text = Localization.Translations[Data.ObjectInHand.TranslationKey] + " (" + ((DripBottle)Data.ObjectInHand).WaterUnits + "u)";
             InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Drip bottle/" + ((DripBottle)Data.ObjectInHand).WaterUnits);
         }
-        else if (Data.ObjectInHand.MaxStack > 1) // Flour, bread dough...
-        {
-            InventoryText.text = Data.ObjectInHand.Name + "(" + Data.ObjectInHand.Stack + ")";
-        }
+
+        if (Data.ObjectInHand is BuildableObject) UI.Find("Build button").gameObject.SetActive(true);
         
         InventorySlot.SetActive(true);
     }

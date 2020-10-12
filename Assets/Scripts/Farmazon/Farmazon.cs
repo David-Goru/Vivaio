@@ -73,7 +73,7 @@ public class Farmazon : MonoBehaviour
 
         foreach (XmlNode item in items)
         {
-            FarmazonItems.Add(item["Name"].InnerText, new FarmazonItem(item["Name"].InnerText, item["Use"].InnerText, int.Parse(item["Price"].InnerText), item["Description"].InnerText));
+            FarmazonItems.Add(item["Name"].InnerText, new FarmazonItem(item["Name"].InnerText, item["Use"].InnerText, int.Parse(item["Price"].InnerText), item["Description"].InnerText, item["Category"].InnerText, item["TranslationKey"].InnerText));
         }
     }
 
@@ -173,7 +173,7 @@ public class Farmazon : MonoBehaviour
         if (Master.Data.Balance < TotalPrice || CartItems.Count == 0) return;
 
         int slotCounter = 0;
-        Box box = new Box("Delivery box");
+        Box box = new Box("Delivery box", "DeliveryBox");
         DeliverySystem.Data.DeliveryList.Add(box);
 
         foreach (CartItem item in CartItems.ToArray())
@@ -184,42 +184,42 @@ public class Farmazon : MonoBehaviour
                 switch (fi.Use)
                 {
                     case "Build":
-                        if (fi.Name == "Composter") box.Items[slotCounter] = new Composter();
-                        else if (fi.Name == "Product box") box.Items[slotCounter] = new ProductBox(0, 100);
-                        else if (fi.Name == "Shop table") box.Items[slotCounter] = new Stand(0, 50, "Shop table", "Big display");
-                        else if (fi.Name == "Shop box") box.Items[slotCounter] = new Stand(0, 10, "Shop box", "Small display");
-                        else if (fi.Name == "Storage box") box.Items[slotCounter] = new Box("Storage box");
-                        else if (fi.Name == "Seed box") box.Items[slotCounter] = new SeedBox();
-                        else if (fi.Name == "Deseeding machine") box.Items[slotCounter] = new DeseedingMachine();
-                        else if (fi.Name == "Flour machine") box.Items[slotCounter] = new FlourMachine();
-                        else if (fi.Name == "Bread machine") box.Items[slotCounter] = new BreadMachine();
-                        else if (fi.Name == "Furnace") box.Items[slotCounter] = new Furnace();
-                        else if (fi.Name == "Sign") box.Items[slotCounter] = new Sign();
-                        else if (fi.Name == "Fence gate") box.Items[slotCounter] = new Gate("Fence gate");
-                        else if (fi.Name == "Fence") box.Items[slotCounter] = new Wall(fi.Name, 5, 10);
-                        else if (fi.Name == "Water pump") box.Items[slotCounter] = new WaterPump();
-                        else box.Items[slotCounter] = new BuildableObject(fi.Name, 1, 1);
+                        if (fi.Name == "Composter") box.Items[slotCounter] = new Composter(fi.TranslationKey);
+                        else if (fi.Name == "Product box") box.Items[slotCounter] = new ProductBox(0, 100, fi.TranslationKey);
+                        else if (fi.Name == "Shop table") box.Items[slotCounter] = new Stand(0, 50, "Shop table", "Big display", fi.TranslationKey);
+                        else if (fi.Name == "Shop box") box.Items[slotCounter] = new Stand(0, 10, "Shop box", "Small display", fi.TranslationKey);
+                        else if (fi.Name == "Storage box") box.Items[slotCounter] = new Box("Storage box", fi.TranslationKey);
+                        else if (fi.Name == "Seed box") box.Items[slotCounter] = new SeedBox(fi.TranslationKey);
+                        else if (fi.Name == "Deseeding machine") box.Items[slotCounter] = new DeseedingMachine(fi.TranslationKey);
+                        else if (fi.Name == "Flour machine") box.Items[slotCounter] = new FlourMachine(fi.TranslationKey);
+                        else if (fi.Name == "Bread machine") box.Items[slotCounter] = new BreadMachine(fi.TranslationKey);
+                        else if (fi.Name == "Furnace") box.Items[slotCounter] = new Furnace(fi.TranslationKey);
+                        else if (fi.Name == "Sign") box.Items[slotCounter] = new Sign(fi.TranslationKey);
+                        else if (fi.Name == "Fence gate") box.Items[slotCounter] = new Gate("Fence gate", fi.TranslationKey);
+                        else if (fi.Name == "Fence") box.Items[slotCounter] = new Wall(fi.Name, 5, 10, fi.TranslationKey);
+                        else if (fi.Name == "Water pump") box.Items[slotCounter] = new WaterPump(fi.TranslationKey);
+                        else box.Items[slotCounter] = new BuildableObject(fi.Name, 1, 1, fi.TranslationKey);
                         break;
                     case "Floor":
-                        if (fi.Name == "Composite tile" || fi.Name == "Wood tile") box.Items[slotCounter] = new Floor(fi.Name, 10, 10);
-                        else box.Items[slotCounter] = new Floor(fi.Name, 10, 10);
+                        if (fi.Name == "Composite tile" || fi.Name == "Wood tile") box.Items[slotCounter] = new Floor(fi.Name, 10, 10, fi.TranslationKey);
+                        else box.Items[slotCounter] = new Floor(fi.Name, 10, 10, fi.TranslationKey);
                         break;
                     case "Farm":
-                        if (fi.Name == "Drip bottle") box.Items[slotCounter] = new DripBottle(0);
-                        else if (fi.Name == "Drip irrigation kit") box.Items[slotCounter] = new DripIrrigationKit();
-                        else box.Items[slotCounter] = new IObject(fi.Name, 1, 1);
+                        if (fi.Name == "Drip bottle") box.Items[slotCounter] = new DripBottle(0, fi.TranslationKey);
+                        else if (fi.Name == "Drip irrigation kit") box.Items[slotCounter] = new DripIrrigationKit(fi.TranslationKey);
+                        else box.Items[slotCounter] = new IObject(fi.Name, 1, 1, fi.TranslationKey);
                         break;
                     case "Seed":
-                        box.Items[slotCounter] = new Seed(fi.Name, 10, 10);
+                        box.Items[slotCounter] = new Seed(fi.Name, 10, 10, fi.TranslationKey);
                         break;                            
                     case "Fertilizer":
-                        box.Items[slotCounter] = new Fertilizer(10, 10);
+                        box.Items[slotCounter] = new Fertilizer(10, 10, fi.TranslationKey);
                         break;
                 }
 
                 if (slotCounter == 3)
                 {
-                    box = new Box("Delivery box");
+                    box = new Box("Delivery box", fi.TranslationKey);
                     DeliverySystem.Data.DeliveryList.Add(box);
                     slotCounter = 0;
                 }

@@ -16,7 +16,7 @@ public class BreadMachine : BuildableObject
     [SerializeField]
     public int DoughAmount;
 
-    public BreadMachine() : base("Bread machine", 1, 1)
+    public BreadMachine(string translationKey) : base("Bread machine", 1, 1, translationKey)
     {
         State = MachineState.AVAILABLE;
         FlourAmount = 0;
@@ -93,7 +93,7 @@ public class BreadMachine : BuildableObject
         if (State != MachineState.FINISHED) return false;
         if (DoughAmount > 0)
         {
-            if (Inventory.AddObject(new IObject("Bread dough", 5, 10)))
+            if (Inventory.AddObject(new IObject("Bread dough", 5, 10, "BreadDough")))
             {
                 DoughAmount = 0;                
                 Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Bread machine/Available");

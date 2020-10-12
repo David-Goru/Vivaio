@@ -270,6 +270,7 @@ public class PlayerControls : MonoBehaviour
 
         Letter letter = (Letter)Inventory.Data.ObjectInHand;
         letter.Read = true;
+        letter.TranslationKey = "LetterOpen";
         Inventory.ChangeObject();
         letterUI.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + letter.Type);
         letterUI.transform.Find("Title").gameObject.GetComponent<Text>().text = letter.Title;

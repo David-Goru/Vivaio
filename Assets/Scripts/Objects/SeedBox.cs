@@ -8,7 +8,7 @@ public class SeedBox : BuildableObject
     [SerializeField]
     public Seed[] Seeds;
 
-    public SeedBox() : base("Seed box", 1, 1)
+    public SeedBox(string translationKey) : base("Seed box", 1, 1, translationKey)
     {
         Seeds = new Seed[8];
     }
@@ -68,11 +68,11 @@ public class SeedBox : BuildableObject
             if (Seeds[pos].Stack > 10)
             {
                 Seeds[pos].Stack -= 10;
-                s = new Seed(Seeds[pos].Type, 10, 10);
+                s = new Seed(Seeds[pos].Type, 10, 10, Seeds[pos].Type + "Seeds");
             }
             else
             {
-                s = new Seed(Seeds[pos].Type, Seeds[pos].Stack, 10);
+                s = new Seed(Seeds[pos].Type, Seeds[pos].Stack, 10, Seeds[pos].Type + "Seeds");
                 Seeds[pos] = null;
                 Model.transform.Find("Slots").Find("Slot " + pos).gameObject.SetActive(false);
             }

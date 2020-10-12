@@ -11,7 +11,7 @@ public class Box : BuildableObject
     [SerializeField]
     public DeliveryPoint Point;
 
-    public Box(string name) : base(name, 1, 1)
+    public Box(string name, string translationKey) : base(name, 1, 1, translationKey)
     {
         if (name == "Delivery box" || name == "Present box") IsDeliveryBox = true;
         else IsDeliveryBox = false;

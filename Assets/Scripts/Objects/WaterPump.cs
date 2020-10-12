@@ -9,7 +9,7 @@ public class WaterPump : BuildableObject
     [SerializeField]
     public int WaterUsage;
 
-    public WaterPump() : base("Water pump", 1, 1) 
+    public WaterPump(string translationKey) : base("Water pump", 1, 1, translationKey) 
     {
         WaterUsage = 0;
     }

@@ -8,7 +8,7 @@ public class Floor : BuildableObject
     [SerializeField]
     public string SpriteType = "None";
 
-    public Floor(string name, int stack, int maxStack) : base(name, stack, maxStack) { }
+    public Floor(string name, int stack, int maxStack, string translationKey) : base(name, stack, maxStack, translationKey) { }
 
     public void CheckRotation(bool propagate = false)
     {

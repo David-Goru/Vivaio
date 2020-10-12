@@ -41,6 +41,64 @@ public class Localization : MonoBehaviour
         // General
         Translations.Add("Day", "Day {0}");
 
+        // Vegetables
+        Translations.Add("Sticks", "Sticks");
+        Translations.Add("Carrot", "Carrot");
+        Translations.Add("Potato", "Potato");
+        Translations.Add("Tomato", "Tomato");
+        Translations.Add("Pumpkin", "Pumpkin");
+        Translations.Add("Onion", "Onion");
+        Translations.Add("Lettuce", "Lettuce");
+        Translations.Add("Wheat", "Wheat");
+
+        // Food
+        Translations.Add("Flour", "Flour");
+        Translations.Add("BreadDough", "Bread dough");
+        Translations.Add("Bread", "Bread");
+
+        // Tools
+        Translations.Add("Hoe", "Hoe");
+        Translations.Add("Shovel", "Shovel");
+        Translations.Add("WateringCan", "Watering can");
+        Translations.Add("Basket", "Basket");
+
         // Objects
+        Translations.Add("CarrotSeeds", "Carrot seeds");
+        Translations.Add("PotatoSeeds", "Potato seeds");
+        Translations.Add("TomatoSeeds", "Tomato seeds");
+        Translations.Add("PumpkinSeeds", "Pumpkin seeds");
+        Translations.Add("OnionSeeds", "Onion seeds");
+        Translations.Add("LettuceSeeds", "Lettuce seeds");
+        Translations.Add("WheatSeeds", "Wheat seeds");
+        Translations.Add("GrassSeeds", "Grass seeds");
+        Translations.Add("Sign", "Sign");
+        Translations.Add("FenceGate", "Fence gate");
+        Translations.Add("Fence", "Fence");
+        Translations.Add("ShopBox", "Shop box");
+        Translations.Add("ShopTable", "Shop table");
+        Translations.Add("StorageBox", "Storage box");
+        Translations.Add("ProductBox", "Product box");
+        Translations.Add("RockTile", "Rock tile");
+        Translations.Add("ConcreteTile", "Concrete tile");
+        Translations.Add("CompositeTile", "Composite tile");
+        Translations.Add("BrickTile", "Brick tile");
+        Translations.Add("WoodTile", "Wood tile");
+        Translations.Add("DripBottle", "Drip bottle");
+        Translations.Add("DripIrrigationKit", "Drip irrigation kit");
+        Translations.Add("Fertilizer", "Fertilizer");
+        Translations.Add("Composter", "Composter");
+        Translations.Add("SeedBox", "Seed box");
+        Translations.Add("DeseedingMachine", "Deseeding machine");
+        Translations.Add("FlourMachine", "Flour machine");
+        Translations.Add("BreadMachine", "Bread machine");
+        Translations.Add("Furnace", "Furnace");
+        Translations.Add("WaterPump", "Water pump");
+        Translations.Add("DeliveryBox", "Delivery box");
+        Translations.Add("PresentBox", "Present box");
+        Translations.Add("LetterOpen", "Open letter");
+        Translations.Add("LetterClosed", "Closed letter");
+        Translations.Add("HouseLamp", "House lamp");
+        Translations.Add("CashRegister", "Cash register");
+        Translations.Add("Bed", "Bed");
     }
 }

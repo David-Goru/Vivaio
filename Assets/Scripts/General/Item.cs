@@ -15,4 +15,14 @@ public class Item : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    void OnMouseEnter()
+    {
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 255, 255);
+    }
+
+    void OnMouseExit()
+    {
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+    }
 }

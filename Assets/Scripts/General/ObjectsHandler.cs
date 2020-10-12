@@ -46,7 +46,7 @@ public class ObjectsHandler : MonoBehaviour
         Data.Objects = new List<IObject>();
 
         // Add bed
-        Bed bed = new Bed();
+        Bed bed = new Bed("Bed");
         bed.Placed = true;
         bed.Model = Instantiate(Resources.Load<GameObject>("Objects/Bed"), new Vector2(-48.25f, 7.75f), Quaternion.Euler(0, 0, 0));     
         bed.WorldPosition = bed.Model.transform.position;
@@ -61,7 +61,7 @@ public class ObjectsHandler : MonoBehaviour
         TimeSystem.Bed = bed.Model;
 
         // Add cash register
-        CashRegister cashRegister = new CashRegister();
+        CashRegister cashRegister = new CashRegister("CashRegister");
         cashRegister.Placed = true;
         cashRegister.Model = Instantiate(Resources.Load<GameObject>("Objects/Cash register"), new Vector2(-13.75f, 9.25f), Quaternion.Euler(0, 0, 0));     
         cashRegister.WorldPosition = cashRegister.Model.transform.position;  
@@ -82,7 +82,7 @@ public class ObjectsHandler : MonoBehaviour
         CashRegisterHandler.CashRegisterModel = cashRegister.Model;
 
         // Add house lamp
-        BuildableObject lamp = new Lamp("House lamp");
+        BuildableObject lamp = new Lamp("House lamp", "HouseLamp");
         lamp.Placed = true;
         lamp.Model = Instantiate(Resources.Load<GameObject>("Objects/House lamp"), new Vector2(-51, 8), Quaternion.Euler(0, 0, 0));     
         lamp.WorldPosition = lamp.Model.transform.position;

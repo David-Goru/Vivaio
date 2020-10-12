@@ -16,7 +16,7 @@ public class Furnace : BuildableObject
     [SerializeField]
     public string ProductBaked;
 
-    public Furnace() : base("Furnace", 1, 1)
+    public Furnace(string translationKey) : base("Furnace", 1, 1, translationKey)
     {
         State = MachineState.AVAILABLE;
         ProductBaked = "Bread";
@@ -49,7 +49,7 @@ public class Furnace : BuildableObject
 
     public bool TakeProduct()
     {        
-        if (Inventory.AddObject(new IObject("Bread", Amount, 10)))
+        if (Inventory.AddObject(new IObject("Bread", Amount, 10, "Bread")))
         {
             Amount = 0;
             State = MachineState.AVAILABLE;

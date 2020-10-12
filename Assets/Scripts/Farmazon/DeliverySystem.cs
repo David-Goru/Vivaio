@@ -37,7 +37,7 @@ public class DeliverySystem : MonoBehaviour
         }
 
         // First grandma present
-        Box box = new Box("Present box");
+        Box box = new Box("Present box", "PresentBox");
         DeliveryPoint point = Data.DeliveryPoints[1];
         point.Available = false;
         box.Point = point;
@@ -48,7 +48,7 @@ public class DeliverySystem : MonoBehaviour
         string body = "Dear grandson, \n\nI'm glad you finally decided to make the big step. Now, you're all on your own, and will have the power to build whatever future you want. \n\nI want you to make your best, so here is my bit: carrot seeds. Treat them well, and make them glad of their children, just as you make me glad. Good luck!";
         string signature = "Grandma";
         box.Items[0] = new Letter(type, title, body, signature);
-        box.Items[1] = new Seed("Carrot", 10, 10);
+        box.Items[1] = new Seed("Carrot", 10, 10, "CarrotSeeds");
         box.Placed = true;
         box.WorldPosition = point.Pos;
         ObjectsHandler.Data.Objects.Add(box);

@@ -8,7 +8,7 @@ public class Lamp : BuildableObject
     [SerializeField]
     public bool On;
 
-    public Lamp(string name) : base(name, 1, 1)
+    public Lamp(string name, string translationKey) : base(name, 1, 1, translationKey)
     {
         On = false;
     }

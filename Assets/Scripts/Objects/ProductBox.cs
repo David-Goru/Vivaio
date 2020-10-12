@@ -12,7 +12,7 @@ public class ProductBox : BuildableObject
     [SerializeField]
     public int MaxAmount;
 
-    public ProductBox(int amount, int maxAmount) : base("Product box", 1, 1)
+    public ProductBox(int amount, int maxAmount, string translationKey) : base("Product box", 1, 1, translationKey)
     {
         Amount = amount;
         MaxAmount = maxAmount;

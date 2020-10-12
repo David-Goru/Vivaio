@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class WateringCan : Tool
 {
+    public WateringCan() : base("WateringCan") {}
+
     [SerializeField]
     public int Remaining;
 

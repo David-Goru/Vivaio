@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Bed : BuildableObject
 {
-    public Bed() : base("Bed", 1, 1) {}
+    public Bed(string translationKey) : base("Bed", 1, 1, translationKey) {}
 
     public override void LoadObjectCustom()
     {        

@@ -16,7 +16,7 @@ public class DeseedingMachine : BuildableObject
     [SerializeField]
     public string SeedType;
 
-    public DeseedingMachine() : base("Deseeding machine", 1, 1)
+    public DeseedingMachine(string translationKey) : base("Deseeding machine", 1, 1, translationKey)
     {
         State = MachineState.AVAILABLE;
     }
@@ -47,7 +47,7 @@ public class DeseedingMachine : BuildableObject
     {
         if (State != MachineState.FINISHED) return false;
         if (Seeds == 0) return false;
-        if (Inventory.AddObject(new Seed(SeedType, Seeds, 10)))
+        if (Inventory.AddObject(new Seed(SeedType, Seeds, 10, SeedType + "Seeds")))
         {
             Seeds = 0;
 

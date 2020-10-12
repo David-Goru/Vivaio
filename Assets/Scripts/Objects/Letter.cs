@@ -14,7 +14,7 @@ public class Letter : IObject
     [SerializeField]
     public bool Read;
 
-    public Letter(string type, string title, string body, string signature) : base("Letter", 1, 1)
+    public Letter(string type, string title, string body, string signature) : base("Letter", 1, 1, "LetterClosed")
     {
         Type = type;
         Title = title;
