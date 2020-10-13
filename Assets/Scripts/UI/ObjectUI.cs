@@ -57,7 +57,7 @@ public class ObjectUI : MonoBehaviour
                 {
                     int hours = (int)c.Timer.Time / 60;
                     int minutes = c.Timer.Time - hours * 60;
-                    ComposterUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format("Producing compost.\n Time remaining: {0:D2} hours {1:D2} minutes", hours, minutes);
+                    ComposterUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format(Localization.Translations["composter_working_text"], hours, minutes);
                 }
                 else if (c.State == MachineState.FINISHED && !ComposterUI.transform.Find("Finished").gameObject.activeSelf)
                 {
@@ -80,7 +80,7 @@ public class ObjectUI : MonoBehaviour
                 {
                     int hours = (int)dm.Timer.Time / 60;
                     int minutes = dm.Timer.Time - hours * 60;
-                    DeseedingMachineUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format("Producing {0} seeds.\n Time remaining: {1:D2} hours {2:D2} minutes", dm.SeedType, hours, minutes);
+                    DeseedingMachineUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format(Localization.Translations["deseeding_machine_working"], dm.SeedType, hours, minutes);
                 }
                 else if (dm.State == MachineState.FINISHED && !DeseedingMachineUI.transform.Find("Finished").gameObject.activeSelf)
                 {
@@ -98,7 +98,7 @@ public class ObjectUI : MonoBehaviour
                 if (fm.State == MachineState.WORKING)
                 {
                     int minutes = fm.Timer.Time;
-                    FlourMachineUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format("Producing flour.\n Time remaining: {0:D2} minutes", minutes);
+                    FlourMachineUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format(Localization.Translations["flour_machine_working"], minutes);
                 }
                 else if (fm.State == MachineState.FINISHED && !FlourMachineUI.transform.Find("Finished").gameObject.activeSelf)
                 {
@@ -116,7 +116,7 @@ public class ObjectUI : MonoBehaviour
                 if (bm.State == MachineState.WORKING)
                 {
                     int minutes = bm.Timer.Time;
-                    BreadMachineUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format("Producing bread dough.\n Time remaining: {0:D2} minutes", minutes);
+                    BreadMachineUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format(Localization.Translations["bread_machine_working"], minutes);
                 }
                 else if (bm.State == MachineState.FINISHED && !BreadMachineUI.transform.Find("Finished").gameObject.activeSelf)
                 {
@@ -132,7 +132,7 @@ public class ObjectUI : MonoBehaviour
                 if (f.State == MachineState.WORKING)
                 {
                     int minutes = f.Timer.Time;
-                    FurnaceUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format("Producing {0}.\n Time remaining: {1:D2} minutes", f.ProductBaked, minutes);
+                    FurnaceUI.transform.Find("Working").Find("Text").GetComponent<Text>().text = string.Format(Localization.Translations["furnace_working"], f.ProductBaked, minutes);
                 }
                 else if (f.State == MachineState.FINISHED && !FurnaceUI.transform.Find("Finished").gameObject.activeSelf)
                 {
@@ -210,7 +210,8 @@ public class ObjectUI : MonoBehaviour
             StandUI.transform.Find("Price").GetComponent<InputField>().onEndEdit.RemoveAllListeners();
             StandUI.transform.Find("Price").GetComponent<InputField>().onEndEdit.AddListener(delegate{ChangePrice(s, StandUI.transform.Find("Price").GetComponent<InputField>());});
             StandUI.transform.Find("Price").Find("Placeholder").GetComponent<Text>().text = s.ItemValue.ToString();
-            StandUI.transform.Find("Recommended price").GetComponent<Text>().text = string.Format("Recommended price: {0}", s.Item != null ? s.Item.MediumValue : 0);
+            StandUI.transform.Find("Recommended price").GetComponent<Text>().text = string.Format(Localization.Translations["stand_recommended_price"], s.Item != null ? s.Item.MediumValue : 0);
+            StandUI.transform.Find("Change state").Find("Text").GetComponent<Text>().text = s.Available ? Localization.Translations["stand_disable"] : Localization.Translations["stand_enable"];
             StandUI.transform.Find("Change state").GetComponent<Button>().onClick.RemoveAllListeners();
             StandUI.transform.Find("Change state").GetComponent<Button>().onClick.AddListener(() => ChangeState(s));  
 
@@ -273,7 +274,7 @@ public class ObjectUI : MonoBehaviour
                 if (sb.Seeds[pos] == null)
                 {
                     slot.Find("Seed bag").gameObject.SetActive(false);
-                    slot.Find("Amount").GetComponent<Text>().text = "Empty";
+                    slot.Find("Amount").GetComponent<Text>().text = Localization.Translations["Empty"];
                     slot.GetComponent<Image>().enabled = true;
                 }
                 else
@@ -564,7 +565,7 @@ public class ObjectUI : MonoBehaviour
         s.AddProduct();
         StandUI.transform.Find("Product").Find("Text").GetComponent<Text>().text = string.Format("{0}/{1}", s.Amount, s.MaxAmount);
         StandUI.transform.Find("Price").Find("Placeholder").GetComponent<Text>().text = s.ItemValue.ToString();
-        StandUI.transform.Find("Recommended price").GetComponent<Text>().text = string.Format("Recommended price: {0}", s.Item != null ? s.Item.MediumValue : 0);
+        StandUI.transform.Find("Recommended price").GetComponent<Text>().text = string.Format(Localization.Translations["stand_recommended_price"], s.Item != null ? s.Item.MediumValue : 0);
         StandUI.transform.Find("Product").GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + s.ItemName);
     }
 
@@ -587,6 +588,7 @@ public class ObjectUI : MonoBehaviour
     public static void ChangeState(Stand s)
     {
         s.Available = !s.Available;
+        StandUI.transform.Find("Change state").Find("Text").GetComponent<Text>().text = s.Available ? Localization.Translations["stand_disable"] : Localization.Translations["stand_enable"];
     }
 
     // Seed box
@@ -596,7 +598,7 @@ public class ObjectUI : MonoBehaviour
         if (sb.Seeds[pos] == null)
         {
             SeedBoxUI.transform.Find("Slots").Find("Slot " + pos).Find("Seed bag").gameObject.SetActive(false);
-            SeedBoxUI.transform.Find("Slots").Find("Slot " + pos).Find("Amount").GetComponent<Text>().text = "Empty";
+            SeedBoxUI.transform.Find("Slots").Find("Slot " + pos).Find("Amount").GetComponent<Text>().text = Localization.Translations["Empty"];
             SeedBoxUI.transform.Find("Slots").Find("Slot " + pos).GetComponent<Image>().enabled = true;
 
             bool canTakeBox = true;

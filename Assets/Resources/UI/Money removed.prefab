@@ -66,7 +66,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 553e121a340938749b17a5ae68cb0ac6, type: 3}
+    m_Font: {fileID: 12800000, guid: 6fcab021ef8b0ad41b3c880ff2e41bac, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 1
@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "-X\u20A1"
+  m_Text: "-X\u20AC"
 --- !u!114 &6733140296415992699
 MonoBehaviour:
   m_ObjectHideFlags: 0

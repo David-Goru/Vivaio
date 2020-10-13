@@ -65,12 +65,12 @@ public class CashRegisterHandler : MonoBehaviour
             ticket.transform.SetParent(content);
             ticket.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Shop/Customer photos/" + Data.CashLog[i].Consumer);
             ticket.transform.Find("Name").GetComponent<Text>().text = Data.CashLog[i].Consumer;
-            ticket.transform.Find("Date").GetComponent<Text>().text = "Day " + Data.CashLog[i].Day;
+            ticket.transform.Find("Date").GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Data.CashLog[i].Day);
 
             string itemsList = Data.CashLog[i].ItemsBought;
             int totalLines = Data.CashLog[i].TotalLines;
 
-            itemsList += string.Format("Total amount: {0}$", Data.CashLog[i].Total);
+            itemsList += string.Format(Localization.Translations["cash_log_total_amount"], Data.CashLog[i].Total);
 
             ticket.transform.Find("Items list").GetComponent<Text>().text = itemsList;
 

@@ -3732,6 +3732,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205b8b334f6c5924593de7bc49c636a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThrowObjectButton: {fileID: 0}
+  BuildButton: {fileID: 0}
+  CancelBuildButton: {fileID: 0}
+  OpenLetterButton: {fileID: 0}
+  BedText: {fileID: 0}
+  BedButton: {fileID: 0}
+  CashRegisterLogTitle: {fileID: 0}
+  StorageTitle: {fileID: 0}
+  TakeStorageButton: {fileID: 0}
+  ComposterTitle: {fileID: 0}
+  ComposterTake: {fileID: 0}
+  ComposterAddCompost: {fileID: 0}
+  ComposterTakeFertilizer: {fileID: 0}
+  ProductBoxTitle: {fileID: 0}
+  ProductBoxTake: {fileID: 0}
+  ProductBoxAddProduct: {fileID: 0}
+  ProductBoxTakeProduct: {fileID: 0}
+  ShopStandTitle: {fileID: 0}
+  ShopStandTake: {fileID: 0}
+  ShopStandAddProduct: {fileID: 0}
+  ShopStandTakeProduct: {fileID: 0}
+  ShopStandPrice: {fileID: 0}
+  SeedBoxTitle: {fileID: 0}
+  SeedBoxTake: {fileID: 0}
+  DeseedingMachineTitle: {fileID: 0}
+  DeseedingMachineTake: {fileID: 0}
+  DeseedingMachineAddProduct: {fileID: 0}
+  DeseedingMachineTakeSeeds: {fileID: 0}
+  DeseedingMachineTakeCompost: {fileID: 0}
+  FlourMachineTitle: {fileID: 0}
+  FlourMachineTake: {fileID: 0}
+  FlourMachineAddWheat: {fileID: 0}
+  FlourMachineTakeCompost: {fileID: 0}
+  FlourMachineTakeFlour: {fileID: 0}
+  BreadTitle: {fileID: 0}
+  BreadMachineTake: {fileID: 0}
+  BreadMachineAddFlour: {fileID: 0}
+  BreadMachineAddWater: {fileID: 0}
+  BreadMachineTakeBreadDough: {fileID: 0}
+  SignTitle: {fileID: 0}
+  SignTake: {fileID: 0}
+  SignSelectedIcon: {fileID: 0}
+  FurnaceTitle: {fileID: 0}
+  FurnaceTake: {fileID: 0}
+  FurnaceAddProduct: {fileID: 0}
+  FurnaceTurnOn: {fileID: 0}
+  FurnaceTakeProduct: {fileID: 0}
 --- !u!4 &1037306110
 Transform:
   m_ObjectHideFlags: 0
@@ -5888,7 +5935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameVersion: Alpha 8
-  VersionDate: 29.10.2020
+  VersionDate: 29/10/2020
   SpecialEdition: 0
 --- !u!4 &1589041282
 Transform:

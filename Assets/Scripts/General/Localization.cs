@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Localization : MonoBehaviour
 {
@@ -38,8 +39,19 @@ public class Localization : MonoBehaviour
         Translations.Add("HalloweenUnlocked", "Halloween Edition");
         Translations.Add("HalloweenLocked", "Click to buy");
 
-        // General
+        // General UI
         Translations.Add("Day", "Day {0}");
+        Translations.Add("Empty", "Empty");
+        Translations.Add("throw_object_button", "Throw object");
+        Translations.Add("build_button", "Build object");
+        Translations.Add("cancel_build_button", "Cancel");
+        Translations.Add("open_letter_button", "Open letter");
+        Translations.Add("bed_text", "Comfy sheets await you after a hard farm day...");
+        Translations.Add("bed_button", "Sleep");
+        Translations.Add("cash_log_total_amount", "Total amount: {0}€");
+        Translations.Add("cash_register_log_title", "Cash register log");
+        Translations.Add("storage_title", "Storage");
+        Translations.Add("take_storage_button", "Take storage");
 
         // Vegetables
         Translations.Add("Sticks", "Sticks");
@@ -100,5 +112,212 @@ public class Localization : MonoBehaviour
         Translations.Add("HouseLamp", "House lamp");
         Translations.Add("CashRegister", "Cash register");
         Translations.Add("Bed", "Bed");
+
+        // Letters
+        Translations.Add("grandma_signature", "Grandma");
+        Translations.Add("grandma_first_letter_title", "I'm glad");
+        Translations.Add("grandma_first_letter_body", "Dear grandson, \n\n        I'm glad you've finally decided to take this opportunity. Now, you're all on your own, and will have the power to build the future you've ever wanted.\n\n        I want you to make your best, so here is my bit: carrot seeds. Treat them well, and make them glad of their children, just as you make me glad. Good luck!");
+        Translations.Add("SDFP_signature", "SDFP");
+        Translations.Add("last_day_expenses_title", "Last day expenses");
+        Translations.Add("last_day_expenses_letter_body_start", "From the <b>State Department of Farms and Plants</b> we inform you that the day {0} expenses are as follows:\n        Energy usage: -{1}€\n        Water usage: -{2}€\n");
+        Translations.Add("last_day_expenses_letter_body_debt", "        Debt: -{0}€\n        ------------------\n        Total: -{1}€\n        Remaining debt: {2}€");
+        Translations.Add("last_day_expenses_letter_body_nodebt", "        ------------------\n        Total: -{0}€");
+        Translations.Add("debt_paid_title", "Debt paid");
+        Translations.Add("debt_paid_letter_body", "Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we thank you for paying properly the last debt, and so, we inform you that you are able to request a new upgrade for your farm.");
+        Translations.Add("debt_information_title", "Debt information");
+        Translations.Add("debt_information_letter_body", "Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}€</b>. The debt will be paid in amounts of <b>{2}€</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.");
+        Translations.Add("debt_information_topic_new_farm", "New farm bought");
+        Translations.Add("debt_information_topic_farm_expansion", "Farm expansion");
+        Translations.Add("happy_customer_signature", "Your happy customer, {0}");
+        Translations.Add("happy_customer_title", "Happy customer");
+        Translations.Add("happy_customer_letter_body", "Hello,\n        I am {0}, one of your closest customers. I would like to tell you that your shop is just… amazing. You have had me coming over and over, and always had what I needed. Please, keep doing what you do. I would love to see how far your shop goes.");
+        Translations.Add("unhappy_customer_signature", "Your unhappy customer, {0}");
+        Translations.Add("unhappy_customer_title", "Unhappy customer");
+        Translations.Add("unhappy_customer_letter_body", "Hello,\n        I am {0}, and I am writing this as a warning. After coming to your shop several days, I have realized that your shop is not supplying your customers with the right products. I would love to see you improving and learning from your mistakes. Please, focus on what you do. Ask for help if you need, there are a lot of farmers that would love to teach you how to build a good shop. Do not hate me, this is a constructive critic. And, as so, please, take into consideration what I have said. Success comes from knowing that you did your best to become the best that you are capable of becoming.");
+    
+        // Machines and others
+        Translations.Add("composter_title", "Composter");
+        Translations.Add("compsoter_take", "Take composter");
+        Translations.Add("composter_add_compost", "Add compost");
+        Translations.Add("composter_take_fertilizer", "Take fertilizer");
+        Translations.Add("composter_working_text", "Producing compost.\nTime remaining: {0:D2} hours {1:D2} minutes");
+
+        Translations.Add("product_box_title", "Product box");
+        Translations.Add("product_box_take", "Take product box");
+        Translations.Add("product_box_add_product", "Add product");
+        Translations.Add("product_box_take_product", "Take product");
+        
+        Translations.Add("shop_stand_title", "Shop stand");
+        Translations.Add("shop_stand_take", "Take shop stand");
+        Translations.Add("shop_stand_add_product", "Add product");
+        Translations.Add("shop_stand_take_product", "Take product");
+        Translations.Add("stand_disable", "Disable stand");
+        Translations.Add("stand_enable", "Enable stand");
+        Translations.Add("stand_recommended_price", "Recommended price: {0}");
+        Translations.Add("stand_price", "Price:");
+        
+        Translations.Add("seed_box_title", "Seed box");
+        Translations.Add("seed_box_take", "Take seed box");
+        
+        Translations.Add("deseeding_machine_title", "Deseeding machine");
+        Translations.Add("deseeding_machine_working", "Producing {0} seeds.\nTime remaining: {1:D2} hours {2:D2} minutes");
+        Translations.Add("deseeding_machine_take", "Take deseeding machine");
+        Translations.Add("deseeding_machine_add_product", "Add product to deseed");
+        Translations.Add("deseeding_machine_take_seeds", "Take seeds");
+        Translations.Add("deseeding_machine_take_compost", "Take compost");
+        
+        Translations.Add("flour_machine_title", "Flour machine");
+        Translations.Add("flour_machine_working", "Producing flour.\nTime remaining: {0:D2} minutes");
+        Translations.Add("flour_machine_take", "Take flour machine");
+        Translations.Add("flour_machine_add_wheat", "Add wheat");
+        Translations.Add("flour_machine_take_compost", "Take compost");
+        Translations.Add("flour_machine_take_flour", "Take flour");
+        
+        Translations.Add("bread_machine_title", "Bread machine");
+        Translations.Add("bread_machine_working", "Producing bread dough.\nTime remaining: {0:D2} minutes");
+        Translations.Add("bread_machine_take", "Take bread machine");
+        Translations.Add("bread_machine_add_flour", "Add flour");
+        Translations.Add("bread_machine_add_water", "Add water");
+        Translations.Add("bread_machine_take_bread_dough", "Take bread dough");
+        
+        Translations.Add("sign_title", "Sign");
+        Translations.Add("sign_take", "Take sign");
+        Translations.Add("sign_selected_icon", "Selected icon");
+        
+        Translations.Add("furnace_title", "Furnace");
+        Translations.Add("furnace_working", "Producing {0}.\nTime remaining: {1:D2} minutes");
+        Translations.Add("furnace_take", "Take furnace");
+        Translations.Add("furnace_add_product", "Add product to bake");
+        Translations.Add("furnace_turn_on", "Turn on");
+        Translations.Add("furnace_take_product", "Take product");
+    }
+
+    [Header("Buttons")]
+    public Text ThrowObjectButton;
+    public Text BuildButton;
+    public Text CancelBuildButton;
+    public Text OpenLetterButton;
+    public Text BedText;
+    public Text BedButton;
+    public Text CashRegisterLogTitle;
+    
+    [Header("Storage")]
+    public Text StorageTitle;
+    public Text TakeStorageButton;
+
+    [Header("Composter")]
+    public Text ComposterTitle;
+    public Text ComposterTake;
+    public Text ComposterAddCompost;
+    public Text ComposterTakeFertilizer;
+
+    [Header("Product box")]
+    public Text ProductBoxTitle;
+    public Text ProductBoxTake;
+    public Text ProductBoxAddProduct;
+    public Text ProductBoxTakeProduct;
+
+    [Header("Shop stand")]
+    public Text ShopStandTitle;
+    public Text ShopStandTake;
+    public Text ShopStandAddProduct;
+    public Text ShopStandTakeProduct;
+    public Text ShopStandPrice;
+
+    [Header("Seed box")]
+    public Text SeedBoxTitle;
+    public Text SeedBoxTake;
+
+    [Header("Deseeding machine")]
+    public Text DeseedingMachineTitle;
+    public Text DeseedingMachineTake;
+    public Text DeseedingMachineAddProduct;
+    public Text DeseedingMachineTakeSeeds;
+    public Text DeseedingMachineTakeCompost;
+
+    [Header("Flour machine")]
+    public Text FlourMachineTitle;
+    public Text FlourMachineTake;
+    public Text FlourMachineAddWheat;
+    public Text FlourMachineTakeCompost;
+    public Text FlourMachineTakeFlour;
+
+    [Header("Bread machine")]
+    public Text BreadTitle;
+    public Text BreadMachineTake;
+    public Text BreadMachineAddFlour;
+    public Text BreadMachineAddWater;
+    public Text BreadMachineTakeBreadDough;
+
+    [Header("Sign")]
+    public Text SignTitle;
+    public Text SignTake;
+    public Text SignSelectedIcon;
+
+    [Header("Furnace")]
+    public Text FurnaceTitle;
+    public Text FurnaceTake;
+    public Text FurnaceAddProduct;
+    public Text FurnaceTurnOn;
+    public Text FurnaceTakeProduct;
+
+    public void UpdateTexts()
+    {
+        BedText.text = Translations["bed_text"];
+        BedButton.text = Translations["bed_button"];
+        CashRegisterLogTitle.text = Translations["cash_register_log_title"];
+        StorageTitle.text = Translations["storage_title"];
+        TakeStorageButton.text = Translations["take_storage_button"];
+        ThrowObjectButton.text = Translations["throw_object_button"];
+        BuildButton.text = Translations["build_button"];
+        CancelBuildButton.text = Translations["cancel_build_button"];
+        OpenLetterButton.text = Translations["open_letter_button"];
+
+        ComposterTitle.text = Translations["composter_title"];
+        ComposterTake.text = Translations["compsoter_take"];
+        ComposterAddCompost.text = Translations["composter_add_compost"];
+        ComposterTakeFertilizer.text = Translations["composter_take_fertilizer"];
+
+        ProductBoxTitle.text = Translations["product_box_title"];
+        ProductBoxTake.text = Translations["product_box_take"];
+        ProductBoxAddProduct.text = Translations["product_box_add_product"];
+        ProductBoxTakeProduct.text = Translations["product_box_take_product"];
+
+        ShopStandTitle.text = Translations["shop_stand_title"];
+        ShopStandTake.text = Translations["shop_stand_take"];
+        ShopStandAddProduct.text = Translations["shop_stand_add_product"];
+        ShopStandTakeProduct.text = Translations["shop_stand_take_product"];
+        ShopStandPrice.text = Translations["stand_price"];
+
+        SeedBoxTitle.text = Translations["seed_box_title"];
+        SeedBoxTake.text = Translations["seed_box_take"];
+
+        DeseedingMachineTitle.text = Translations["deseeding_machine_title"];
+        DeseedingMachineTake.text = Translations["deseeding_machine_take"];
+        DeseedingMachineAddProduct.text = Translations["deseeding_machine_add_product"];
+        DeseedingMachineTakeSeeds.text = Translations["deseeding_machine_take_seeds"];
+        DeseedingMachineTakeCompost.text = Translations["deseeding_machine_take_compost"];
+
+        FlourMachineTitle.text = Translations["flour_machine_title"];
+        FlourMachineTake.text = Translations["flour_machine_take"];
+        FlourMachineAddWheat.text = Translations["flour_machine_add_wheat"];
+        FlourMachineTakeCompost.text = Translations["flour_machine_take_compost"];
+        FlourMachineTakeFlour.text = Translations["flour_machine_take_flour"];
+
+        BreadTitle.text = Translations["bread_machine_title"];
+        BreadMachineTake.text = Translations["bread_machine_take"];
+        BreadMachineAddFlour.text = Translations["bread_machine_add_flour"];
+        BreadMachineAddWater.text = Translations["bread_machine_add_water"];
+        BreadMachineTakeBreadDough.text = Translations["bread_machine_take_bread_dough"];
+
+        SignTitle.text = Translations["sign_title"];
+        SignTake.text = Translations["sign_take"];
+        SignSelectedIcon.text = Translations["sign_selected_icon"];
+
+        FurnaceTitle.text = Translations["furnace_title"];
+        FurnaceTake.text = Translations["furnace_take"];
+        FurnaceAddProduct.text = Translations["furnace_add_product"];
+        FurnaceTurnOn.text = Translations["furnace_turn_on"];
+        FurnaceTakeProduct.text = Translations["furnace_take_product"];
     }
 }

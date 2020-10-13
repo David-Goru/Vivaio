@@ -16,6 +16,7 @@ public class GameLoader : MonoBehaviour
     void Start()
     {
         if (Localization.Translations == null) Localization.LoadTranslations();
+        GameObject.Find("UI").GetComponent<Localization>().UpdateTexts();
 
         Log = new List<string>();
         loadingText = GameObject.Find("UI").transform.Find("Load screen").Find("Text").gameObject.GetComponent<Text>();

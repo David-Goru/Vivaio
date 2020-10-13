@@ -196,7 +196,7 @@
 		<Use>Build</Use>
 		<Price>500</Price>
 		<Description>An storage that can keep up to 8 slots of 25 seeds per slot.</Description>
-		<Category>Seeds</Category>
+		<Category>Storage</Category>
 		<TranslationKey>SeedBox</TranslationKey>
 	</FarmazonItem>
 	<FarmazonItem>

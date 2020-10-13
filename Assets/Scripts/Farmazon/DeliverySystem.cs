@@ -44,9 +44,9 @@ public class DeliverySystem : MonoBehaviour
         box.Model = Instantiate(Resources.Load<GameObject>("Objects/Present box"), point.Pos, Quaternion.Euler(0, 0, 0));
         box.Model.name = "Present box";
         string type = "Family";
-        string title = "I'm glad";
-        string body = "Dear grandson, \n\nI'm glad you finally decided to make the big step. Now, you're all on your own, and will have the power to build whatever future you want. \n\nI want you to make your best, so here is my bit: carrot seeds. Treat them well, and make them glad of their children, just as you make me glad. Good luck!";
-        string signature = "Grandma";
+        string title = Localization.Translations["grandma_first_letter_title"];
+        string body = Localization.Translations["grandma_first_letter_body"];
+        string signature = Localization.Translations["grandma_signature"];
         box.Items[0] = new Letter(type, title, body, signature);
         box.Items[1] = new Seed("Carrot", 10, 10, "CarrotSeeds");
         box.Placed = true;

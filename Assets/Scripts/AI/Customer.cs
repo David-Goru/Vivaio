@@ -91,7 +91,7 @@ public class Customer
                 if (amountTaken != "0")
                 {
                     expenses += itemCost;
-                    itemsBought += (currentDesire.Item.Name + " x" + amountTaken + " (" + itemCost + "$)\n");                    
+                    itemsBought += string.Format("{0} x{1} ({2}€)\n", Localization.Translations[currentDesire.Item.Name], amountTaken, itemCost);                    
                     numberItemsBought++;
                 }
             }

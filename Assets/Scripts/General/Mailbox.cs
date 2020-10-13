@@ -37,9 +37,9 @@ public class Mailbox : MonoBehaviour
 
         // Send first letter ever (debt information letter)
         string type = "SDPF"; // State Department of Plants and Farms
-        string title = "Debt information";
-        string body = string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}$</b>. The debt will be paid in amounts of <b>{2}$</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "New farm bought", Master.Data.Debt, Master.Data.DailyDebt);
-        string signature = "<i>SDFP</i>";
+        string title = Localization.Translations["debt_information_title"];
+        string body = string.Format(Localization.Translations["debt_information_letter_body"], Localization.Translations["debt_information_topic_new_farm"], Master.Data.Debt, Master.Data.DailyDebt);
+        string signature = "<i>" + Localization.Translations["SDFP_signature"] + "</i>";
         NewLetter(type, title, body, signature);
 
         return true;
@@ -59,18 +59,18 @@ public class Mailbox : MonoBehaviour
             {
                 c.LetterSent = true;
                 type = "Customer";
-                title = "Happy customer";
-                body = string.Format("Hello,\n        I am {0}, one of your closest customers. I would like to tell you that your shop is just… amazing. You have had me coming over and over, and always had what I needed. Please, keep doing what you do. I would love to see how far your shop goes.", c.Name);
-                signature = string.Format("<i>Your happy customer, {0}</i>", c.Name);
+                title = Localization.Translations["happy_customer_title"];
+                body = string.Format(Localization.Translations["happy_customer_letter_body"], c.Name);
+                signature = string.Format("<i>" + Localization.Translations["happy_customer_signature"] + "</i>", c.Name);
                 NewLetter(type, title, body, signature);
             }
             else if (c.Trust <= 10 && !c.LetterSent)
             {
                 c.LetterSent = true;
                 type = "Customer";
-                title = "Unhappy customer";
-                body = string.Format("Hello,\n        I am {0}, and I am writing this as a warning. After coming to your shop several days, I have realized that your shop is not supplying your customers with the right products. I would love to see you improving and learning from your mistakes. Please, focus on what you do. Ask for help if you need, there are a lot of farmers that would love to teach you how to build a good shop. Do not hate me, this is a constructive critic. And, as so, please, take into consideration what I have said. Success comes from knowing that you did your best to become the best that you are capable of becoming.", c.Name);
-                signature = string.Format("<i>Your unhappy customer, {0}</i>", c.Name);
+                title = Localization.Translations["unhappy_customer_title"];
+                body = string.Format(Localization.Translations["unhappy_customer_letter_body"], c.Name);
+                signature = string.Format("<i>" + Localization.Translations["unhappy_customer_signature"] + "</i>", c.Name);
                 NewLetter(type, title, body, signature);
             }
         }
@@ -78,21 +78,20 @@ public class Mailbox : MonoBehaviour
         // Check for debt letters
         // Daily debt
         type = "SDPF";
-        title = "Last day expenses";
-        body = string.Format("From the <b>State Department of Farms and Plants</b> we inform you that the day {0} expenses are as follows:\n        Energy usage: -{1}$\n        Water usage: -{2}$\n", Master.Data.Day, Master.Data.LastDayEnergyUsage, Master.Data.LastDayWaterUsage);
-        if (Master.Data.LastDayDebt > 0) body += string.Format("        Debt: -{0}$\n        ------------------\n        Total: -{1}$\n        Remaining debt: {2}$", Master.Data.LastDayDebt, Master.Data.LastDayPaid, Master.Data.Debt);
-        else body += string.Format("        ------------------\n        Total: -{0}$", Master.Data.LastDayPaid);
-        signature = "<i>SDFP</i>";
+        title = Localization.Translations["last_day_expenses_title"];
+        body = string.Format(Localization.Translations["last_day_expenses_letter_body_start"], Master.Data.Day, Master.Data.LastDayEnergyUsage, Master.Data.LastDayWaterUsage);
+        if (Master.Data.LastDayDebt > 0) body += string.Format(Localization.Translations["last_day_expenses_letter_body_debt"], Master.Data.LastDayDebt, Master.Data.LastDayPaid, Master.Data.Debt);
+        else body += string.Format(Localization.Translations["last_day_expenses_letter_body_nodebt"], Master.Data.LastDayPaid);
+        signature = "<i>" + Localization.Translations["SDFP_signature"] + "</i>";
         NewLetter(type, title, body, signature);
 
         // Fully paid debt
         if (Master.Data.Debt == 0 && Master.Data.LastDayDebt > 0)
         {
             type = "SDPF";
-            title = "Debt paid";
-            // When upgrades are available:
-            body = "Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we thank you for paying properly the last debt, and so, we inform you that you are able to request a new upgrade for your farm.";
-            signature = "<i>SDFP</i>";
+            title = Localization.Translations["debt_paid_title"];
+            body = Localization.Translations["debt_paid_letter_body"];
+            signature = "<i>" + Localization.Translations["SDFP_signature"] + "</i>";
             NewLetter(type, title, body, signature);
         }
 
@@ -100,9 +99,9 @@ public class Mailbox : MonoBehaviour
         if (Management.Data.ExpandField)
         {
             type = "SDPF";
-            title = "Debt paid";
-            body =  string.Format("Hello sir,\n        from the <b>State Department of Farms and Plants</b>, we inform you that a new debt has been created in your farm, due to:\n       {0}\nThe total debt ascends to <b>{1}$</b>. The debt will be paid in amounts of <b>{2}$</b> every day if possible. You won’t be able to request a new upgrade until the current debt is completely paid.", "Farm expansion", 3000 + 1500 * Management.Data.ExpansionLevel, Master.Data.DailyDebt);
-            signature = "<i>SDFP</i>";
+            title = Localization.Translations["debt_paid_title"];
+            body =  string.Format(Localization.Translations["debt_information_letter_body"], Localization.Translations["debt_information_topic_farm_expansion"], 3000 + 1500 * Management.Data.ExpansionLevel, Master.Data.DailyDebt);
+            signature = "<i>" + Localization.Translations["SDFP_signature"] + "</i>";
             NewLetter(type, title, body, signature);
         }
     }
