@@ -177,6 +177,7 @@ public class PlowedSoil : MonoBehaviour
                 {
                     PlayerControls.DoingAnim = true;
                     StartCoroutine(PlayerControls.DoAnim("Shovel", (Vector2)transform.position));
+                    Master.RunSoundStatic(((Tool)Inventory.Data.ObjectInHand).Clips[0]);
                     RemovePlant();
                 }
                 break;            
@@ -193,6 +194,7 @@ public class PlowedSoil : MonoBehaviour
                         transform.Find("Drip bottle").Find("Warning").gameObject.SetActive(false);
                         PlayerControls.DoingAnim = true;
                         StartCoroutine(PlayerControls.DoAnim("Water", (Vector2)transform.position));
+                        Master.RunSoundStatic(((Tool)Inventory.Data.ObjectInHand).Clips[0]);
                         wc.UseTool(unitsToUse);
                         transform.Find("Drip bottle").Find(waterUnits.ToString()).gameObject.SetActive(false);
                         waterUnits += unitsToUse * 2;
@@ -212,6 +214,7 @@ public class PlowedSoil : MonoBehaviour
                     {
                         PlayerControls.DoingAnim = true;
                         StartCoroutine(PlayerControls.DoAnim("Water", (Vector2)transform.position));
+                        Master.RunSoundStatic(((Tool)Inventory.Data.ObjectInHand).Clips[0]);
                         wc.UseTool(1);
                     }
                 }
@@ -221,6 +224,7 @@ public class PlowedSoil : MonoBehaviour
                 {  
                     PlayerControls.DoingAnim = true;  
                     StartCoroutine(PlayerControls.DoAnim("Basket", (Vector2)transform.position));
+                    Master.RunSoundStatic(((Tool)Inventory.Data.ObjectInHand).Clips[0]);
                 }
                 break;
             case "Seed":
@@ -266,6 +270,7 @@ public class PlowedSoil : MonoBehaviour
                     AutoWater();
                 }
                 seed.UseSeed();
+                Master.RunSoundStatic(SoundsHandler.UseSeedsStatic);
                 break;
             case "Fertilizer":
                 if (hasFertilizer) return;
@@ -275,6 +280,7 @@ public class PlowedSoil : MonoBehaviour
                 {
                     PlayerControls.DoingAnim = true;
                     StartCoroutine(PlayerControls.DoAnim("Seed", (Vector2)transform.position));
+                    Master.RunSoundStatic(SoundsHandler.UseFertilizerStatic);
                     if (AddFertilizer()) fertilizer.UseFertilizer();
                 }
                 break;

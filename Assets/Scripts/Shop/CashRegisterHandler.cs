@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class CashRegisterHandler : MonoBehaviour
 {
+    public AudioClip Clip;
     public static CashRegisterData Data;
     public static GameObject CashRegisterModel;
     public static List<Vector2> CustomerPos;
@@ -83,5 +84,6 @@ public class CashRegisterHandler : MonoBehaviour
 
         ui.transform.Find("Cash register").gameObject.SetActive(true);
         CashRegisterModel.GetComponent<CashRegisterHandler>().enabled = true;
+        Master.RunSoundStatic(CashRegisterModel.GetComponent<CashRegisterHandler>().Clip);
     }
 }

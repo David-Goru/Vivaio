@@ -28,6 +28,8 @@ public class Build : MonoBehaviour
         {
             physicalObject = Instantiate(Resources.Load<GameObject>("Objects/" + Inventory.Data.ObjectInHand.Name), pos, Quaternion.Euler(0, 0, 0));
             boInfo.Model = physicalObject;
+
+            if (boInfo is Gate) physicalObject.transform.Find("R button").gameObject.SetActive(true);
         }
 
         // Check if object can be built at position
@@ -74,6 +76,8 @@ public class Build : MonoBehaviour
 
     void placeObject()
     {
+        Master.RunSoundStatic(SoundsHandler.PlaceObjectStatic);
+
         // Update color
         if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
@@ -114,6 +118,8 @@ public class Build : MonoBehaviour
                     return;
                 }
             }
+
+            if (boInfo.Name == "Fence gate") physicalObject.transform.Find("R button").gameObject.SetActive(false);
 
             switch (boInfo.Name)
             {
@@ -208,6 +214,7 @@ public class Build : MonoBehaviour
                     w.CheckRotation();
                 }
             }
+            else if (boInfo is Gate) physicalObject.transform.Find("R button").gameObject.SetActive(false);
         }
 
         if (boInfo != null)
@@ -222,6 +229,7 @@ public class Build : MonoBehaviour
 
     public void StartBuild(GameObject objectToMove)
     {
+        Master.RunSoundStatic(SoundsHandler.MoveObjectStatic);
         physicalObject = objectToMove;
         savedPos = objectToMove.transform.position;        
         objectToMove.GetComponent<BoxCollider2D>().enabled = false;
@@ -229,7 +237,11 @@ public class Build : MonoBehaviour
         IObject bo = ObjectsHandler.Data.Objects.Find(x => x.Model == objectToMove);
         boInfo = (BuildableObject)bo;
 
-        if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").Find("Obstacle").gameObject.SetActive(false);
+        if (boInfo is Gate) 
+        {
+            physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").Find("Obstacle").gameObject.SetActive(false);
+            physicalObject.transform.Find("R button").gameObject.SetActive(true);
+        }
         else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(false);
         
         Transform tParent;
@@ -248,6 +260,7 @@ public class Build : MonoBehaviour
     public void StartBuild(GameObject objectToBuild, BuildableObject bo)
     {
         physicalObject = objectToBuild;
+        if (bo is Gate) physicalObject.transform.Find("R button").gameObject.SetActive(true);
         boInfo = bo;
         boInfo.Model = objectToBuild;
         isMoving = false;
@@ -262,7 +275,11 @@ public class Build : MonoBehaviour
 
         if (isMoving)
         {
-            if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+            if (boInfo is Gate)
+            {
+                physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                physicalObject.transform.Find("R button").gameObject.SetActive(false);
+            }
             else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
             physicalObject.GetComponent<BoxCollider2D>().enabled = true;
             physicalObject.transform.position = savedPos;  

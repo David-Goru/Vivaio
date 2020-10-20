@@ -90,9 +90,8 @@ public class TimeSystem : MonoBehaviour
         Master.Player.transform.Find("Character shadow").gameObject.SetActive(false);
         GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(false);
         Bed.transform.Find("Sprite").GetComponent<Animator>().SetTrigger("Sleep");
-        //GameObject.Find("Farm handler").GetComponent<TimeSystem>().StartCoroutine(GameObject.Find("Farm handler").GetComponent<TimeSystem>().FastClock(Data.CurrentMinute));
         if (Data.CurrentMinute == 719) GameObject.Find("Farm handler").GetComponent<TimeSystem>().StartCoroutine(GameObject.Find("Farm handler").GetComponent<TimeSystem>().TimeTick());
-        MusicHandler.StartTransition(SongType.Night);
+        MusicHandler.StartTransition(SongType.Early);
     }
 
     public IEnumerator TimeTick()
@@ -133,18 +132,6 @@ public class TimeSystem : MonoBehaviour
 
         // New tick
         if (Data.Sleeping || Data.CurrentMinute < 719) StartCoroutine(TimeTick());
-    }
-
-    IEnumerator FastClock(int startMinute)
-    {
-        int i = 0;
-        while (Data.Sleeping)
-        {
-            yield return new WaitForSeconds(Options.Data.MinuteValue / Data.TimeSpeed * 15);
-            ClockHand.transform.eulerAngles = new Vector3(0, 0, -1f * (startMinute + i));
-            i += 15;
-        }
-        ClockHand.transform.eulerAngles = new Vector3(0, 0, -1f * Data.CurrentMinute);
     }
 
     IEnumerator ColorTransition(Color a, Color b)

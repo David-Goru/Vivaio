@@ -8,6 +8,7 @@ using System;
 
 public class MainMenu : MonoBehaviour
 {
+    public AudioSource AudioHandler;
     public Animator CreateGameController;
     public Animator LoadGameController;
     public FileInfo[] SavedGames;
@@ -136,14 +137,21 @@ public class MainMenu : MonoBehaviour
             t.Find("Next").gameObject.SetActive(false);
             t.Find("First part").gameObject.SetActive(false);
             t.Find("Second part").gameObject.SetActive(false);
-            t.Find("Load").gameObject.SetActive(false);
+            t.Find("Game type").Find(Master.GameEdition).Find("Load").gameObject.SetActive(false);
             t.Find("Date").gameObject.SetActive(false);
-            t.Find("Farm name").GetComponent<Text>().text = "No farms found";
+            t.Find("Farm name").GetComponent<Text>().text = Localization.Translations["mainMenu_loadGame_no_farms"];
         }
         else
         {
-            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Farm name").GetComponent<Text>().text = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name) + ",";
-            transform.Find("Load screen").Find("Start animation").Find("Loaded stuff").Find("Date").GetComponent<Text>().text = SavedGames[savedGamesIndex].LastWriteTime.ToString();
+            Transform t = transform.Find("Load screen").Find("Start animation").Find("Loaded stuff");
+            t.Find("Previous").gameObject.SetActive(true);
+            t.Find("Next").gameObject.SetActive(true);
+            t.Find("First part").gameObject.SetActive(true);
+            t.Find("Second part").gameObject.SetActive(true);
+            t.Find("Game type").Find(Master.GameEdition).Find("Load").gameObject.SetActive(true);
+            t.Find("Date").gameObject.SetActive(true);
+            t.Find("Farm name").GetComponent<Text>().text = Path.GetFileNameWithoutExtension(SavedGames[savedGamesIndex].Name) + ",";
+            t.Find("Date").GetComponent<Text>().text = SavedGames[savedGamesIndex].LastWriteTime.ToString();
         }
     }
 
@@ -221,6 +229,12 @@ public class MainMenu : MonoBehaviour
 
         PlayerPrefs.SetString("Edition", edition);
         Master.GameEdition = edition;
+    }
+
+    public void RunSound(AudioClip clip)
+    {
+        AudioHandler.clip = clip;
+        AudioHandler.Play(); 
     }
 
     public void Exit()

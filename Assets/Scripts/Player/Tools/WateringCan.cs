@@ -13,6 +13,7 @@ public class WateringCan : Tool
     public override void UseTool(int amount)
     {
         Remaining -= amount;
+        if (Remaining == 0) Master.RunSoundStatic(Clips[1]);
         Inventory.ChangeObject();
     }
 

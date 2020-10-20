@@ -32,6 +32,7 @@ public class Localization : MonoBehaviour
         Translations.Add("mainMenu_loadFarm", "LOAD FARM");
         Translations.Add("mainMenu_loadGameLetterTextPart1", "Dear farm, I have decided that is time to come back and work harder than ever. I'm sorry for abandoning you,");
         Translations.Add("mainMenu_loadGameLetterTextPart2", "but mistakes where made. I'm a human, you know... I just needed a break. But now, I'm stronger... Just let me help you. Again.");
+        Translations.Add("mainMenu_loadGame_no_farms", "No farms found");
         Translations.Add("Vanilla", "Vanilla");
         Translations.Add("VanillaUnlocked", "Vanilla Edition");
         Translations.Add("VanillaLocked", "Vanilla Edition");

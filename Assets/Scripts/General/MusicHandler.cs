@@ -73,5 +73,6 @@ public enum SongType
     Morning = 0,
     ShopOpen = 1,
     Evening = 2,
-    Night = 3
+    Night = 3,
+    Early = 4
 }

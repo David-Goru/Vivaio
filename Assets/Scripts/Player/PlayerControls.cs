@@ -148,6 +148,7 @@ public class PlayerControls : MonoBehaviour
                 {
                     PlayerControls.DoingAnim = true;
                     StartCoroutine(PlayerControls.DoAnim("Hoe", (Vector2)farmLand.transform.position));
+                    Master.RunSoundStatic(((Tool)Inventory.Data.ObjectInHand).Clips[0]);
 
                     GameObject plowedSoil = Instantiate(Resources.Load<GameObject>("Farm/Plowed soil"), farmLand.transform.position, Quaternion.Euler(0, 0, 0));
                     Transform ground = GameObject.Find("Farm").transform;
@@ -247,7 +248,7 @@ public class PlayerControls : MonoBehaviour
         if (Inventory.Data.ObjectInHand == null) return;
         if (buildScript.enabled) buildScript.CancelBuild();
 
-        GameObject item = Instantiate(Resources.Load<GameObject>("Item"), new Vector2(transform.position.x, transform.position.y - 0.2f), transform.rotation);
+        GameObject item = Instantiate(Resources.Load<GameObject>("Item"), new Vector2(transform.position.x, transform.position.y), transform.rotation);
         item.GetComponent<SpriteRenderer>().sprite = Inventory.InventorySlot.GetComponent<Image>().sprite;
         item.GetComponent<Item>().ItemObject = Inventory.Data.ObjectInHand;
 

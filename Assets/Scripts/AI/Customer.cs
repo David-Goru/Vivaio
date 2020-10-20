@@ -138,6 +138,7 @@ public class Customer
                     MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegisterHandler.CashRegisterModel.transform);
                     if (Trust < 85) Trust++;
                     Master.UpdateBalance(expenses);
+                    Master.RunSoundStatic(CashRegisterHandler.CashRegisterModel.GetComponent<CashRegisterHandler>().Clip);
                 }
                 else if (Trust > 10) Trust--;
                 paid = true;

@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class Tool : IObject
 {
+    [System.NonSerialized]
+    public AudioClip[] Clips;
     [SerializeField]
     public bool OnStand;
 

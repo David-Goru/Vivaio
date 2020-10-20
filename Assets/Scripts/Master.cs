@@ -13,6 +13,7 @@ public class Master : MonoBehaviour
     public static string PlayerName = "Nobody";
     public static bool LoadingGame = false;
     public static GameObject Player;
+    public static AudioSource AudioHandler;
 
     // In-game
     public static GeneralData Data;
@@ -24,6 +25,7 @@ public class Master : MonoBehaviour
         {
             Data = data;
             Player = GameObject.Find("Player");
+            AudioHandler = Player.transform.Find("Camera").GetComponent<AudioSource>();
             GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "€";
         }
         catch (System.Exception e)
@@ -39,6 +41,7 @@ public class Master : MonoBehaviour
     {
         Data = new GeneralData(PlayerName, 2000, 0, 3000, 0, 100, 0, 0, 1);
         Player = GameObject.Find("Player");
+        AudioHandler = Player.transform.Find("Camera").GetComponent<AudioSource>();
         GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "€";
 
         return true;
@@ -60,5 +63,17 @@ public class Master : MonoBehaviour
         uiElement.GetComponent<Text>().text = (money < 0 ? "" : "+") + money + "€";
         uiElement.transform.SetParent(MoneyHandler);
         uiElement.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+    }
+
+    public void RunSound(AudioClip clip)
+    {
+        AudioHandler.clip = clip;
+        AudioHandler.Play(); 
+    }
+
+    public static void RunSoundStatic(AudioClip clip)
+    {
+        AudioHandler.clip = clip;
+        AudioHandler.Play(); 
     }
 }

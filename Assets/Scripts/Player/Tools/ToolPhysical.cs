@@ -5,6 +5,7 @@ public class ToolPhysical : MonoBehaviour
 {
     public string Type;
     public Tool Tool;
+    public AudioClip[] Clips;
 
     // When loading a game
     public void Load()
@@ -13,15 +14,19 @@ public class ToolPhysical : MonoBehaviour
         {
             case "Hoe":
                 Tool = ToolsHolder.Data.Hoe;
+                Tool.Clips = Clips;
                 break;            
             case "Shovel":
                 Tool = ToolsHolder.Data.Shovel;
+                Tool.Clips = Clips;
                 break;            
             case "Watering can":
                 Tool = ToolsHolder.Data.WateringCan;
+                Tool.Clips = Clips;
                 break;            
             case "Basket":
                 Tool = ToolsHolder.Data.Basket;
+                Tool.Clips = Clips;
                 break;
         }
         Tool.Model = gameObject;
@@ -40,6 +45,7 @@ public class ToolPhysical : MonoBehaviour
                 ToolsHolder.Data.Hoe.OnStand = true;
                 ToolsHolder.Data.Hoe.Model = gameObject;
                 Tool = ToolsHolder.Data.Hoe;
+                Tool.Clips = Clips;
                 break;
             case "Shovel":
                 ToolsHolder.Data.Shovel = new Shovel();
@@ -47,6 +53,7 @@ public class ToolPhysical : MonoBehaviour
                 ToolsHolder.Data.Shovel.OnStand = true;
                 ToolsHolder.Data.Shovel.Model = gameObject;
                 Tool = ToolsHolder.Data.Shovel;
+                Tool.Clips = Clips;
                 break;
             case "Watering can":
                 ToolsHolder.Data.WateringCan = new WateringCan();
@@ -55,6 +62,7 @@ public class ToolPhysical : MonoBehaviour
                 ToolsHolder.Data.WateringCan.OnStand = true;
                 ToolsHolder.Data.WateringCan.Model = gameObject;
                 Tool = ToolsHolder.Data.WateringCan;
+                Tool.Clips = Clips;
                 break;
             case "Basket":
                 ToolsHolder.Data.Basket = new Basket();
@@ -64,6 +72,7 @@ public class ToolPhysical : MonoBehaviour
                 ToolsHolder.Data.Basket.OnStand = true;
                 ToolsHolder.Data.Basket.Model = gameObject;
                 Tool = ToolsHolder.Data.Basket;
+                Tool.Clips = Clips;
                 break;
         }
         gameObject.GetComponent<BoxCollider2D>().enabled = true;

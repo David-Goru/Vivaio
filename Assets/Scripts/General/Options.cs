@@ -47,6 +47,15 @@ public class Options : MonoBehaviour
         return true;
     }
 
+    public void CheckCloseOptions()
+    {
+        if (OptionsUI.activeSelf)
+        {
+            ShowOptions(false);
+            Time.timeScale = 1;
+        }
+    }
+
     public void OpenOptions()
     {
         ShowOptions(true);

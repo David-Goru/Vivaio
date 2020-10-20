@@ -37,6 +37,8 @@ public class Gate : BuildableObject
 
     public override void RotateObject()
     {
+        Master.RunSoundStatic(SoundsHandler.RotateObjectStatic);
+
         Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject.SetActive(false);
 
         Rotation++;
