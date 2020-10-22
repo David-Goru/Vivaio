@@ -86,10 +86,11 @@ public class Build : MonoBehaviour
         else if (physicalObject.transform.Find("Obstacle") != null) physicalObject.transform.Find("Obstacle").gameObject.SetActive(true);
         
         Transform tParent;
-        tParent = physicalObject.transform.Find("Vertices");        
+        tParent = physicalObject.transform.Find("Vertices");
+        Vertex v = null;
         foreach (Transform t in tParent)
         {                            
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
             if (v != null)
             {
                 if (boInfo is Floor)
