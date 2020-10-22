@@ -95,6 +95,20 @@ public class ObjectsHandler : MonoBehaviour
 
         Data.Objects.Add(lamp);
 
+        // Add garbage can
+        GarbageCan garbageCan = new GarbageCan("GarbageCan");
+        garbageCan.Placed = true;
+        garbageCan.Model = Instantiate(Resources.Load<GameObject>("Objects/Garbage can"), new Vector2(-11.75f, 9.25f), Quaternion.Euler(0, 0, 0));     
+        garbageCan.WorldPosition = garbageCan.Model.transform.position;  
+
+        foreach (Transform t in garbageCan.Model.transform.Find("Vertices"))
+        {
+            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            v.State = VertexState.Occuppied;
+        }
+
+        Data.Objects.Add(garbageCan);
+
         return true;
     }
 }

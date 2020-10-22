@@ -193,6 +193,13 @@ public class TimeSystem : MonoBehaviour
         DeliverySystem.UpdatePackages();
         DayDisplay.GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
 
+        ((GarbageCan)ObjectsHandler.Data.Objects.Find(x => x.Name == "Garbage can")).Items = new List<IObject>();
+        Transform content = GameObject.Find("UI").transform.Find("Garbage can").Find("Objects").Find("Viewport").Find("Content");
+        foreach (Transform t in content)
+        {
+            Destroy(t.gameObject);
+        }
+
         GameSaver.SaveGame();
     }
 

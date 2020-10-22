@@ -888,6 +888,37 @@ public class ObjectUI : MonoBehaviour
         }
         State = UIState.NONE;
     }
+
+    // Garbage can
+    public void ThrowItem()
+    {
+        if (Inventory.Data.ObjectInHand != null && !(Inventory.Data.ObjectInHand is Tool))
+        {
+            ((GarbageCan)ObjectsHandler.Data.Objects.Find(x => x.Name == "Garbage can")).Items.Add(Inventory.Data.ObjectInHand);
+
+            Transform content = GameObject.Find("UI").transform.Find("Garbage can").Find("Objects").Find("Viewport").Find("Content");
+            GameObject item = Instantiate(Resources.Load<GameObject>("Trash"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+            item.transform.SetParent(content);
+            item.transform.SetAsFirstSibling();
+            item.transform.Find("Image").GetComponent<Image>().sprite = Inventory.InventorySlot.GetComponent<Image>().sprite;
+            item.transform.Find("Name").GetComponent<Text>().text = Inventory.InventoryText.text;
+            IObject trash = Inventory.Data.ObjectInHand;
+            item.GetComponent<Button>().onClick.AddListener(() => GetItemBack(trash, item));
+
+            Inventory.RemoveObject();
+        }
+    }
+
+    public static void GetItemBack(IObject item, GameObject trashIcon)
+    {
+        Destroy(trashIcon);
+        Inventory.AddObject(item);
+    }
+
+    public void CloseGarbageCan()
+    {
+        ObjectsHandler.Data.Objects.Find(x => x.Name == "Garbage can").Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Garbage can closed");
+    }
 }
 
 public enum UIState

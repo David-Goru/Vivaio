@@ -27,6 +27,7 @@ public class Master : MonoBehaviour
             Player = GameObject.Find("Player");
             AudioHandler = Player.transform.Find("Camera").GetComponent<AudioSource>();
             GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "€";
+            GameObject.Find("Farm handler").GetComponent<VersionHandlerGame>().LoadEditionStuff();
         }
         catch (System.Exception e)
         {
@@ -43,6 +44,7 @@ public class Master : MonoBehaviour
         Player = GameObject.Find("Player");
         AudioHandler = Player.transform.Find("Camera").GetComponent<AudioSource>();
         GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "€";
+        GameObject.Find("Farm handler").GetComponent<VersionHandlerGame>().LoadEditionStuff();
 
         return true;
     }

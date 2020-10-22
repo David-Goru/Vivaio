@@ -280,13 +280,6 @@ public class PlayerControls : MonoBehaviour
         letterUI.SetActive(true);
     }
 
-    public void ThrowLetter()
-    {
-        GameObject.Find("UI").transform.Find("Letter").gameObject.SetActive(false);
-        GameObject.Find("UI").transform.Find("Open letter").gameObject.SetActive(false);
-        Inventory.RemoveObject();
-    }
-
     public void TakeScreenshot()
     {
         Camera camera = transform.Find("Camera").gameObject.GetComponent<Camera>();

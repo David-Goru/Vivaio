@@ -6057,7 +6057,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameVersion: Alpha 8
   VersionDate: 29/10/2020
-  SpecialEdition: 0
+  SpecialEdition: 1
 --- !u!4 &1589041282
 Transform:
   m_ObjectHideFlags: 0

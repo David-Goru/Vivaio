@@ -53,6 +53,8 @@ public class Localization : MonoBehaviour
         Translations.Add("cash_register_log_title", "Cash register log");
         Translations.Add("storage_title", "Storage");
         Translations.Add("take_storage_button", "Take storage");
+        Translations.Add("garbage_can_title", "Trash can");
+        Translations.Add("garbage_can_throw_object_button", "Throw object");
 
         // Vegetables
         Translations.Add("Sticks", "Sticks");
@@ -113,6 +115,7 @@ public class Localization : MonoBehaviour
         Translations.Add("HouseLamp", "House lamp");
         Translations.Add("CashRegister", "Cash register");
         Translations.Add("Bed", "Bed");
+        Translations.Add("GarbageCan", "Garbage can");
 
         // Letters
         Translations.Add("grandma_signature", "Grandma");
@@ -201,6 +204,8 @@ public class Localization : MonoBehaviour
     public Text BedText;
     public Text BedButton;
     public Text CashRegisterLogTitle;
+    public Text GarbageCanTitle;
+    public Text GarbageCanThrowButton;
     
     [Header("Storage")]
     public Text StorageTitle;
@@ -273,6 +278,8 @@ public class Localization : MonoBehaviour
         BuildButton.text = Translations["build_button"];
         CancelBuildButton.text = Translations["cancel_build_button"];
         OpenLetterButton.text = Translations["open_letter_button"];
+        GarbageCanTitle.text = Translations["garbage_can_title"];
+        GarbageCanThrowButton.text = Translations["garbage_can_throw_object_button"];
 
         ComposterTitle.text = Translations["composter_title"];
         ComposterTake.text = Translations["compsoter_take"];
