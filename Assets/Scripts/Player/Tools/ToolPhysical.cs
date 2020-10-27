@@ -85,12 +85,12 @@ public class ToolPhysical : MonoBehaviour
             if (Inventory.Data.ObjectInHand == null)
             {
                 Tool.TakeTool();
-                transform.Find("Text").gameObject.SetActive(false);
+                transform.Find("Take").gameObject.SetActive(false);
             }
             else if (Inventory.Data.ObjectInHand is Tool)
             {
+                transform.parent.Find(Inventory.Data.ObjectInHand.Name).Find("Leave").gameObject.SetActive(false);
                 ((Tool)Inventory.Data.ObjectInHand).LetTool();
-                transform.parent.Find("Let").gameObject.SetActive(false);
             }
         }
     }
@@ -99,19 +99,29 @@ public class ToolPhysical : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject()) 
         {
-            if (Inventory.Data.ObjectInHand == null) transform.Find("Text").gameObject.SetActive(true);
-            else if (Inventory.Data.ObjectInHand is Tool) transform.parent.Find("Let").gameObject.SetActive(true);
+            if (Inventory.Data.ObjectInHand == null) 
+            {
+                if (Tool.OnStand) transform.Find("Take").gameObject.SetActive(true);
+            }
+            else if (Inventory.Data.ObjectInHand is Tool)
+            {
+                transform.parent.Find(Inventory.Data.ObjectInHand.Name).Find("Leave").gameObject.SetActive(true);
+            }
         }
         if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 1.5f)
         {
-            transform.Find("Text").gameObject.SetActive(false);
-            transform.parent.Find("Let").gameObject.SetActive(false);
+            transform.Find("Take").gameObject.SetActive(false);
+            if (Inventory.Data.ObjectInHand != null && Inventory.Data.ObjectInHand is Tool)
+                transform.parent.Find(Inventory.Data.ObjectInHand.Name).Find("Leave").gameObject.SetActive(false);
         }
     }
 
     void OnMouseExit()
     {
-        if (transform.Find("Text").gameObject.activeSelf) transform.Find("Text").gameObject.SetActive(false);
-        if (transform.parent.Find("Let").gameObject.activeSelf) transform.parent.Find("Let").gameObject.SetActive(false);
+        if (transform.Find("Take").gameObject.activeSelf) transform.Find("Take").gameObject.SetActive(false);
+        if (transform.parent.Find("Hoe").Find("Leave").gameObject.activeSelf) transform.parent.Find("Hoe").Find("Leave").gameObject.SetActive(false);
+        if (transform.parent.Find("Shovel").Find("Leave").gameObject.activeSelf) transform.parent.Find("Shovel").Find("Leave").gameObject.SetActive(false);
+        if (transform.parent.Find("Watering can").Find("Leave").gameObject.activeSelf) transform.parent.Find("Watering can").Find("Leave").gameObject.SetActive(false);
+        if (transform.parent.Find("Basket").Find("Leave").gameObject.activeSelf) transform.parent.Find("Basket").Find("Leave").gameObject.SetActive(false);
     }
 }

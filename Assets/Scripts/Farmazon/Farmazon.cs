@@ -83,17 +83,17 @@ public class Farmazon : MonoBehaviour
 
         amount = 0;
         ItemUI.transform.Find("Item").Find("Amount info").Find("Amount").GetComponent<Text>().text = "0";
-        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = "0$";
+        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = "0€";
 
         ItemUI.transform.Find("Item").gameObject.SetActive(true);
         if (selectedItem.Use == "Seed")
         {
-            ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = itemName + " seeds"; 
+            ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = Localization.Translations[FarmazonItems[itemName].TranslationKey]; 
             ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + itemName + " seeds").Icon;
         }
         else 
         {
-            ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = itemName;
+            ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = Localization.Translations[FarmazonItems[itemName].TranslationKey];
             ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + itemName).Icon;
         }
         ItemUI.transform.Find("Item").Find("Description").GetComponent<Text>().text = selectedItem.Description;
@@ -105,14 +105,14 @@ public class Farmazon : MonoBehaviour
         if (amount >= 99) return;
         amount++;
         ItemUI.transform.Find("Item").Find("Amount info").Find("Amount").GetComponent<Text>().text = amount.ToString();
-        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "$";
+        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "€";
     }
     public void RemoveAmount()
     {
         if (amount <= 0) return;
         amount--;
         ItemUI.transform.Find("Item").Find("Amount info").Find("Amount").GetComponent<Text>().text = amount.ToString();
-        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "$";
+        ItemUI.transform.Find("Item").Find("Amount info").Find("Price").GetComponent<Text>().text = (amount * selectedItem.Price) + "€";
     }
 
     public void AddToCart()
@@ -128,7 +128,7 @@ public class Farmazon : MonoBehaviour
 
     public void OpenCart()
     {
-        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "$";
+        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "€";
 
         Transform content = transform.Find("Chart").Find("Viewport").Find("Content");
 
@@ -147,15 +147,15 @@ public class Farmazon : MonoBehaviour
             FarmazonItem fi = FarmazonItems[item.Item];
             if (fi.Use == "Seed")
             {
-                itemObject.transform.Find("Name").GetComponent<Text>().text = fi.Name + " seeds";
+                itemObject.transform.Find("Name").GetComponent<Text>().text = Localization.Translations[fi.TranslationKey];
                 itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + fi.Name + " seeds").Icon;
             }
             else
             {
-                itemObject.transform.Find("Name").GetComponent<Text>().text = fi.Name;
+                itemObject.transform.Find("Name").GetComponent<Text>().text = Localization.Translations[fi.TranslationKey];
                 itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + fi.Name).Icon;
             }
-            itemObject.transform.Find("Price").GetComponent<Text>().text = item.Amount + "u (" + item.Amount * fi.Price + "$)";
+            itemObject.transform.Find("Price").GetComponent<Text>().text = item.Amount + "u (" + item.Amount * fi.Price + "€)";
             itemObject.transform.SetParent(content, false);
         }
     }
@@ -163,7 +163,7 @@ public class Farmazon : MonoBehaviour
     public void RemoveItem(CartItem item)
     {
         TotalPrice -= item.Amount * FarmazonItems[item.Item].Price;
-        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "$";
+        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = TotalPrice + "€";
         item.RemoveIt();
         CheckState();
     }
@@ -234,6 +234,6 @@ public class Farmazon : MonoBehaviour
 
         Master.UpdateBalance(-TotalPrice);
         TotalPrice = 0;
-        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = "0$";
+        transform.Find("Chart info").Find("Price").GetComponent<Text>().text = "0€";
     }
 }

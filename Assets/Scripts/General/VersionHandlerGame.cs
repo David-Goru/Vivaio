@@ -9,6 +9,8 @@ public class VersionHandlerGame : MonoBehaviour
     [Header("Halloween")]
     public RuntimeAnimatorController PlayerHalloweenController;
     public Sprite HouseExperiorHalloween;
+    public GameObject InitialModuleHalloween;
+    public GameObject LastModuleHalloween;
 
     public void LoadEditionStuff()
     {
@@ -16,6 +18,8 @@ public class VersionHandlerGame : MonoBehaviour
         {
             Master.Player.GetComponent<Animator>().runtimeAnimatorController = PlayerHalloweenController;
             HouseExterior.sprite = HouseExperiorHalloween;
+            InitialModuleHalloween.SetActive(true);
+            LastModuleHalloween.SetActive(true);
         }
     }
 }

@@ -16,19 +16,21 @@ public class Management : MonoBehaviour
         {
             Data = data;
 
+            GameObject module;
             for (int i = 0; i < data.ExpansionLevel; i++)
             {
                 Vector2 pos = new Vector2(-10.25f, 3.375f - i * 2.5f);
-                Instantiate(Resources.Load("Middle module"), pos, Quaternion.Euler(0, 0, 0));
+                module = Instantiate<GameObject>(Resources.Load<GameObject>("Middle module"), pos, Quaternion.Euler(0, 0, 0));
+                if (Master.GameEdition == "Halloween") module.transform.Find("HW").gameObject.SetActive(true);
             }
 
             GameObject.Find("Environment").transform.Find("Last module").position = new Vector2(-10.25f, 3.375f - data.ExpansionLevel * 2.5f);
 
             ManagementUI = GameObject.Find("UI").transform.Find("Management").gameObject;
-            ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}$.", 4500 + 1500 * data.ExpansionLevel);
-            ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}$", 4500 + 1500 * data.ExpansionLevel);
-            ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
-            ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
+            ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format(Localization.Translations["management_expansion_text"], 4500 + 1500 * data.ExpansionLevel);
+            ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_expand_warning"], 4500 + 1500 * data.ExpansionLevel);
+            ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format(Localization.Translations["management_remaining_debt"], Master.Data.Debt);
+            ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_pay_debt_warning"], Master.Data.Debt);
 
             if (Master.Data.Debt > 0) ManagementUI.transform.Find("Debt").gameObject.SetActive(true);
             else ManagementUI.transform.Find("Expansion").gameObject.SetActive(true);
@@ -50,10 +52,10 @@ public class Management : MonoBehaviour
         Data.ExpandField = false;
 
         ManagementUI = GameObject.Find("UI").transform.Find("Management").gameObject;
-        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}$.", 4500 + 1500 * Data.ExpansionLevel);
-        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}$", 4500 + 1500 * Data.ExpansionLevel);
-        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
-        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
+        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format(Localization.Translations["management_expansion_text"], 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_expand_warning"], 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format(Localization.Translations["management_remaining_debt"], Master.Data.Debt);
+        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_pay_debt_warning"], Master.Data.Debt);
 
         ManagementUI.transform.Find("Debt").gameObject.SetActive(true);
 
@@ -68,7 +70,7 @@ public class Management : MonoBehaviour
         Master.Data.LastDayDebt = Master.Data.Debt;
         Master.Data.Debt = 0;
 
-        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Debt paid!");
+        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = Localization.Translations["management_debt_paid"];
         ManagementUI.transform.Find("Debt").gameObject.SetActive(false);
         ManagementUI.transform.Find("Expansion").gameObject.SetActive(true);
     }
@@ -81,7 +83,7 @@ public class Management : MonoBehaviour
         Master.Data.Debt = cost;
         Data.ExpandField = true;
 
-        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = "Your farm will be expanded 5 blocks tomorrow.";
+        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = Localization.Translations["management_expand_announcement"];
         ManagementUI.transform.Find("Expansion").Find("Expand button").gameObject.SetActive(false);
     }
 
@@ -145,10 +147,10 @@ public class Management : MonoBehaviour
             v.UpdateCons();
         }
 
-        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
-        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
-        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format("You can make your farm 5 blocks bigger for {0}$.", 4500 + 1500 * Data.ExpansionLevel);
-        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format("New debt: {0}$", 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format(Localization.Translations["management_remaining_debt"], Master.Data.Debt);
+        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_pay_debt_warning"], Master.Data.Debt);
+        ManagementUI.transform.Find("Expansion").Find("Expansion text").GetComponent<Text>().text = string.Format(Localization.Translations["management_expansion_text"], 4500 + 1500 * Data.ExpansionLevel);
+        ManagementUI.transform.Find("Expansion").Find("Expand button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_expand_warning"], 4500 + 1500 * Data.ExpansionLevel);
         ManagementUI.transform.Find("Expansion").Find("Expand button").gameObject.SetActive(true);
         ManagementUI.transform.Find("Expansion").gameObject.SetActive(false);
         ManagementUI.transform.Find("Debt").gameObject.SetActive(true);
@@ -157,7 +159,7 @@ public class Management : MonoBehaviour
 
     public static void UpdateDebt()
     {
-        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format("Remaining debt: {0}$.", Master.Data.Debt);
-        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format("-{0}$", Master.Data.Debt);
+        ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format(Localization.Translations["management_remaining_debt"], Master.Data.Debt);
+        ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_pay_debt_warning"], Master.Data.Debt);
     }
 }

@@ -75,7 +75,7 @@ public class Options : MonoBehaviour
 
         GameObject.Find("Player").transform.Find("Camera").GetComponent<Camera>().orthographicSize = (float)Screen.currentResolution.height / 64 / 8;
         
-        OptionsUI.transform.Find("Day duration").Find("Explanation").GetComponent<Text>().text = string.Format("Current: {0} (1 in-game minute lasts {0} real seconds)", Data.MinuteValue); 
+        OptionsUI.transform.Find("Day duration").Find("Explanation").GetComponent<Text>().text = string.Format(Localization.Translations["options_current_day_duration"], Data.MinuteValue); 
         
         if(!Directory.Exists(Options.Data.DataPath + "/Saves/")) 
         {
@@ -89,7 +89,7 @@ public class Options : MonoBehaviour
     public void ChangeMinuteValue(float value)
     {
         Data.MinuteValue = value;
-        OptionsUI.transform.Find("Day duration").Find("Explanation").GetComponent<Text>().text = string.Format("Current: {0} (1 in-game minute lasts {0} real seconds)", Data.MinuteValue);
+        OptionsUI.transform.Find("Day duration").Find("Explanation").GetComponent<Text>().text = string.Format(Localization.Translations["options_current_day_duration"], Data.MinuteValue);
     } 
 
     public void ChangeFullScreen()

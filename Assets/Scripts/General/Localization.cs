@@ -56,6 +56,42 @@ public class Localization : MonoBehaviour
         Translations.Add("garbage_can_title", "Trash can");
         Translations.Add("garbage_can_throw_object_button", "Throw object");
 
+        // Options UI
+        Translations.Add("Options", "Options");
+        Translations.Add("options_set_day_duration", "Set day duration");
+        Translations.Add("options_current_day_duration", "Current: {0} (1 in-game minute lasts {0} real seconds)");
+        Translations.Add("options_fullscreen", "Fullscreen");
+        Translations.Add("options_change_res", "Change resolution");
+        Translations.Add("options_choose_res", "Choose resolution");
+        Translations.Add("options_volume", "Volume");
+        Translations.Add("options_back_main_menu", "Back to main menu");
+        Translations.Add("options_back_main_menu_conf", "Leave");
+        Translations.Add("options_leave_game", "Leave game");
+        Translations.Add("options_leave_game_conf", "Leave");
+        Translations.Add("options_unsaved_data_warning", "Unsaved data will be lost");
+        Translations.Add("options_are_you_sure_warning", "Are you sure?");
+
+        // Management UI
+        Translations.Add("Management", "Management");
+        Translations.Add("management_remaining_debt", "Remaining debt: {0}€.");
+        Translations.Add("management_pay_debt", "Pay debt now");
+        Translations.Add("management_pay_debt_warning", "-{0}€");
+        Translations.Add("management_debt_paid", "Debt paid!");
+        Translations.Add("management_expansion_text", "You can make your farm 5 blocks bigger for {0}€.");
+        Translations.Add("management_expand", "Expand");
+        Translations.Add("management_expand_warning", "New debt: {0}€");
+        Translations.Add("management_expand_announcement", "Your farm will be expanded 5 blocks tomorrow.");
+
+        // Farmazon UI
+        Translations.Add("Farmazon", "Farmazon");
+        Translations.Add("farmazon_select_item", "Select an item");
+        Translations.Add("farmazon_show_cart", "Show cart");
+        Translations.Add("farmazon_total_price", "Total price");
+        Translations.Add("farmazon_terms_and_conditions", "By buying, you agree to Farmazon's Conditions of Use and Privacy Notice.\nTaxes are calculated depending on your location.\nFarmazon does not support refunds. If you find any problems with the item(s) bought, just buy them again!");
+        Translations.Add("farmazon_buy", "Buy");
+        Translations.Add("farmazon_add_to_cart", "Add to cart");
+        Translations.Add("farmazon_back_to_shop", "Back to shop");
+
         // Vegetables
         Translations.Add("Sticks", "Sticks");
         Translations.Add("Carrot", "Carrot");
@@ -206,6 +242,37 @@ public class Localization : MonoBehaviour
     public Text CashRegisterLogTitle;
     public Text GarbageCanTitle;
     public Text GarbageCanThrowButton;
+
+    [Header("Options")]
+    public Text OptionsTitle;
+    public Text OptionsSetDayDuration;
+    public Text OptionsFullscreen;
+    public Text OptionsChangeRes;
+    public Text OptionsChooseRes;
+    public Text OptionsVolume;
+    public Text OptionsBackMenu;
+    public Text OptionsBackMenuConf;
+    public Text OptionsLeaveGame;
+    public Text OptionsLeaveGameConf;
+    public Text OptionsUnsavedDataWarning1;
+    public Text OptionsUnsavedDataWarning2;
+    public Text OptionsUnsavedDataWarning3;
+    public Text OptionsUnsavedDataWarning4;
+
+    [Header("Management")]
+    public Text ManagementTitle;
+    public Text ManagementPayDebt;
+    public Text ManagementExpand;
+
+    [Header("Farmazon")]
+    public Text FarmazonTitle;
+    public Text FarmazonSelectItem;
+    public Text FarmazonShowCart;
+    public Text FarmazonTotalPrice;
+    public Text FarmazonTermsAndConditions;
+    public Text FarmazonBuy;
+    public Text FarmazonAddToCart;
+    public Text FarmazonBackToShop;
     
     [Header("Storage")]
     public Text StorageTitle;
@@ -280,6 +347,34 @@ public class Localization : MonoBehaviour
         OpenLetterButton.text = Translations["open_letter_button"];
         GarbageCanTitle.text = Translations["garbage_can_title"];
         GarbageCanThrowButton.text = Translations["garbage_can_throw_object_button"];
+
+        OptionsTitle.text = Translations["Options"];
+        OptionsSetDayDuration.text = Translations["options_set_day_duration"];
+        OptionsFullscreen.text = Translations["options_fullscreen"];
+        OptionsChangeRes.text = Translations["options_change_res"];
+        OptionsChooseRes.text = Translations["options_choose_res"];
+        OptionsVolume.text = Translations["options_volume"];
+        OptionsBackMenu.text = Translations["options_back_main_menu"];
+        OptionsBackMenuConf.text = Translations["options_back_main_menu_conf"];
+        OptionsLeaveGame.text = Translations["options_leave_game"];
+        OptionsLeaveGameConf.text = Translations["options_leave_game_conf"];
+        OptionsUnsavedDataWarning1.text = Translations["options_unsaved_data_warning"];
+        OptionsUnsavedDataWarning2.text = Translations["options_unsaved_data_warning"];
+        OptionsUnsavedDataWarning3.text = Translations["options_are_you_sure_warning"];
+        OptionsUnsavedDataWarning4.text = Translations["options_are_you_sure_warning"];
+        
+        ManagementTitle.text = Translations["Management"];
+        ManagementPayDebt.text = Translations["management_pay_debt"];
+        ManagementExpand.text = Translations["management_expand"];
+
+        FarmazonTitle.text = Translations["Farmazon"];
+        FarmazonSelectItem.text = Translations["farmazon_select_item"];
+        FarmazonShowCart.text = Translations["farmazon_show_cart"];
+        FarmazonTotalPrice.text = Translations["farmazon_total_price"];
+        FarmazonTermsAndConditions.text = Translations["farmazon_terms_and_conditions"];
+        FarmazonBuy.text = Translations["farmazon_buy"];
+        FarmazonAddToCart.text = Translations["farmazon_add_to_cart"];
+        FarmazonBackToShop.text = Translations["farmazon_back_to_shop"];
 
         ComposterTitle.text = Translations["composter_title"];
         ComposterTake.text = Translations["compsoter_take"];
