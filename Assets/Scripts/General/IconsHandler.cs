@@ -19,7 +19,7 @@ public class IconsHandler : MonoBehaviour
             GameObject noneIcon = Instantiate(Resources.Load<GameObject>("UI/Icon"), iconsView.position, iconsView.rotation);
             noneIcon.GetComponent<Image>().sprite = Icons[0].Sprite;
             noneIcon.GetComponent<Button>().onClick.AddListener(() => ObjectUI.ChooseIcon(Icons[0].Name));
-            noneIcon.transform.SetParent(iconsView);
+            noneIcon.transform.SetParent(iconsView, false);
 
             DirectoryInfo icons = new DirectoryInfo(Application.dataPath + "/Data/Icons/");
             foreach (FileInfo f in icons.GetFiles())
@@ -37,7 +37,7 @@ public class IconsHandler : MonoBehaviour
                 GameObject g = Instantiate(Resources.Load<GameObject>("UI/Icon"), iconsView.position, iconsView.rotation);
                 g.GetComponent<Image>().sprite = iconSprite;
                 g.GetComponent<Button>().onClick.AddListener(() => ObjectUI.ChooseIcon(i.Name));
-                g.transform.SetParent(iconsView);
+                g.transform.SetParent(iconsView, false);
 
                 Icons.Add(i);
             }

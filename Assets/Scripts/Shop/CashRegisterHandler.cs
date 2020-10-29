@@ -63,7 +63,7 @@ public class CashRegisterHandler : MonoBehaviour
         for (int i = Data.CashLog.Count - 1; i >= 0; i--)
         {
             GameObject ticket = Instantiate(Resources.Load<GameObject>("Shop/Ticket"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-            ticket.transform.SetParent(content);
+            ticket.transform.SetParent(content, false);
             ticket.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<Sprite>("Shop/Customer photos/" + Data.CashLog[i].Consumer);
             ticket.transform.Find("Name").GetComponent<Text>().text = Data.CashLog[i].Consumer;
             ticket.transform.Find("Date").GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Data.CashLog[i].Day);

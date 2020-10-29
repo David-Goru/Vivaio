@@ -67,7 +67,7 @@ public class GameSaver : MonoBehaviour
         file.Close();
 
         GameObject uiElement = Instantiate<GameObject>(Resources.Load<GameObject>("UI/Game saved"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-        uiElement.transform.SetParent(GameObject.Find("UI").transform);
+        uiElement.transform.SetParent(GameObject.Find("UI").transform, false);
         uiElement.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
         uiElement.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
     }

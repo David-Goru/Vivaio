@@ -13,12 +13,12 @@ public class Build : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R) && boInfo != null && physicalObject != null) boInfo.RotateObject();
+
         checkPosition(new Vector2(Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).x * 4.0f) / 4.0f,     // Vertex position X
                                   Mathf.Round(Camera.main.ScreenToWorldPoint(Input.mousePosition).y * 4.0f) / 4.0f));   // Vertex position Y
 
         if (Input.GetMouseButtonDown(0) && buildable && !EventSystem.current.IsPointerOverGameObject()) placeObject();  // Build/place object
-
-        if (Input.GetKeyDown(KeyCode.R) && boInfo != null && physicalObject != null) boInfo.RotateObject();
     }
 
     void checkPosition(Vector2 pos)

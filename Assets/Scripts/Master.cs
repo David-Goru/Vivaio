@@ -63,7 +63,7 @@ public class Master : MonoBehaviour
 
         GameObject uiElement = Instantiate<GameObject>(Resources.Load<GameObject>("UI/Money " + (money < 0 ? "removed" : "added")), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
         uiElement.GetComponent<Text>().text = (money < 0 ? "" : "+") + money + "€";
-        uiElement.transform.SetParent(MoneyHandler);
+        uiElement.transform.SetParent(MoneyHandler, false);
         uiElement.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
     }
 

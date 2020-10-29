@@ -47,12 +47,12 @@ public class MusicHandler : MonoBehaviour
         AudioSource.Play();
 
         // Fade in
-        while(AudioSource.volume < Options.Data.Volume)
+        while(AudioSource.volume < Options.Data.MusicVolume)
         {
             AudioSource.volume += (float)(FadeRate * Time.deltaTime);
             yield return new WaitForSeconds(0.01f);
         }
-        AudioSource.volume = Options.Data.Volume;
+        AudioSource.volume = Options.Data.MusicVolume;
     }
 }
 

@@ -14,6 +14,8 @@ public class SoundsHandler : MonoBehaviour
     public static AudioClip MoveObjectStatic;
     public AudioClip RotateObject;
     public static AudioClip RotateObjectStatic;
+    public AudioClip OpenGarbage;
+    public static AudioClip OpenGarbageStatic;
 
     void Start()
     {
@@ -22,5 +24,6 @@ public class SoundsHandler : MonoBehaviour
         PlaceObjectStatic = PlaceObject;
         MoveObjectStatic = MoveObject;
         RotateObjectStatic = RotateObject;
+        OpenGarbageStatic = OpenGarbage;
     }
 }

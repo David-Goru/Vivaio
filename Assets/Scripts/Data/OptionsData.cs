@@ -16,5 +16,7 @@ public class OptionsData
     [SerializeField]
     public bool FullScreen;
     [SerializeField]
-    public float Volume;
+    public float MusicVolume;
+    [SerializeField]
+    public float SoundsVolume;
 }

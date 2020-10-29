@@ -3836,6 +3836,35 @@ MonoBehaviour:
   BedText: {fileID: 0}
   BedButton: {fileID: 0}
   CashRegisterLogTitle: {fileID: 0}
+  GarbageCanTitle: {fileID: 0}
+  GarbageCanThrowButton: {fileID: 0}
+  OptionsTitle: {fileID: 0}
+  OptionsSetDayDuration: {fileID: 0}
+  OptionsFullscreen: {fileID: 0}
+  OptionsChangeRes: {fileID: 0}
+  OptionsChooseRes: {fileID: 0}
+  OptionsVolume: {fileID: 0}
+  OptionsVolumeMusic: {fileID: 0}
+  OptionsVolumeSounds: {fileID: 0}
+  OptionsBackMenu: {fileID: 0}
+  OptionsBackMenuConf: {fileID: 0}
+  OptionsLeaveGame: {fileID: 0}
+  OptionsLeaveGameConf: {fileID: 0}
+  OptionsUnsavedDataWarning1: {fileID: 0}
+  OptionsUnsavedDataWarning2: {fileID: 0}
+  OptionsUnsavedDataWarning3: {fileID: 0}
+  OptionsUnsavedDataWarning4: {fileID: 0}
+  ManagementTitle: {fileID: 0}
+  ManagementPayDebt: {fileID: 0}
+  ManagementExpand: {fileID: 0}
+  FarmazonTitle: {fileID: 0}
+  FarmazonSelectItem: {fileID: 0}
+  FarmazonShowCart: {fileID: 0}
+  FarmazonTotalPrice: {fileID: 0}
+  FarmazonTermsAndConditions: {fileID: 0}
+  FarmazonBuy: {fileID: 0}
+  FarmazonAddToCart: {fileID: 0}
+  FarmazonBackToShop: {fileID: 0}
   StorageTitle: {fileID: 0}
   TakeStorageButton: {fileID: 0}
   ComposterTitle: {fileID: 0}

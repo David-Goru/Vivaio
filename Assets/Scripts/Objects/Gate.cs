@@ -40,11 +40,12 @@ public class Gate : BuildableObject
         Master.RunSoundStatic(SoundsHandler.RotateObjectStatic);
 
         Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject.SetActive(false);
+        Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = Color.white;
 
         Rotation++;
         if (Rotation == 4) Rotation = 0;
 
-        GameObject gateState = Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject;        
+        GameObject gateState = Model.transform.Find("Rotation " + Rotation).Find(Opened ? "Open" : "Closed").gameObject;
         gateState.SetActive(true);
 
         Model.GetComponent<BoxCollider2D>().offset = gateState.GetComponent<BoxCollider2D>().offset;

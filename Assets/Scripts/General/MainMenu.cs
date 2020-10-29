@@ -62,7 +62,7 @@ public class MainMenu : MonoBehaviour
         Master.SpecialEdition = GameObject.Find("Version Handler").GetComponent<VersionHandler>().SpecialEdition;
 
         // Special Edition
-        if (PlayerPrefs.GetString("Edition") != null)
+        if (PlayerPrefs.GetString("Edition", "None") != "None")
         {
             Master.GameEdition = PlayerPrefs.GetString("Edition");
             

@@ -39,7 +39,8 @@ public class Options : MonoBehaviour
         Data.FPS = 60;  
         Data.MinuteValue = 1;
         Data.FullScreen = Screen.fullScreen;
-        Data.Volume = 0.25f;
+        Data.MusicVolume = 0.25f;
+        Data.SoundsVolume = 0.5f;
 
         OptionsUI = GameObject.Find("UI").transform.Find("Options").gameObject;
         SetOptions();
@@ -83,7 +84,8 @@ public class Options : MonoBehaviour
             Directory.CreateDirectory(Options.Data.DataPath + "/Screenshots/");
         }
 
-        OptionsUI.transform.Find("Volume").GetComponent<Slider>().value = Data.Volume;
+        OptionsUI.transform.Find("Volume").Find("Music volume").GetComponent<Slider>().value = Data.MusicVolume;
+        OptionsUI.transform.Find("Volume").Find("Sounds volume").GetComponent<Slider>().value = Data.SoundsVolume;
     }
 
     public void ChangeMinuteValue(float value)
@@ -163,10 +165,16 @@ public class Options : MonoBehaviour
         Screen.SetResolution(Data.Width, Data.Height, Data.FullScreen);
     }
 
-    public void ChangeVolume()
+    public void ChangeMusicVolume()
     {
-        Data.Volume = OptionsUI.transform.Find("Volume").GetComponent<Slider>().value;
-        GameObject.Find("Music handler").GetComponent<AudioSource>().volume = Data.Volume;
+        Data.MusicVolume = OptionsUI.transform.Find("Volume").Find("Music volume").GetComponent<Slider>().value;
+        GameObject.Find("Music handler").GetComponent<AudioSource>().volume = Data.MusicVolume;
+    }
+
+    public void ChangeSoundsVolume()
+    {
+        Data.SoundsVolume = OptionsUI.transform.Find("Volume").Find("Sounds volume").GetComponent<Slider>().value;
+        GameObject.Find("Player").transform.Find("Camera").GetComponent<AudioSource>().volume = Data.SoundsVolume;
     }
 
     public void LeaveGame()
@@ -176,6 +184,7 @@ public class Options : MonoBehaviour
 
     public void BackToMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("Main menu");
     }
 }

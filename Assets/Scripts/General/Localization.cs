@@ -64,6 +64,8 @@ public class Localization : MonoBehaviour
         Translations.Add("options_change_res", "Change resolution");
         Translations.Add("options_choose_res", "Choose resolution");
         Translations.Add("options_volume", "Volume");
+        Translations.Add("options_volume_music", "Music");
+        Translations.Add("options_volume_sounds", "Sounds");
         Translations.Add("options_back_main_menu", "Back to main menu");
         Translations.Add("options_back_main_menu_conf", "Leave");
         Translations.Add("options_leave_game", "Leave game");
@@ -250,6 +252,8 @@ public class Localization : MonoBehaviour
     public Text OptionsChangeRes;
     public Text OptionsChooseRes;
     public Text OptionsVolume;
+    public Text OptionsVolumeMusic;
+    public Text OptionsVolumeSounds;
     public Text OptionsBackMenu;
     public Text OptionsBackMenuConf;
     public Text OptionsLeaveGame;
@@ -354,6 +358,8 @@ public class Localization : MonoBehaviour
         OptionsChangeRes.text = Translations["options_change_res"];
         OptionsChooseRes.text = Translations["options_choose_res"];
         OptionsVolume.text = Translations["options_volume"];
+        OptionsVolumeMusic.text = Translations["options_volume_music"];
+        OptionsVolumeSounds.text = Translations["options_volume_sounds"];
         OptionsBackMenu.text = Translations["options_back_main_menu"];
         OptionsBackMenuConf.text = Translations["options_back_main_menu_conf"];
         OptionsLeaveGame.text = Translations["options_leave_game"];

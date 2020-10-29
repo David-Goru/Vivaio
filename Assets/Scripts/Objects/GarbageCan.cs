@@ -18,5 +18,6 @@ public class GarbageCan : BuildableObject
         GameObject.Find("UI").transform.Find("Garbage can").gameObject.SetActive(true);
         Model.GetComponent<GarbageCanHandler>().enabled = true;
         Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Garbage can open");
+        Master.RunSoundStatic(SoundsHandler.OpenGarbageStatic);
     }
 }
