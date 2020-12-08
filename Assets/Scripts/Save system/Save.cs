@@ -21,7 +21,7 @@ public class Save
     public MapData MapData;
 
     // Vertex system
-    public List<Vertex> Vertices;
+    public Vertex[,] GridInfo;
 
     // Farm system
     public FarmData FarmData;

@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class Options : MonoBehaviour
 {
     public static OptionsData Data;
-
     public static GameObject OptionsUI;
 
     // When loading a game
@@ -20,6 +19,19 @@ public class Options : MonoBehaviour
 
             OptionsUI = GameObject.Find("UI").transform.Find("Options").gameObject;  
             SetOptions();
+
+            foreach (ISlot slot in Data.TopBarButtons)
+            {
+                slot.Slot = GameObject.Find("UI").transform.Find("Top buttons bar").Find("Slots").Find(slot.SlotName).gameObject;
+                slot.Initialize();
+            }
+
+            if (Data.TopBarCollapsed)
+            {
+                GameObject.Find("UI").transform.Find("Top buttons bar").Find("Buttons").GetComponent<HideShowButtons>().Collapse();
+                GameObject.Find("UI").transform.Find("Top buttons bar").Find("Extended").gameObject.SetActive(false);
+                GameObject.Find("UI").transform.Find("Top buttons bar").Find("Collapsed").gameObject.SetActive(true);
+            }
         }
         catch (System.Exception e)
         {
@@ -41,9 +53,22 @@ public class Options : MonoBehaviour
         Data.FullScreen = Screen.fullScreen;
         Data.MusicVolume = 0.25f;
         Data.SoundsVolume = 0.5f;
+        Data.TopBarCollapsed = false;
 
         OptionsUI = GameObject.Find("UI").transform.Find("Options").gameObject;
         SetOptions();
+
+        // Top bar buttons
+        Data.TopBarButtons = new List<ISlot>();
+        string[] buttons = new string[5] {"Options button", "Farmazon button", "Management button", "Tutorial button", "Shop button"}; 
+        int buttonNumber = 0;
+        foreach (Transform t in GameObject.Find("UI").transform.Find("Top buttons bar").Find("Slots"))
+        {
+            ISlot slot = new ISlot(buttons[buttonNumber], t.gameObject);
+            buttonNumber++;
+            Data.TopBarButtons.Add(slot);
+            slot.Initialize();
+        }
 
         return true;
     }

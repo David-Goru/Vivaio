@@ -56,9 +56,16 @@ public class Localization : MonoBehaviour
         Translations.Add("garbage_can_title", "Trash can");
         Translations.Add("garbage_can_throw_object_button", "Throw object");
 
+        // Top bar buttons
+        Translations.Add("options_tooltip", "Options");
+        Translations.Add("farmazon_tooltip", "Farmazon");
+        Translations.Add("management_tooltip", "Management");
+        Translations.Add("tutorial_tooltip", "Tutorial");
+        Translations.Add("shop_tooltip", "Shop");
+
         // Options UI
         Translations.Add("Options", "Options");
-        Translations.Add("options_set_day_duration", "Set day duration");
+        Translations.Add("options_set_day_duration", "Set day speed");
         Translations.Add("options_current_day_duration", "Current: {0} (1 in-game minute lasts {0} real seconds)");
         Translations.Add("options_fullscreen", "Fullscreen");
         Translations.Add("options_change_res", "Change resolution");
@@ -245,6 +252,13 @@ public class Localization : MonoBehaviour
     public Text GarbageCanTitle;
     public Text GarbageCanThrowButton;
 
+    [Header("Top bar buttons")]
+    public Text OptionsTooltip;
+    public Text FarmazonTooltip;
+    public Text ManagementTooltip;
+    public Text TutorialTooltip;
+    public Text ShopTooltip;
+
     [Header("Options")]
     public Text OptionsTitle;
     public Text OptionsSetDayDuration;
@@ -351,6 +365,12 @@ public class Localization : MonoBehaviour
         OpenLetterButton.text = Translations["open_letter_button"];
         GarbageCanTitle.text = Translations["garbage_can_title"];
         GarbageCanThrowButton.text = Translations["garbage_can_throw_object_button"];
+
+        OptionsTooltip.text = Translations["options_tooltip"];
+        FarmazonTooltip.text = Translations["farmazon_tooltip"];
+        ManagementTooltip.text = Translations["management_tooltip"];
+        TutorialTooltip.text = Translations["tutorial_tooltip"];
+        ShopTooltip.text = Translations["shop_tooltip"];
 
         OptionsTitle.text = Translations["Options"];
         OptionsSetDayDuration.text = Translations["options_set_day_duration"];

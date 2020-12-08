@@ -114,7 +114,7 @@ public class Customer
 
         if (nextStand == null)
         {
-            path = VertexSystem.Route(body.transform.position, CashRegisterHandler.CustomerPos);
+            path = VertexSystem.FindPath(body.transform.position, CashRegisterHandler.CustomerPos);
             if (path.Count == 0) // Can't reach the cash register
             {
                 if (Trust > 10) Trust--;
@@ -123,7 +123,7 @@ public class Customer
                 Master.UpdateBalance(expenses);
             }
         }
-        else path = VertexSystem.Route(body.transform.position, nextStand.CustomerPos);
+        else path = VertexSystem.FindPath(body.transform.position, nextStand.CustomerPos);
     }
 
     public void UpdateState()
@@ -142,7 +142,7 @@ public class Customer
                 }
                 else if (Trust > 10) Trust--;
                 paid = true;
-                path = VertexSystem.Route(body.transform.position, pathEnd);
+                path = VertexSystem.FindPath(body.transform.position, pathEnd);
                 if (path.Count == 0) // Can't leave the shop
                 {
                     if (Trust > 10) Trust--;
@@ -211,7 +211,7 @@ public class Customer
         }
         else
         {
-            path = VertexSystem.Route(body.transform.position, pathEnd);
+            path = VertexSystem.FindPath(body.transform.position, pathEnd);
             paid = true;
         }
         */
@@ -231,12 +231,12 @@ public class Customer
 
             if (nextStand != null)
             {
-                path = VertexSystem.Route(body.transform.position, nextStand.CustomerPos);
+                path = VertexSystem.FindPath(body.transform.position, nextStand.CustomerPos);
                 if (path.Count == 0) nextStand = null;
             }
         }
 
-        if (nextStand == null) path = VertexSystem.Route(body.transform.position, pathEnd);
+        if (nextStand == null) path = VertexSystem.FindPath(body.transform.position, pathEnd);
 
         expenses = 0;
         itemsBought = "";

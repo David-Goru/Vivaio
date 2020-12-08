@@ -37,15 +37,14 @@ public class Build : MonoBehaviour
         {
             buildable = true;            
 
-            if (physicalObject.CompareTag("Cash register") && pos.x > -9.7f) buildable = false;
-            else if (physicalObject.CompareTag("Water pump") && pos.x != -3.25f) buildable = false;
+            if (physicalObject.CompareTag("Water pump") && pos.x != 7) buildable = false;
             else
             {                
                 Transform tParent;
                 tParent = physicalObject.transform.Find("Vertices");
                 foreach (Transform t in tParent)
                 {
-                    Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+                    Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
 
                     if (v == null) buildable = false;
                     else if (boInfo is Floor)
@@ -90,7 +89,7 @@ public class Build : MonoBehaviour
         Vertex v = null;
         foreach (Transform t in tParent)
         {                            
-            v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null)
             {
                 if (boInfo is Floor)
@@ -249,7 +248,7 @@ public class Build : MonoBehaviour
         tParent = physicalObject.transform.Find("Vertices");        
         foreach (Transform t in tParent)
         {                            
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null) v.State = VertexState.Available;
         }
 
@@ -292,7 +291,7 @@ public class Build : MonoBehaviour
             tParent = physicalObject.transform.Find("Vertices");            
             foreach (Transform t in tParent)
             {                            
-                Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+                Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
                 if (v != null) v.State = VertexState.Occuppied;
             }
             physicalObject = null;

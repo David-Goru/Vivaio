@@ -36,8 +36,8 @@ public class MapSystem : MonoBehaviour
 
         Transform verticesHandler = GameObject.Find("Initializer").transform.Find("Vertices");   
       
-        Vector3 firstVfarm = verticesHandler.Find("First vertex farm").position;
-        Vector3 lastVfarm = verticesHandler.Find("Last vertex farm").position;
+        Vector3 firstVfarm = verticesHandler.Find("First vertex").position;
+        Vector3 lastVfarm = verticesHandler.Find("Last vertex").position;
         GameObject farmFloor = Resources.Load<GameObject>("Farm/Farm land");
         Transform ground = GameObject.Find("Farm").transform;
         Vector3 farmMin = new Vector3(firstVfarm.x + 0.125f, firstVfarm.y + 0.125f, 0);

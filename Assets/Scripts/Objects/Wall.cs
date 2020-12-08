@@ -19,7 +19,7 @@ public class Wall : BuildableObject
         SpriteType = "None";
         foreach (Transform t in Model.transform.Find("Vertices"))
         {                            
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null) v.State = VertexState.Available;
         }
         foreach (Wall w in GetCollidingWalls())

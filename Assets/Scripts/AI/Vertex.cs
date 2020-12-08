@@ -3,79 +3,69 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Vertex
+public class Vertex : IHeapItem<Vertex>
 {
     [SerializeField]
-    public int ID;
-    [SerializeField]
-    public Vector2 Pos;
-    [SerializeField]
-    public List<int> Conns;    
+    public Vector2 Pos; 
     [SerializeField]
     public VertexState State;
+    [SerializeField]
+    public int GridX;
+    [SerializeField]
+    public int GridY;
     [SerializeField]
     public string Floor;
     [SerializeField]
     public string FloorType;
 
-    public Vertex(Vector2 pos)
-    {
-        ID = VertexSystem.Vertices.Count;
-        Pos = pos;
-        Conns = new List<int>();
-        State = VertexState.Available;
-        Floor = "None";
-        FloorType = "None";
-    }
+    // Pathfinding
+    public Vertex Parent;
+    public int GCost;
+    public int HCost;
+    int heapIndex;
 
-    public Vertex(Vector2 pos, VertexState state)
+    public Vertex(Vector2 pos, VertexState state, int gridX, int gridY)
     {
-        ID = VertexSystem.Vertices.Count;
         Pos = pos;
-        Conns = new List<int>();
         State = state;
+        GridX = gridX;
+        GridY = gridY;
         Floor = "None";
         FloorType = "None";
     }
 
-    public void UpdateCons()
+	public int FCost
     {
-        Vertex v = VertexSystem.Vertices.Find(u => u.Pos == new Vector2(Pos.x - 0.25f, Pos.y));
-        if (v != null)
+		get
         {
-            if (!Conns.Contains(v.ID))
-            {
-                Conns.Add(v.ID);
-                v.UpdateCons();
-            }
-        }
-        v = VertexSystem.Vertices.Find(u => u.Pos == new Vector2(Pos.x, Pos.y - 0.25f));
-        if (v != null)
+			return GCost + HCost;
+		}
+	}
+
+    public int HeapIndex
+    {
+        get
         {
-            if (!Conns.Contains(v.ID))
-            {
-                Conns.Add(v.ID);
-                v.UpdateCons();
-            }
+            return heapIndex;
         }
-        v = VertexSystem.Vertices.Find(u => u.Pos == new Vector2(Pos.x, Pos.y + 0.25f));
-        if (v != null)
+        set
         {
-            if (!Conns.Contains(v.ID))
-            {
-                Conns.Add(v.ID);
-                v.UpdateCons();
-            }
+            heapIndex = value;
         }
-        v = VertexSystem.Vertices.Find(u => u.Pos == new Vector2(Pos.x + 0.25f, Pos.y));
-        if (v != null)
-        {
-            if (!Conns.Contains(v.ID))
-            {
-                Conns.Add(v.ID);
-                v.UpdateCons();
-            }
-        }
+    }
+
+    public int CompareTo(Vertex vertexToCompare)
+    {
+        int compare = FCost.CompareTo(vertexToCompare.FCost);
+        if (compare == 0) compare = HCost.CompareTo(vertexToCompare.HCost);
+        return -compare;
+    }
+
+    public int GetPenalty()
+    {
+        if (State == VertexState.Walkable) return 0;
+        else if (FloorType != "None") return 3;
+        else return 6;
     }
 }
 

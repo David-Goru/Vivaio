@@ -168,7 +168,7 @@ public class GameLoader : MonoBehaviour
 
         // Vertex system
         loadingText.text = string.Format("Loading {0}...", "vertex grid");
-        yield return new WaitUntil(() => VertexSystem.Load(saveFile.Vertices));
+        yield return new WaitUntil(() => VertexSystem.Load(saveFile.GridInfo));
         yield return new WaitForSeconds(0.05f);
 
         // Farm system

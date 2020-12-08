@@ -24,6 +24,8 @@ public class GeneralData
     public int LastDayEnergyUsage;
     [SerializeField]
     public List<Stand> Stands;
+    [SerializeField]
+    public List<string> Log;
 
     public GeneralData(string playerName, int balance, int day, int debt, int lastDayDebt, int dailyDebt, int lastDayPaid, int lastDayWaterUsage, int lastDayEnergyUsage)
     {
@@ -37,5 +39,6 @@ public class GeneralData
         LastDayWaterUsage = lastDayWaterUsage;
         LastDayEnergyUsage = lastDayEnergyUsage;
         Stands = new List<Stand>();
+        Log = new List<string>();
     }
 }

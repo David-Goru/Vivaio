@@ -31,6 +31,8 @@ public class PlayerControls : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K)) TakeScreenshot();
 
+        if (Input.GetKeyDown(KeyCode.L)) OpenLog();
+
         if (Input.GetAxisRaw("Cancel") != 0) TriggerCancel(); // If doing something, stop it, else, pause the game
         else cancelPaused = false;
 
@@ -101,7 +103,7 @@ public class PlayerControls : MonoBehaviour
                 string floorName = "None";
                 foreach (Transform t in tParent)
                 {                            
-                    Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+                    Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
                     if (v != null)
                     {
                         if (v.Floor == "Composite tile")
@@ -140,7 +142,7 @@ public class PlayerControls : MonoBehaviour
                 bool plowable = true;
                 foreach (Transform t in farmLand.transform.Find("Vertices"))
                 {
-                    Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+                    Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
                     if (v.State != VertexState.Available) plowable = false;
                 }
                 
@@ -166,7 +168,7 @@ public class PlayerControls : MonoBehaviour
 
                     foreach (Transform t in plowedSoil.transform.Find("Vertices"))
                     {
-                        Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+                        Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
                         v.State = VertexState.Occuppied;
                     }
                 }
@@ -295,5 +297,36 @@ public class PlayerControls : MonoBehaviour
         byte[] bytes = screenShot.EncodeToPNG();
         string filename = string.Format("{0}/Screenshots/Vivaio {1} ({2}).png", Options.Data.DataPath, Master.GameVersion, System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
         System.IO.File.WriteAllBytes(filename, bytes);
+    }
+
+    public void OpenLog()
+    {
+        if (GameObject.Find("UI").transform.Find("Log").gameObject.activeSelf)
+        {
+            CloseLog();
+            return;
+        }
+        
+        string logText = "Vivaio " + Master.GameVersion + " " + Master.GameEdition + " Edition (" + Master.VersionDate + ")\n\n";
+
+        if (Master.Data.Log.Count == 0)
+        {
+            logText += "No errors found!";
+        }
+        else
+        {
+            foreach (string l in Master.Data.Log)
+            {
+                logText += l + "\n\n";
+            }
+        }
+
+        GameObject.Find("UI").transform.Find("Log").Find("Text").GetComponent<Text>().text = logText;
+        GameObject.Find("UI").transform.Find("Log").gameObject.SetActive(true);
+    }
+
+    public void CloseLog()
+    {
+        GameObject.Find("UI").transform.Find("Log").gameObject.SetActive(false);
     }
 }

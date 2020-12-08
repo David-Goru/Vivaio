@@ -30,8 +30,8 @@ TagManager:
   - Tool
   - Farm land
   - Floor
-  - 
-  - 
+  - Buildable
+  - OnlyWalkable
   - 
   - 
   - 

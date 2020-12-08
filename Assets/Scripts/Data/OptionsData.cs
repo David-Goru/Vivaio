@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class OptionsData
@@ -19,4 +20,8 @@ public class OptionsData
     public float MusicVolume;
     [SerializeField]
     public float SoundsVolume;
+    [SerializeField]
+    public bool TopBarCollapsed;
+    [SerializeField]
+    public List<ISlot> TopBarButtons;
 }

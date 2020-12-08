@@ -103,7 +103,7 @@ public class Box : BuildableObject
         ObjectsHandler.Data.Objects.Remove(this);
         foreach (Transform t in Model.transform.Find("Vertices"))
         {                            
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null) v.State = VertexState.Available;
         }
         MonoBehaviour.Destroy(Model);

@@ -20,7 +20,7 @@ public class Floor : BuildableObject
         {
             GameObject floor = Physics2D.OverlapPoint(new Vector2(Model.transform.position.x - 0.25f, Model.transform.position.y), 1 << LayerMask.NameToLayer("Floor")).gameObject;
             Transform t = floor.transform.Find("Vertices").Find("Vertex");
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null && v.Floor == Name) left = true;
         }
 
@@ -29,7 +29,7 @@ public class Floor : BuildableObject
         {
             GameObject floor = Physics2D.OverlapPoint(new Vector2(Model.transform.position.x + 0.25f, Model.transform.position.y), 1 << LayerMask.NameToLayer("Floor")).gameObject;
             Transform t = floor.transform.Find("Vertices").Find("Vertex");
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null && v.Floor == Name) right = true;
         }
 
@@ -38,7 +38,7 @@ public class Floor : BuildableObject
         {
             GameObject floor = Physics2D.OverlapPoint(new Vector2(Model.transform.position.x, Model.transform.position.y - 0.25f), 1 << LayerMask.NameToLayer("Floor")).gameObject;
             Transform t = floor.transform.Find("Vertices").Find("Vertex");
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null && v.Floor == Name) down = true;
         }
 
@@ -47,7 +47,7 @@ public class Floor : BuildableObject
         {
             GameObject floor = Physics2D.OverlapPoint(new Vector2(Model.transform.position.x, Model.transform.position.y + 0.25f), 1 << LayerMask.NameToLayer("Floor")).gameObject;
             Transform t = floor.transform.Find("Vertices").Find("Vertex");
-            Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
             if (v != null && v.Floor == Name) up = true;
         }
 
@@ -90,7 +90,7 @@ public class Floor : BuildableObject
     public static void UpdateFloorSprite(GameObject floor, string floorName)
     {
         Transform t = floor.transform.Find("Vertices").Find("Vertex");
-        Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+        Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
         if (v != null && v.Floor == floorName)
         {
             string sprite = floorName;
@@ -101,7 +101,7 @@ public class Floor : BuildableObject
             {
                 GameObject checkFloor = Physics2D.OverlapPoint(new Vector2(floor.transform.position.x - 0.25f, floor.transform.position.y), 1 << LayerMask.NameToLayer("Floor")).gameObject;
                 Transform checkT = checkFloor.transform.Find("Vertices").Find("Vertex");
-                Vertex checkV = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(checkT.transform.position.x, checkT.transform.position.y));
+                Vertex checkV = VertexSystem.VertexFromPosition(checkT.transform.position);
                 if (checkV != null && checkV.Floor == floorName) left = true;
             }
 
@@ -110,7 +110,7 @@ public class Floor : BuildableObject
             {
                 GameObject checkFloor = Physics2D.OverlapPoint(new Vector2(floor.transform.position.x + 0.25f, floor.transform.position.y), 1 << LayerMask.NameToLayer("Floor")).gameObject;
                 Transform checkT = checkFloor.transform.Find("Vertices").Find("Vertex");
-                Vertex checkV = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(checkT.transform.position.x, checkT.transform.position.y));
+                Vertex checkV = VertexSystem.VertexFromPosition(checkT.transform.position);
                 if (checkV != null && checkV.Floor == floorName) right = true;
             }
 
@@ -119,7 +119,7 @@ public class Floor : BuildableObject
             {
                 GameObject checkFloor = Physics2D.OverlapPoint(new Vector2(floor.transform.position.x, floor.transform.position.y - 0.25f), 1 << LayerMask.NameToLayer("Floor")).gameObject;
                 Transform checkT = checkFloor.transform.Find("Vertices").Find("Vertex");
-                Vertex checkV = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(checkT.transform.position.x, checkT.transform.position.y));
+                Vertex checkV = VertexSystem.VertexFromPosition(checkT.transform.position);
                 if (checkV != null && checkV.Floor == floorName) down = true;
             }
 
@@ -128,7 +128,7 @@ public class Floor : BuildableObject
             {
                 GameObject checkFloor = Physics2D.OverlapPoint(new Vector2(floor.transform.position.x , floor.transform.position.y + 0.25f), 1 << LayerMask.NameToLayer("Floor")).gameObject;
                 Transform checkT = checkFloor.transform.Find("Vertices").Find("Vertex");
-                Vertex checkV = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(checkT.transform.position.x, checkT.transform.position.y));
+                Vertex checkV = VertexSystem.VertexFromPosition(checkT.transform.position);
                 if (checkV != null && checkV.Floor == floorName) up = true;
             }
 

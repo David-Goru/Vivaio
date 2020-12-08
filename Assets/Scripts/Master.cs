@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Master : MonoBehaviour
 {
@@ -77,5 +78,10 @@ public class Master : MonoBehaviour
     {
         AudioHandler.clip = clip;
         AudioHandler.Play(); 
+    }
+
+    public static void AddLog(string text)
+    {
+        Data.Log.Add(text);
     }
 }

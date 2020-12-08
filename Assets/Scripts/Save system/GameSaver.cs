@@ -27,7 +27,7 @@ public class GameSaver : MonoBehaviour
         save.MapData = MapSystem.Data;
 
         // Vertex system
-        save.Vertices = VertexSystem.Vertices;
+        save.GridInfo = VertexSystem.GridInfo;
 
         // Farm system
         save.FarmData = Farm.Save();

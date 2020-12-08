@@ -102,50 +102,13 @@ public class Management : MonoBehaviour
         List<Vertex> verticesToUpdate = new List<Vertex>();
 
         // Add new vertices
+        VertexSystem.ExpandGrid();
+        
+        // Add farm plots
         Transform t = newModule.transform.Find("Vertices");
         Vector3 firstV = t.Find("First vertex").position;
         Vector3 lastV = t.Find("Last vertex").position;
-        for (float i = firstV.x; i <= lastV.x; i += 0.25f)
-        {
-            for (float j = firstV.y; j <= lastV.y; j += 0.25f)
-            {
-                Vertex v = new Vertex(new Vector2(i, j));
-                VertexSystem.Vertices.Add(v);
-                verticesToUpdate.Add(v);
-            }
-        }
-
-        // Sidewalk
-        firstV = t.Find("Sidewalk").Find("First").position;
-        lastV = t.Find("Sidewalk").Find("Last").position;
-        for (float i = firstV.x; i <= lastV.x; i += 0.25f)
-        {
-            for (float j = firstV.y; j <= lastV.y; j += 0.25f)
-            {
-                Vertex v = new Vertex(new Vector2(i, j), VertexState.Walkable);
-                VertexSystem.Vertices.Add(v);
-                verticesToUpdate.Add(v);
-            }
-        }
-        
-        // Add farm plots
-        firstV = t.Find("First farm vertex").position;
-        lastV = t.Find("Last farm vertex").position;
-        for (float i = firstV.x; i <= lastV.x; i += 0.25f)
-        {
-            for (float j = firstV.y; j <= lastV.y; j += 0.25f)
-            {
-                Vertex v = new Vertex(new Vector2(i, j));
-                VertexSystem.Vertices.Add(v);
-                verticesToUpdate.Add(v);
-            }
-        }
         MapSystem.ExpandFarm(firstV, lastV);
-        
-        foreach (Vertex v in verticesToUpdate)
-        {
-            v.UpdateCons();
-        }
 
         ManagementUI.transform.Find("Debt").Find("Debt text").GetComponent<Text>().text = string.Format(Localization.Translations["management_remaining_debt"], Master.Data.Debt);
         ManagementUI.transform.Find("Debt").Find("Pay debt button").Find("Warning").GetComponent<Text>().text = string.Format(Localization.Translations["management_pay_debt_warning"], Master.Data.Debt);

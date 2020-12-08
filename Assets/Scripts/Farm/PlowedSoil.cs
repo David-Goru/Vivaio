@@ -240,7 +240,7 @@ public class PlowedSoil : MonoBehaviour
 
                     foreach (Transform t in transform.Find("Vertices"))
                     {
-                        Vertex v = VertexSystem.Vertices.Find(x => x.Pos == new Vector2(t.transform.position.x, t.transform.position.y));
+                        Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
                         v.State = VertexState.Available;
                     }
 

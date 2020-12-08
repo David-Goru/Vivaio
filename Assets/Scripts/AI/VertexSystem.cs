@@ -4,24 +4,47 @@ using UnityEngine;
 
 public class VertexSystem : MonoBehaviour
 {
-    public static List<Vertex> Vertices;
+    public static Vertex[,] GridInfo;
+    public LayerMask Buildable;
+    public LayerMask OnlyWalkable;
+
+    public static LayerMask BuildableMask;
+    public static LayerMask OnlyWalkableMask;
+    public static int GridSizeX, GridSizeY;
+    public static Vector2 GridWorldSize;
+    public static float VertexRadius;
+    public static float VertexDiameter;
+
+    void Awake()
+    {
+        BuildableMask = Buildable;
+        OnlyWalkableMask = OnlyWalkable;
+        GridWorldSize = transform.GetComponent<BoxCollider2D>().size;
+        VertexRadius = 0.125f;
+        VertexDiameter = VertexRadius * 2;
+        GridSizeX = Mathf.RoundToInt(GridWorldSize.x / VertexDiameter);
+        GridSizeY = Mathf.RoundToInt(GridWorldSize.y / VertexDiameter);
+    }
 
     // When loading a game
-    public static bool Load(List<Vertex> vertices)
+    public static bool Load(Vertex[,] gridInfo)
     {
         try
         {
-            Vertices = vertices;
+            GridInfo = gridInfo;
 
-            foreach (Vertex v in vertices)
+            for (int i = 0; i < GridSizeX; i++)
             {
-                if (v.Floor != "None")
+                for (int j = 0; j < GridSizeY; j++)
                 {
-                    GameObject floor = Instantiate(Resources.Load<GameObject>("Objects/" + v.Floor), v.Pos, Quaternion.Euler(0, 0, 0));
-                    floor.GetComponent<BoxCollider2D>().enabled = true;
+                    if (GridInfo[i,j].Floor != "None")
+                    {
+                        GameObject floor = Instantiate(Resources.Load<GameObject>("Objects/" + GridInfo[i,j].Floor), GridInfo[i,j].Pos, Quaternion.Euler(0, 0, 0));
+                        floor.GetComponent<BoxCollider2D>().enabled = true;
 
-                    if (v.Floor == "Composite tile")
-                        floor.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/" + v.Floor + "/" + v.FloorType);
+                        if (GridInfo[i,j].Floor == "Composite tile")
+                            floor.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/" + GridInfo[i,j].Floor + "/" + GridInfo[i,j].FloorType);
+                    }
                 }
             }
         }
@@ -36,221 +59,185 @@ public class VertexSystem : MonoBehaviour
     // When creating a new game
     public static bool New()
     {
-        Transform vertices = GameObject.Find("Initializer").transform.Find("Vertices");
-        Vector3 firstV = vertices.Find("First vertex").position;
-        Vector3 lastV = vertices.Find("Last vertex").position;
-
-        Vertices = new List<Vertex>();
-
-        // Create vertices net (shop area)
-        for (float i = firstV.x; i <= lastV.x; i += 0.25f)
-        {
-            for (float j = firstV.y; j <= lastV.y; j += 0.25f)
-            {
-                Vertices.Add(new Vertex(new Vector2(i, j)));
-            }
-        }
-
-        // Create vertices net (sidewalk)
-        foreach (Transform t in vertices.Find("Sidewalk"))
-        {
-            firstV = t.Find("First vertex").position;
-            lastV = t.Find("Last vertex").position;
-            for (float i = firstV.x; i <= lastV.x; i += 0.25f)
-            {
-                for (float j = firstV.y; j <= lastV.y; j += 0.25f)
-                {
-                    Vertices.Add(new Vertex(new Vector2(i, j), VertexState.Walkable));
-                }
-            }
-        }
-
-        // Add farm vertices
-        Vector3 firstVfarm = vertices.Find("First vertex farm").position;
-        Vector3 lastVfarm = vertices.Find("Last vertex farm").position;
-        for (float i = firstVfarm.x; i <= lastVfarm.x; i += 0.25f)
-        {
-            for (float j = firstVfarm.y; j <= lastVfarm.y; j += 0.25f)
-            {
-                Vertices.Add(new Vertex(new Vector2(i, j)));
-            }
-        }
-
-        // Update vertices connections
-        foreach (Vertex v in Vertices)
-        {
-            v.UpdateCons();
-        }
-
-        Vector3 firstVhouse = vertices.Find("First vertex house").position;
-        Vector3 lastVhouse = vertices.Find("Last vertex house").position;
-        
-        for (float i = firstVhouse.x; i <= lastVhouse.x; i += 0.25f)
-        {
-            for (float j = firstVhouse.y; j <= lastVhouse.y; j += 0.25f)
-            {
-                VertexSystem.Vertices.Add(new Vertex(new Vector2(i, j)));
-            }
-        }
-
-        Vector3 firstVbasement = vertices.Find("First vertex basement").position;
-        Vector3 lastVbasement = vertices.Find("Last vertex basement").position;
-        
-        for (float i = firstVbasement.x; i <= lastVbasement.x; i += 0.25f)
-        {
-            for (float j = firstVbasement.y; j <= lastVbasement.y; j += 0.25f)
-            {
-                VertexSystem.Vertices.Add(new Vertex(new Vector2(i, j)));
-            }
-        }
+        CreateGrid();
 
         return true;
     }
 
-    // BFS algorithm
-    public static Stack<Vector2> Route(Vector2 firstPos, Vector2 lastPos)
+    public static int MaxGridSize
     {
-        Stack<Vector2> bestRoute = new Stack<Vector2>();
-
-        if (firstPos == lastPos)
+        get
         {
-            bestRoute.Push(firstPos);
-            return bestRoute;
+            return GridSizeX * GridSizeY;
         }
-
-        List<bool> visited = new List<bool>();
-        List<int> father = new List<int>();
-
-        for (int i = 0; i < Vertices.Count; i++)
-        {
-            // Set all vertices to unvisited
-            visited.Add(false);
-
-            // Set father to null (-1)
-            father.Add(-1);
-        }
-        
-        int index = Vertices.IndexOf(Vertices.Find(v => v.Pos == firstPos));
-        visited[index] = true;
-
-        Queue<int> box = new Queue<int>();
-        box.Enqueue(index);
-
-        bool pathFinished = false;
-        while (box.Count != 0 && !pathFinished)
-        {
-            int thisIndex = box.Peek();
-            box.Dequeue();
-
-            foreach (int v in Vertices[thisIndex].Conns)
-            {
-                Vertex vx = Vertices.Find(x => x.ID == v);
-                int vertex = Vertices.IndexOf(vx);
-                if (!visited[vertex])
-                {
-                    visited[vertex] = true;
-                    if (Vertices[vertex].Pos == lastPos) pathFinished = true;
-                    if (vx.State == VertexState.Available || vx.State == VertexState.Walkable)
-                    {
-                        father[vertex] = thisIndex;
-                        box.Enqueue(vertex);
-                    }
-                }
-            }
-        }
-
-        if (box.Count == 0 && !pathFinished)
-        {
-            Debug.Log("Route not found: from " + firstPos + " to " + lastPos);
-            return bestRoute;
-        }
-
-        index = Vertices.IndexOf(Vertices.Find(v => v.Pos == lastPos));
-
-        while (index != -1)
-        {
-            bestRoute.Push(Vertices[index].Pos);
-            index = father[index];
-        }
-
-        return bestRoute;
     }
 
-    public static Stack<Vector2> Route(Vector2 firstPos, List<Vector2> lastPos)
+    public static Stack<Vector2> FindPath(Vector2 startPos, Vector2 targetPos)
     {
-        Stack<Vector2> bestRoute = new Stack<Vector2>();
+        List<Vector2> targetToList = new List<Vector2>();
+        targetToList.Add(targetPos);
+        return FindPath(startPos, targetToList);
+    }
 
-        if (lastPos.Contains(firstPos))
+    public static Stack<Vector2> FindPath(Vector2 startPos, List<Vector2> targetPos)
+    {
+        Vertex startVertex = VertexFromPosition(startPos);
+        List<Vertex> targetVertices = new List<Vertex>();
+
+        foreach (Vector2 vPos in targetPos)
         {
-            bestRoute.Push(firstPos);
-            return bestRoute;
+            targetVertices.Add(VertexFromPosition(vPos));
         }
 
-        List<bool> visited = new List<bool>();
-        List<int> father = new List<int>();
+        Heap<Vertex> openSet = new Heap<Vertex>(MaxGridSize);
+        HashSet<Vertex> closedSet = new HashSet<Vertex>();
+        openSet.Add(startVertex);
+        startVertex.GCost = 0;
 
-        for (int i = 0; i < Vertices.Count; i++)
+        Vertex currentVertex = null;
+        while (openSet.Count > 0)
         {
-            // Set all vertices to unvisited
-            visited.Add(false);
+            currentVertex = openSet.RemoveFirst();
+            Debug.Log("Cogemos el que tiene GCost " + currentVertex.GCost);
+            closedSet.Add(currentVertex);
 
-            // Set father to null (-1)
-            father.Add(-1);
-        }
-        
-        int index = Vertices.IndexOf(Vertices.Find(v => v.Pos == firstPos));
-        visited[index] = true;
+            if (targetVertices.Contains(currentVertex)) return RetracePath(startVertex, currentVertex);
 
-        Queue<int> box = new Queue<int>();
-        box.Enqueue(index);
-
-        bool pathFinished = false;
-        int lastPosIndex = -1;
-
-        while (box.Count != 0 && !pathFinished)
-        {
-            int thisIndex = box.Peek();
-            box.Dequeue();
-
-            foreach (int v in Vertices[thisIndex].Conns)
+            foreach (Vertex neighbour in GetNeighbours(currentVertex))
             {
-                Vertex vx = Vertices.Find(x => x.ID == v);
-                int vertex = Vertices.IndexOf(vx);
-                if (!visited[vertex])
-                {
-                    visited[vertex] = true;
-                    
-                    if (vx.State == VertexState.Available || vx.State == VertexState.Walkable)
-                    {
-                        father[vertex] = thisIndex;
-                        box.Enqueue(vertex);
-                    }
+                if (neighbour.State == VertexState.Occuppied || closedSet.Contains(neighbour)) continue;
 
-                    if (lastPos.Contains(Vertices[vertex].Pos))
-                    {
-                        pathFinished = true;
-                        lastPosIndex = vertex;
-                        father[vertex] = thisIndex;
-                        break;
-                    }
+                int newCostToNeighbour = currentVertex.GCost + GetDistance(currentVertex, neighbour) + neighbour.GetPenalty();
+                Debug.Log(newCostToNeighbour + " es menor que " + neighbour.GCost + " o " + !openSet.Contains(neighbour) + " es True?");
+                if (newCostToNeighbour < neighbour.GCost || !openSet.Contains(neighbour))
+                {
+                    Debug.Log("Sí, o al menos no está en el openSet");
+                    neighbour.GCost = newCostToNeighbour;
+                    neighbour.HCost = GetDistance(neighbour, targetVertices[0]);
+                    neighbour.Parent = currentVertex;
+
+                    if (!openSet.Contains(neighbour)) openSet.Add(neighbour);
+                    else openSet.UpdateItem(neighbour);
                 }
             }
         }
 
-        if (box.Count == 0 && !pathFinished)
+        // No path found, return empty list
+        return new Stack<Vector2>();
+    }
+
+    public static Stack<Vector2> RetracePath(Vertex startVertex, Vertex endVertex)
+    {
+        Stack<Vector2> path = new Stack<Vector2>();
+        Vertex currentVertex = endVertex;
+
+        while (currentVertex != startVertex)
         {
-            Debug.Log("Route not found: from " + firstPos + " to " + lastPos[0]);
-            return bestRoute;
+            path.Push(currentVertex.Pos);
+            currentVertex = currentVertex.Parent;
+        }
+        
+        return path;
+    }
+
+    public static int GetDistance(Vertex vertexA, Vertex vertexB)
+    {
+        int distX = Mathf.Abs(vertexA.GridX - vertexB.GridX);
+        int distY = Mathf.Abs(vertexA.GridY - vertexB.GridY);
+        
+        return 10 * distX + 10 * distY;
+    }
+
+    public static void CreateGrid()
+    {
+        GridInfo = new Vertex[GridSizeX, GridSizeY];
+        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2;
+
+        Vector2 vertexPosition = Vector2.one;
+        VertexState state = VertexState.Available;
+        for (int x = 0; x < GridSizeX; x++)
+        {
+            for (int y = 0; y < GridSizeY; y++)
+            {
+                vertexPosition = bottomLeft + Vector2.right * (x * VertexDiameter + VertexRadius) + Vector2.up * (y * VertexDiameter + VertexRadius);
+                if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, OnlyWalkableMask)) state = VertexState.Walkable;
+                else if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, BuildableMask)) state = VertexState.Available;
+                else state = VertexState.Occuppied;
+                GridInfo[x, y] = new Vertex(vertexPosition, state, x, y);
+            }
+        }
+    }
+
+    // Expand grid used when upgrading farm on management menu
+    public static void ExpandGrid()
+    {
+        // Create a new grid with 5 more rows
+        Vertex[,] newGrid = new Vertex[GridSizeX, GridInfo.GetLength(0) + 5];
+
+        // Set new grid vertex as old grid vertex (excluding new rows)
+        for (int i = 0; i < GridSizeX; i++)
+        {
+            for (int j = 0; j < GridInfo.GetLength(0); j++)
+            {
+                newGrid[i,j] = GridInfo[i,j];
+            }
         }
 
-        index = lastPosIndex;
+        // Get bottom left position
+        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2;
 
-        while (index != -1)
+        // Add new vertex for the last 5 rows
+        Vector2 vertexPosition = Vector2.one;
+        VertexState state = VertexState.Available;
+        for (int x = 0; x < GridSizeX; x++)
         {
-            bestRoute.Push(Vertices[index].Pos);
-            index = father[index];
+            for (int y = GridInfo.GetLength(0); y < GridInfo.GetLength(0) + 5; y++)
+            {
+                vertexPosition = bottomLeft + Vector2.right * (x * VertexDiameter + VertexRadius) + Vector2.up * (y * VertexDiameter + VertexRadius);
+                if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, OnlyWalkableMask)) state = VertexState.Walkable;
+                else if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, BuildableMask)) state = VertexState.Available;
+                else state = VertexState.Occuppied;
+                newGrid[x, y] = new Vertex(vertexPosition, state, x, y);
+            }
         }
 
-        return bestRoute;
+        // Set old grid to new grid and update size
+        GridInfo = newGrid;
+        GridWorldSize = new Vector2(GridWorldSize.x, GridWorldSize.y + 5);
+    }
+
+    public static List<Vertex> GetNeighbours(Vertex vertex)
+    {
+        List<Vertex> neighbours = new List<Vertex>();
+
+        // Get top, bottom, right and left neightbours
+        if (vertex.GridX >= 0 && vertex.GridX < GridSizeX && (vertex.GridY + 1) >= 0 && (vertex.GridY + 1) < GridSizeY) neighbours.Add(GridInfo[vertex.GridX, vertex.GridY + 1]);
+        if (vertex.GridX >= 0 && vertex.GridX < GridSizeX && (vertex.GridY - 1) >= 0 && (vertex.GridY - 1) < GridSizeY) neighbours.Add(GridInfo[vertex.GridX, vertex.GridY - 1]);
+        if ((vertex.GridX + 1) >= 0 && (vertex.GridX + 1) < GridSizeX && vertex.GridY >= 0 && vertex.GridY < GridSizeY) neighbours.Add(GridInfo[vertex.GridX + 1, vertex.GridY]);
+        if ((vertex.GridX - 1) >= 0 && (vertex.GridX - 1) < GridSizeX && vertex.GridY >= 0 && vertex.GridY < GridSizeY) neighbours.Add(GridInfo[vertex.GridX - 1, vertex.GridY]);
+
+        return neighbours;
+    }
+
+    public static Vertex VertexFromPosition(Vector2 pos)
+    {
+        int x = Mathf.RoundToInt((GridSizeX - 1) * (pos.x + GridWorldSize.x / 2) / GridWorldSize.x);
+        int y = Mathf.RoundToInt((GridSizeY - 1) * (pos.y + GridWorldSize.y / 2) / GridWorldSize.y);
+
+        return GridInfo[x, y];
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(GridWorldSize.x, GridWorldSize.y, 1));
+
+        if (GridInfo != null)
+        {
+            foreach (Vertex n in GridInfo)
+            {
+                Gizmos.color = (n.State == VertexState.Available ? Color.green : (n.State == VertexState.Walkable ? Color.gray : Color.red));
+                Gizmos.DrawCube(n.Pos, Vector3.one * VertexDiameter * 0.4f);
+            }
+        }
     }
 }
