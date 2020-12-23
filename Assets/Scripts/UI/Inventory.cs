@@ -4,17 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
-{
-    public static GameObject InventorySlot;
-    public static Text InventoryText;    
-    
-    public static InventoryData Data;
-
-    void Start()
-    {
-        InventorySlot = GameObject.Find("UI").transform.Find("Inventory").Find("Object").gameObject;
-        InventoryText = InventorySlot.transform.parent.Find("Object info").gameObject.GetComponent<Text>();
-    }    
+{    
+    public static InventoryData Data;   
 
     // When loading a game
     public static bool Load(InventoryData data)
@@ -40,81 +31,60 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public static void RemoveObject()
+    public static bool RemoveObject(int amount = 0)
     {
-        InventorySlot.SetActive(false);
-        InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
-        InventoryText.text = "";
+        if (amount > 0 && Data.ObjectInHand.Stack != amount)
+        {
+            if (Data.ObjectInHand.Stack < amount) return false;
+            Data.ObjectInHand.Stack -= amount;
+            UI.Elements["Inventory item text"].GetComponent<Text>().text = Data.ObjectInHand.GetUIName();
+            return true;
+        }
+
+        UI.Elements["Inventory item"].SetActive(false);
+        UI.Elements["Inventory item text"].GetComponent<Text>().text = "";
         Data.ObjectInHand = null;
 
-        Transform UI = GameObject.Find("UI").transform;
-        UI.Find("Build button").gameObject.SetActive(false);
-        UI.Find("Throw object").gameObject.SetActive(false);
-        UI.Find("Letter").gameObject.SetActive(false);
-        UI.Find("Open letter").gameObject.SetActive(false);
+        UI.Elements["Build object button"].SetActive(false);
+        UI.Elements["Throw object button"].SetActive(false);
+        UI.Elements["Letter"].SetActive(false);
+        UI.Elements["Open letter button"].SetActive(false);
+        return true;
     }
 
-    public static bool AddObject(IObject item)
+    public static int AddObject(IObject item)
     {
         if (Data.ObjectInHand == null)
         {
             Data.ObjectInHand = item;
             ChangeObject();
-            return true;
+            return item.Stack;
         }
-        else if (Data.ObjectInHand.Name == item.Name && (Data.ObjectInHand.Stack + item.Stack) <= item.MaxStack)
+        else if (Data.ObjectInHand.Name == item.Name)
         {
-            Data.ObjectInHand.Stack += item.Stack;
-            ChangeObject();
-            return true;
+            if ((Data.ObjectInHand.Stack + item.Stack) <= item.MaxStack)
+            {
+                Data.ObjectInHand.Stack += item.Stack;
+                ChangeObject();
+                return item.Stack;
+            }
+            else
+            {
+                int amountToTake = item.MaxStack - Data.ObjectInHand.Stack;
+                Data.ObjectInHand.Stack += amountToTake;
+                return amountToTake;
+            }
         }
-        return false;
+        return 0;
     }
 
     public static void ChangeObject()
     {
-        InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Data.ObjectInHand.Name);
-
-        Transform UI = GameObject.Find("UI").transform;
-        InventoryText.text = Localization.Translations[Data.ObjectInHand.TranslationKey];
-        UI.Find("Throw object").gameObject.SetActive(true);
-
-        if (Data.ObjectInHand.MaxStack > 1) InventoryText.text = Localization.Translations[Data.ObjectInHand.TranslationKey] + " (" + Data.ObjectInHand.Stack + ")";
-
-        if (Data.ObjectInHand is Tool)
-        {
-            if (Data.ObjectInHand is WateringCan)
-            {
-                WateringCan wc = (WateringCan)Data.ObjectInHand;
-                InventoryText.text = Localization.Translations[wc.TranslationKey] + " (" + wc.Remaining + "/10)";
-                if (wc.Remaining == 0) InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
-            }
-            else if (Data.ObjectInHand is Basket)
-            {
-                Basket basket = (Basket)Data.ObjectInHand;
-                if (basket.Product != null)
-                {
-                    InventoryText.text = Localization.Translations[basket.TranslationKey] + " (" + basket.Amount + "/20)";
-                    InventorySlot.transform.Find("Subobject").gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + basket.Product.Name);
-                    InventorySlot.transform.Find("Subobject").gameObject.SetActive(true);
-                }
-                else InventorySlot.transform.Find("Subobject").gameObject.SetActive(false);
-            }
-        }
-        else if (Data.ObjectInHand is Letter)
-        {
-            Letter letter = (Letter)Data.ObjectInHand;
-            InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
-            UI.Find("Open letter").gameObject.SetActive(true);
-        }
-        else if (Data.ObjectInHand.Name == "Drip bottle")
-        {
-            InventoryText.text = Localization.Translations[Data.ObjectInHand.TranslationKey] + " (" + ((DripBottle)Data.ObjectInHand).WaterUnits + "u)";
-            InventorySlot.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Drip bottle/" + ((DripBottle)Data.ObjectInHand).WaterUnits);
-        }
-
-        if (Data.ObjectInHand is BuildableObject) UI.Find("Build button").gameObject.SetActive(true);
-        
-        InventorySlot.SetActive(true);
+        UI.Elements["Inventory item text"].GetComponent<Text>().text = Data.ObjectInHand.GetUIName();
+        UI.Elements["Inventory item"].GetComponent<Image>().sprite = Data.ObjectInHand.GetUISprite();
+        UI.Elements["Inventory item"].SetActive(true);
+        UI.Elements["Throw object button"].SetActive(true);
+        if (Data.ObjectInHand is BuildableObject) UI.Elements["Build object button"].SetActive(true);
+        else if (Data.ObjectInHand is Letter) UI.Elements["Open letter button"].SetActive(true);
     }
 }

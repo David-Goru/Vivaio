@@ -4,10 +4,10 @@ using UnityEngine;
 public class DeliverySystem : MonoBehaviour
 {
     public static DeliverySystemData Data;
-    public static Vector2[] PointPositions = new Vector2[] { new Vector2(-13.75f, 10.75f), 
-                                                             new Vector2(-12.9f, 10.75f), 
-                                                             new Vector2(-13.75f, 10.25f), 
-                                                             new Vector2(-12.9f, 10.25f) };
+    public static Vector2[] PointPositions = new Vector2[] { new Vector2(-3.5f, 0.25f), 
+                                                             new Vector2(-2.5f, 0.25f), 
+                                                             new Vector2(-3.5f, 0.75f), 
+                                                             new Vector2(-2.5f, 0.75f) };
 
     // When loading a game
     public static bool Load(DeliverySystemData data)

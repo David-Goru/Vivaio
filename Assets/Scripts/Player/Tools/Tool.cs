@@ -10,7 +10,7 @@ public class Tool : IObject
     [SerializeField]
     public bool OnStand;
 
-    public Tool(string translationKey) : base("Tool", 1, 1, translationKey) {}
+    public Tool(string translationKey) : base("Tool", "", 1, 1, translationKey) {}
 
     public void ChangeVisual()
     {

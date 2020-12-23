@@ -20,11 +20,14 @@ public class CustomerData
     public int Trust;
     [SerializeField]
     public bool LetterSent;
+    [SerializeField]
+    public int GlassBottles;
 
-    public CustomerData(string name, int trust, bool letterSent)
+    public CustomerData(string name, int trust, bool letterSent, int glassBottles)
     {
         Name = name;
         Trust = trust;
         LetterSent = letterSent;
+        GlassBottles = glassBottles;
     }
 }

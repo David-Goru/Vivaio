@@ -32,6 +32,7 @@ public class AI : MonoBehaviour
                 {
                     c.Trust = d.Trust;
                     c.LetterSent = d.LetterSent;
+                    c.GlassBottles = d.GlassBottles;
                 }
             }
 
@@ -68,7 +69,7 @@ public class AI : MonoBehaviour
 
         foreach (Customer c in Customers)
         {
-            data.Customers.Add(new CustomerData(c.Name, c.Trust, c.LetterSent));
+            data.Customers.Add(new CustomerData(c.Name, c.Trust, c.LetterSent, c.GlassBottles));
         }
 
         return data;

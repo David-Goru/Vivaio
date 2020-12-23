@@ -21,13 +21,13 @@ public class Farmazon : MonoBehaviour
     {
         try
         {
-            FarmazonListHandler = GameObject.Find("UI").transform.Find("Farmazon").Find("Items").Find("Viewport").Find("Content");
+            FarmazonListHandler = GameObject.Find("UI").transform.Find("Menus").Find("Farmazon").Find("Items").Find("Viewport").Find("Content");
         
             FarmazonItems = new Dictionary<string, FarmazonItem>();
             LoadFarmazonItems();
 
             CartItems = data.CartItems;
-            if (CartItems.Count > 0) GameObject.Find("UI").transform.Find("Farmazon button").Find("Circle").gameObject.SetActive(true);
+            if (CartItems.Count > 0) UI.Elements["Farmazon circle"].SetActive(true);
         }
         catch (Exception e)
         {
@@ -40,7 +40,7 @@ public class Farmazon : MonoBehaviour
     // When creating a new game
     public static bool New()
     {        
-        FarmazonListHandler = GameObject.Find("UI").transform.Find("Farmazon").Find("Items").Find("Viewport").Find("Content");
+        FarmazonListHandler = GameObject.Find("UI").transform.Find("Menus").Find("Farmazon").Find("Items").Find("Viewport").Find("Content");
         
         FarmazonItems = new Dictionary<string, FarmazonItem>();
         CartItems = new List<CartItem>();
@@ -89,12 +89,12 @@ public class Farmazon : MonoBehaviour
         if (selectedItem.Use == "Seed")
         {
             ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = Localization.Translations[FarmazonItems[itemName].TranslationKey]; 
-            ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + itemName + " seeds").Icon;
+            ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = UI.Sprites[itemName + " seeds"];
         }
         else 
         {
             ItemUI.transform.Find("Item").Find("Name").GetComponent<Text>().text = Localization.Translations[FarmazonItems[itemName].TranslationKey];
-            ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + itemName).Icon;
+            ItemUI.transform.Find("Item").Find("Image").GetComponent<Image>().sprite = UI.Sprites[itemName];
         }
         ItemUI.transform.Find("Item").Find("Description").GetComponent<Text>().text = selectedItem.Description;
         ItemUI.transform.Find("No selected item").gameObject.SetActive(false);
@@ -148,12 +148,12 @@ public class Farmazon : MonoBehaviour
             if (fi.Use == "Seed")
             {
                 itemObject.transform.Find("Name").GetComponent<Text>().text = Localization.Translations[fi.TranslationKey];
-                itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + fi.Name + " seeds").Icon;
+                itemObject.transform.Find("Image").GetComponent<Image>().sprite = UI.Sprites[fi.Name + " seeds"];
             }
             else
             {
                 itemObject.transform.Find("Name").GetComponent<Text>().text = Localization.Translations[fi.TranslationKey];
-                itemObject.transform.Find("Image").GetComponent<Image>().sprite = Resources.Load<ObjectInfo>("Objects info/" + fi.Name).Icon;
+                itemObject.transform.Find("Image").GetComponent<Image>().sprite = UI.Sprites[fi.Name];
             }
             itemObject.transform.Find("Price").GetComponent<Text>().text = item.Amount + "u (" + item.Amount * fi.Price + "€)";
             itemObject.transform.SetParent(content, false);
@@ -186,8 +186,10 @@ public class Farmazon : MonoBehaviour
                     case "Build":
                         if (fi.Name == "Composter") box.Items[slotCounter] = new Composter(fi.TranslationKey);
                         else if (fi.Name == "Product box") box.Items[slotCounter] = new ProductBox(0, 100, fi.TranslationKey);
-                        else if (fi.Name == "Shop table") box.Items[slotCounter] = new Stand(0, 50, "Shop table", "Big display", fi.TranslationKey);
-                        else if (fi.Name == "Shop box") box.Items[slotCounter] = new Stand(0, 10, "Shop box", "Small display", fi.TranslationKey);
+                        else if (fi.Name == "Small vegetables stand") box.Items[slotCounter] = new Stand("Vegetables", 0, 10, "Small vegetables stand", "Vegetables small display", fi.TranslationKey);
+                        else if (fi.Name == "Big vegetables stand") box.Items[slotCounter] = new Stand("Vegetables", 0, 50, "Big vegetables stand", "Vegetables big display", fi.TranslationKey);
+                        else if (fi.Name == "Food stand") box.Items[slotCounter] = new Stand("Food", 0, 35, "Food stand", "Food display", fi.TranslationKey);
+                        else if (fi.Name == "Beverages stand") box.Items[slotCounter] = new Stand("Beverages", 0, 15, "Beverages stand", "Beverages display", fi.TranslationKey);
                         else if (fi.Name == "Storage box") box.Items[slotCounter] = new Box("Storage box", fi.TranslationKey);
                         else if (fi.Name == "Seed box") box.Items[slotCounter] = new SeedBox(fi.TranslationKey);
                         else if (fi.Name == "Deseeding machine") box.Items[slotCounter] = new DeseedingMachine(fi.TranslationKey);
@@ -198,6 +200,10 @@ public class Farmazon : MonoBehaviour
                         else if (fi.Name == "Fence gate") box.Items[slotCounter] = new Gate("Fence gate", fi.TranslationKey);
                         else if (fi.Name == "Fence") box.Items[slotCounter] = new Wall(fi.Name, 5, 10, fi.TranslationKey);
                         else if (fi.Name == "Water pump") box.Items[slotCounter] = new WaterPump(fi.TranslationKey);
+                        else if (fi.Name == "Garbage can") box.Items[slotCounter] = new GarbageCan(fi.TranslationKey);
+                        else if (fi.Name == "Water bottling machine") box.Items[slotCounter] = new WaterBottlingMachine(fi.TranslationKey);
+                        else if (fi.Name == "Bottles recycler") box.Items[slotCounter] = new BottlesRecycler(fi.TranslationKey);
+                        else if (fi.Name == "Cash register") box.Items[slotCounter] = new CashRegister(fi.TranslationKey);
                         else box.Items[slotCounter] = new BuildableObject(fi.Name, 1, 1, fi.TranslationKey);
                         break;
                     case "Floor":
@@ -207,13 +213,16 @@ public class Farmazon : MonoBehaviour
                     case "Farm":
                         if (fi.Name == "Drip bottle") box.Items[slotCounter] = new DripBottle(0, fi.TranslationKey);
                         else if (fi.Name == "Drip irrigation kit") box.Items[slotCounter] = new DripIrrigationKit(fi.TranslationKey);
-                        else box.Items[slotCounter] = new IObject(fi.Name, 1, 1, fi.TranslationKey);
+                        else box.Items[slotCounter] = new IObject(fi.Name, "", 1, 1, fi.TranslationKey);
                         break;
                     case "Seed":
                         box.Items[slotCounter] = new Seed(fi.Name, 10, 10, fi.TranslationKey);
                         break;                            
                     case "Fertilizer":
                         box.Items[slotCounter] = new Fertilizer(10, 10, fi.TranslationKey);
+                        break;                          
+                    case "Other":
+                        box.Items[slotCounter] = new IObject(fi.Name, "", 10, 10, fi.TranslationKey);
                         break;
                 }
 

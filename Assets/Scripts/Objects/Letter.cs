@@ -14,7 +14,7 @@ public class Letter : IObject
     [SerializeField]
     public bool Read;
 
-    public Letter(string type, string title, string body, string signature) : base("Letter", 1, 1, "LetterClosed")
+    public Letter(string type, string title, string body, string signature) : base("Letter", "", 1, 1, "LetterClosed")
     {
         Type = type;
         Title = title;
@@ -23,8 +23,8 @@ public class Letter : IObject
         Read = false;
     }
 
-    public override void LoadObjectCustom()
+    public override Sprite GetUISprite()
     {
-        Model.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/" + (Read ? "Open" : "Closed") + " letter");
+        return UI.Sprites[Name + " " + (Read ? "open" : "closed")];
     }
 }

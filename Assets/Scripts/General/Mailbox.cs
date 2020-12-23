@@ -116,9 +116,9 @@ public class Mailbox : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) > 1.5f) return;
+        if (EventSystem.current.IsPointerOverGameObject() || Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) > 2.5f) return;
 
-        if (Data.Letters.Count > 0 && !Inventory.InventorySlot.activeSelf) Inventory.AddObject(Data.Letters.Dequeue());
+        if (Data.Letters.Count > 0 && Inventory.AddObject(Data.Letters.Peek()) > 0) Data.Letters.Dequeue();
         
         // Update mail box warning
         if (Data.Letters.Count == 0) transform.Find("Warning").gameObject.SetActive(false);

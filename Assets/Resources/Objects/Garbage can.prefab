@@ -179,7 +179,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6507483460376751256}
   - component: {fileID: 6507483460376751263}
-  - component: {fileID: 5402138190807767642}
   m_Layer: 12
   m_Name: Garbage can
   m_TagString: Untagged
@@ -230,18 +229,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.48}
   m_EdgeRadius: 0
---- !u!114 &5402138190807767642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6507483460376751258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f670d6e150d7f1a4e8ca7b5850e9ad8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6507483461686001489
 GameObject:
   m_ObjectHideFlags: 0

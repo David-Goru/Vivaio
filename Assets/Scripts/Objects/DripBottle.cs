@@ -8,13 +8,18 @@ public class DripBottle : IObject
     [SerializeField]
     public int WaterUnits;
 
-    public DripBottle(int waterUnits, string translationKey) : base("Drip bottle", 1, 1, translationKey)
+    public DripBottle(int waterUnits, string translationKey) : base("Drip bottle", "", 1, 1, translationKey)
     {
         WaterUnits = waterUnits;
     }
 
-    public override void LoadObjectCustom()
+    public override string GetUIName()
     {
-        Model.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/Drip bottle/" + WaterUnits);
+        return Localization.Translations[TranslationKey] + " (" + WaterUnits + "u)";
+    }
+
+    public override Sprite GetUISprite()
+    {
+        return UI.Sprites[Name + " " + WaterUnits];
     }
 }

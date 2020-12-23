@@ -11,4 +11,15 @@ public class Basket : Tool
     public Product Product;
     [SerializeField]
     public int Amount;
+
+    public override string GetUIName()
+    {
+        return Localization.Translations[TranslationKey] + " (" + Amount + "/10)";
+    }
+
+    public override Sprite GetUISprite()
+    {
+        if (Product != null) return UI.Sprites[Name + " with " + Product.Name];
+        return UI.Sprites[Name];
+    }
 }

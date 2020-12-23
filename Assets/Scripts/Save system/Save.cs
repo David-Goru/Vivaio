@@ -38,9 +38,6 @@ public class Save
     // Objects system
     public ObjectsData ObjectsData;
 
-    // Cash register system
-    public CashRegisterData CashRegisterData;
-
     // Delivery system
     public DeliverySystemData DeliverySystemData;
 

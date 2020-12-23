@@ -251,7 +251,7 @@ public class PlayerControls : MonoBehaviour
         if (buildScript.enabled) buildScript.CancelBuild();
 
         GameObject item = Instantiate(Resources.Load<GameObject>("Item"), new Vector2(transform.position.x, transform.position.y), transform.rotation);
-        item.GetComponent<SpriteRenderer>().sprite = Inventory.InventorySlot.GetComponent<Image>().sprite;
+        item.GetComponent<SpriteRenderer>().sprite = Inventory.Data.ObjectInHand.GetUISprite();
         item.GetComponent<Item>().ItemObject = Inventory.Data.ObjectInHand;
 
         Inventory.Data.ObjectInHand.WorldPosition = item.transform.position;
@@ -263,11 +263,10 @@ public class PlayerControls : MonoBehaviour
     public void OpenLetter()
     {
         if (!(Inventory.Data.ObjectInHand is Letter)) return;
-        GameObject letterUI = GameObject.Find("UI").transform.Find("Letter").gameObject;
 
-        if (letterUI.activeSelf) // Close letter
+        if (UI.Elements["Letter"].activeSelf) // Close letter
         {
-            letterUI.SetActive(false);
+            UI.Elements["Letter"].SetActive(false);
             return;
         }
 
@@ -275,11 +274,11 @@ public class PlayerControls : MonoBehaviour
         letter.Read = true;
         letter.TranslationKey = "LetterOpen";
         Inventory.ChangeObject();
-        letterUI.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + letter.Type);
-        letterUI.transform.Find("Title").gameObject.GetComponent<Text>().text = letter.Title;
-        letterUI.transform.Find("Body").gameObject.GetComponent<Text>().text = letter.Body;
-        letterUI.transform.Find("Signature").gameObject.GetComponent<Text>().text = letter.Signature;
-        letterUI.SetActive(true);
+        UI.Elements["Letter"].GetComponent<Image>().sprite = UI.Sprites[letter.Type];
+        UI.Elements["Letter title"].GetComponent<Text>().text = letter.Title;
+        UI.Elements["Letter body"].GetComponent<Text>().text = letter.Body;
+        UI.Elements["Letter signature"].GetComponent<Text>().text = letter.Signature;
+        UI.Elements["Letter"].SetActive(true);
     }
 
     public void TakeScreenshot()
@@ -301,7 +300,7 @@ public class PlayerControls : MonoBehaviour
 
     public void OpenLog()
     {
-        if (GameObject.Find("UI").transform.Find("Log").gameObject.activeSelf)
+        if (UI.Elements["Log"].activeSelf)
         {
             CloseLog();
             return;
@@ -321,12 +320,12 @@ public class PlayerControls : MonoBehaviour
             }
         }
 
-        GameObject.Find("UI").transform.Find("Log").Find("Text").GetComponent<Text>().text = logText;
-        GameObject.Find("UI").transform.Find("Log").gameObject.SetActive(true);
+        UI.Elements["Log text"].GetComponent<Text>().text = logText;
+        UI.Elements["Log"].SetActive(true);
     }
 
     public void CloseLog()
     {
-        GameObject.Find("UI").transform.Find("Log").gameObject.SetActive(false);
+        UI.Elements["Log"].SetActive(false);
     }
 }

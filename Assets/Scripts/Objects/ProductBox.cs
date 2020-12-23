@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class ProductBox : BuildableObject
@@ -60,6 +61,8 @@ public class ProductBox : BuildableObject
                 Inventory.ChangeObject();
             }
         }
+        UI.Elements["Product box product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
+        UI.Elements["Product box product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
     }
 
     public void TakeProduct()
@@ -87,23 +90,25 @@ public class ProductBox : BuildableObject
         Amount -= amount;
         basket.Amount += amount;
         Inventory.ChangeObject();
+        UI.Elements["Product box product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
+        UI.Elements["Product box product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
     }
 
     public override void ActionOne()
     {
         AddProduct();
-        if (ObjectUI.ObjectHandling == this && ObjectUI.ProductBoxUI.activeSelf) ObjectUI.OpenUI(this);
+        if (UI.ObjectOnUI == this && UI.Elements["Product box"].activeSelf) OpenUI();
     }
 
     public override void ActionTwoHard()
     {
         TakeProduct();
-        if (ObjectUI.ObjectHandling == this && ObjectUI.ProductBoxUI.activeSelf) ObjectUI.OpenUI(this);
+        if (UI.ObjectOnUI == this && UI.Elements["Product box"].activeSelf) OpenUI();
     }
 
     public override void ActionTwo()
     {
-        ObjectUI.OpenUI(this);
+        UI.OpenNewObjectUI(this);
     }
 
     public override void LoadObjectCustom()
@@ -114,5 +119,35 @@ public class ProductBox : BuildableObject
             Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Big display/" + Item.Name);
             Model.transform.Find("Product").gameObject.SetActive(true);
         }
+    }
+
+    // UI stuff
+    public override void OpenUI()
+    {
+        UI.Elements["Product box product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
+        UI.Elements["Product box product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
+        UI.Elements["Product box"].SetActive(true); 
+    }
+
+    public override void CloseUI()
+    {
+        UI.Elements["Product box"].SetActive(false);
+    }
+
+    public static void InitializeUIButtons()
+    {
+        UI.Elements["Product box take object button"].GetComponent<Button>().onClick.AddListener(() => TakeObject());
+        UI.Elements["Product box add product"].GetComponent<Button>().onClick.AddListener(() => AddProductButton());
+        UI.Elements["Product box take product"].GetComponent<Button>().onClick.AddListener(() => TakeProductButton());
+    }
+    
+    public static void AddProductButton()
+    {
+        ((ProductBox)UI.ObjectOnUI).AddProduct();
+    }
+    
+    public static void TakeProductButton()
+    {
+        ((ProductBox)UI.ObjectOnUI).TakeProduct();
     }
 }

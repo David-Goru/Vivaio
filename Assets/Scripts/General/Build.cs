@@ -38,6 +38,7 @@ public class Build : MonoBehaviour
             buildable = true;            
 
             if (physicalObject.CompareTag("Water pump") && pos.x != 7) buildable = false;
+            else if (boInfo.Name == "Water bottling machine" && pos.x != 7) buildable = false;
             else
             {                
                 Transform tParent;
@@ -123,8 +124,10 @@ public class Build : MonoBehaviour
 
             switch (boInfo.Name)
             {
-                case "Shop table":
-                case "Shop box": // Can be optimized
+                case "Small vegetables stand":
+                case "Big vegetables stand":
+                case "Food stand":
+                case "Beverages stand": // Can be optimized
                     boInfo.Model = physicalObject;
                     ObjectsHandler.Data.Objects.Add(boInfo);
                     boInfo.Placed = true;
@@ -148,6 +151,19 @@ public class Build : MonoBehaviour
                         p.CheckDripIrrigationWarning(false);
                     }
                     break;
+                case "Cash register":
+                    boInfo.Model = physicalObject;
+                    ObjectsHandler.Data.Objects.Add(boInfo);
+                    boInfo.Placed = true;
+
+                    CashRegister cr = (CashRegister)boInfo;                
+                    cr.CustomerPos = new List<Vector2>();
+                    foreach (Transform t in physicalObject.transform.Find("Customer position"))
+                    {
+                        cr.CustomerPos.Add(t.position);
+                    }
+                    Master.Data.CashRegisters.Add((CashRegister)boInfo);
+                    break;
                 case "Product box":
                 case "Composter":
                 case "Storage box":
@@ -158,6 +174,9 @@ public class Build : MonoBehaviour
                 case "Furnace":
                 case "Sign":
                 case "Fence gate":
+                case "Water bottling machine":
+                case "Bottles recycler":
+                case "Garbage can":
                     boInfo.Model = physicalObject;
                     ObjectsHandler.Data.Objects.Add(boInfo);
                     boInfo.Placed = true;
@@ -196,11 +215,12 @@ public class Build : MonoBehaviour
                 }
             }
             else if (boInfo.Name == "Cash register")
-            {                             
-                CashRegisterHandler.CustomerPos = new List<Vector2>();
+            {
+                CashRegister cr = (CashRegister)boInfo;                
+                cr.CustomerPos = new List<Vector2>();
                 foreach (Transform t in physicalObject.transform.Find("Customer position"))
                 {
-                    CashRegisterHandler.CustomerPos.Add(t.position);
+                    cr.CustomerPos.Add(t.position);
                 }
             }
             else if (boInfo is Wall)
@@ -222,7 +242,7 @@ public class Build : MonoBehaviour
             boInfo.WorldPosition = physicalObject.transform.position;
             boInfo = null;
         }
-        GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(false);  
+        UI.Elements["Cancel build button"].SetActive(false);  
         physicalObject = null;
         this.enabled = false;
     }
@@ -254,7 +274,7 @@ public class Build : MonoBehaviour
 
         isMoving = true;
         this.enabled = true;
-        GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(true);
+        UI.Elements["Cancel build button"].SetActive(true);
     }
 
     public void StartBuild(GameObject objectToBuild, BuildableObject bo)
@@ -265,13 +285,13 @@ public class Build : MonoBehaviour
         boInfo.Model = objectToBuild;
         isMoving = false;
         this.enabled = true;
-        GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(true);
-        GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(false);
+        UI.Elements["Cancel build button"].SetActive(true);
+        UI.Elements["Build object button"].SetActive(false);
     }
 
     public void CancelBuild()
     {
-        GameObject.Find("UI").transform.Find("Cancel build button").gameObject.SetActive(false);
+        UI.Elements["Cancel build button"].SetActive(false);
 
         if (isMoving)
         {
@@ -298,7 +318,7 @@ public class Build : MonoBehaviour
         }
         else
         {
-            GameObject.Find("UI").transform.Find("Build button").gameObject.SetActive(true);
+            UI.Elements["Build object button"].SetActive(true);
             boInfo.Model = null;
             Destroy(physicalObject);
         }

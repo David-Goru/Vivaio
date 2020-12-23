@@ -11,13 +11,13 @@ public class HideShowButtons : MonoBehaviour
 
     public void UpdateMainButton(GameObject newMainButton)
     {
-        Options.Data.TopBarButtons.Find(x => x.Button == newMainButton).SetButton(Options.Data.TopBarButtons.Find(x => x.SlotName == "Main slot").Button);
-        Options.Data.TopBarButtons.Find(x => x.SlotName == "Main slot").SetButton(newMainButton);
+        Options.Data.TopBarButtons.Find(x => x.Button == newMainButton).SetButton(Options.Data.TopBarButtons.Find(x => x.SlotName == "Top right bar main slot").Button);
+        Options.Data.TopBarButtons.Find(x => x.SlotName == "Top right bar main slot").SetButton(newMainButton);
     }
 
     public void Collapse()
     {
-        Transform mainButton = Options.Data.TopBarButtons.Find(x => x.SlotName == "Main slot").Button.transform;
+        Transform mainButton = Options.Data.TopBarButtons.Find(x => x.SlotName == "Top right bar main slot").Button.transform;
         foreach (Transform t in transform)
         {
             if (t == mainButton) continue;

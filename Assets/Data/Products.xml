@@ -1,38 +1,52 @@
 <Products>
 	<Product>
 		<Name>Sticks</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>0</MediumValue>
 	</Product>
 	<Product>
 		<Name>Wheat</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>0</MediumValue>
 	</Product>
 	<Product>
 		<Name>Tomato</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>4</MediumValue>
 	</Product>
 	<Product>
 		<Name>Carrot</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>3</MediumValue>
 	</Product>
 	<Product>
 		<Name>Potato</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>3</MediumValue>
 	</Product>
 	<Product>
 		<Name>Pumpkin</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>25</MediumValue>
 	</Product>
 	<Product>
 		<Name>Onion</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>4</MediumValue>
 	</Product>
 	<Product>
 		<Name>Lettuce</Name>
+		<Type>Vegetables</Type>
 		<MediumValue>11</MediumValue>
 	</Product>
 	<Product>
 		<Name>Bread</Name>
+		<Type>Food</Type>
 		<MediumValue>45</MediumValue>
+	</Product>
+	<Product>
+		<Name>Water bottle</Name>
+		<Type>Beverages</Type>
+		<MediumValue>75</MediumValue>
 	</Product>
 </Products>

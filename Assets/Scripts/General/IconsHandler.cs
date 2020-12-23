@@ -13,13 +13,12 @@ public class IconsHandler : MonoBehaviour
         try
         {
             Icons = new List<Icon>();
-            Transform iconsView = GameObject.Find("UI").transform.Find("Sign").Find("Choose icon").Find("Viewport").Find("Content");
 
-            Icons.Add(new Icon("None", Resources.Load<Sprite>("UI/None")));
-            GameObject noneIcon = Instantiate(Resources.Load<GameObject>("UI/Icon"), iconsView.position, iconsView.rotation);
+            Icons.Add(new Icon("None", UI.Sprites["None"]));
+            GameObject noneIcon = Instantiate(Resources.Load<GameObject>("UI/Icon"), UI.Elements["Sign choose icon content"].transform.position, UI.Elements["Sign choose icon content"].transform.rotation);
             noneIcon.GetComponent<Image>().sprite = Icons[0].Sprite;
-            noneIcon.GetComponent<Button>().onClick.AddListener(() => ObjectUI.ChooseIcon(Icons[0].Name));
-            noneIcon.transform.SetParent(iconsView, false);
+            noneIcon.GetComponent<Button>().onClick.AddListener(() => Sign.ChooseIcon(Icons[0].Name));
+            noneIcon.transform.SetParent(UI.Elements["Sign choose icon content"].transform, false);
 
             DirectoryInfo icons = new DirectoryInfo(Application.dataPath + "/Data/Icons/");
             foreach (FileInfo f in icons.GetFiles())
@@ -34,10 +33,10 @@ public class IconsHandler : MonoBehaviour
 
                 Icon i = new Icon(Path.GetFileNameWithoutExtension(f.Name), iconSprite);
 
-                GameObject g = Instantiate(Resources.Load<GameObject>("UI/Icon"), iconsView.position, iconsView.rotation);
+                GameObject g = Instantiate(Resources.Load<GameObject>("UI/Icon"), UI.Elements["Sign choose icon content"].transform.position, UI.Elements["Sign choose icon content"].transform.rotation);
                 g.GetComponent<Image>().sprite = iconSprite;
-                g.GetComponent<Button>().onClick.AddListener(() => ObjectUI.ChooseIcon(i.Name));
-                g.transform.SetParent(iconsView, false);
+                g.GetComponent<Button>().onClick.AddListener(() => Sign.ChooseIcon(i.Name));
+                g.transform.SetParent(UI.Elements["Sign choose icon content"].transform, false);
 
                 Icons.Add(i);
             }

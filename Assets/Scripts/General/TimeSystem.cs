@@ -11,10 +11,7 @@ public class TimeSystem : MonoBehaviour
     // Game objects
     public static GameObject Background;
     public static GameObject House;
-    public static GameObject Clock;
     public static GameObject Bed;
-    public GameObject ClockHand;
-    public GameObject DayDisplay;
 
     // Sprites
     public Sprite HouseDay;
@@ -40,13 +37,12 @@ public class TimeSystem : MonoBehaviour
             Data = data;
             
             Background = GameObject.Find("Background");
-            Clock = GameObject.FindGameObjectWithTag("Clock");
             House = GameObject.FindGameObjectWithTag("House");
 
             Background.GetComponent<SpriteRenderer>().color = GameObject.Find("Farm handler").GetComponent<TimeSystem>().EarlyBackground;
-            Clock.GetComponent<Image>().sprite = GameObject.Find("Farm handler").GetComponent<TimeSystem>().ClockNight;
+            UI.Elements["Clock"].GetComponent<Image>().sprite = GameObject.Find("Farm handler").GetComponent<TimeSystem>().ClockNight;
             House.GetComponent<SpriteRenderer>().sprite = GameObject.Find("Farm handler").GetComponent<TimeSystem>().HouseNight;
-            GameObject.Find("Farm handler").GetComponent<TimeSystem>().DayDisplay.GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
+            UI.Elements["Day display"].GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
 
             Master.Player.transform.position = Data.SleepPosition;
 
@@ -66,9 +62,8 @@ public class TimeSystem : MonoBehaviour
         Data = new TimeData(false, false, TimeState.MORNING, 180, 1, new List<Timer>());        
             
         Background = GameObject.Find("Background");
-        Clock = GameObject.FindGameObjectWithTag("Clock");
         House = GameObject.FindGameObjectWithTag("House");
-        GameObject.Find("Farm handler").GetComponent<TimeSystem>().DayDisplay.GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
+        UI.Elements["Day display"].GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
 
         MusicHandler.StartTransition(SongType.Morning);
 
@@ -88,7 +83,7 @@ public class TimeSystem : MonoBehaviour
         (Master.Player.GetComponent("PlayerMovement") as PlayerMovement).enabled = false;
         Master.Player.GetComponent<SpriteRenderer>().enabled = false;
         Master.Player.transform.Find("Character shadow").gameObject.SetActive(false);
-        GameObject.Find("UI").transform.Find("Bed").gameObject.SetActive(false);
+        UI.Elements["Bed"].SetActive(false);
         Bed.transform.Find("Sprite").GetComponent<Animator>().SetTrigger("Sleep");
         if (Data.CurrentMinute == 719) GameObject.Find("Farm handler").GetComponent<TimeSystem>().StartCoroutine(GameObject.Find("Farm handler").GetComponent<TimeSystem>().TimeTick());
         MusicHandler.StartTransition(SongType.Early);
@@ -122,7 +117,7 @@ public class TimeSystem : MonoBehaviour
         }
 
         // Clock
-        ClockHand.transform.eulerAngles = new Vector3(0, 0, -1f * Data.CurrentMinute);      
+        UI.Elements["Clock hand"].transform.eulerAngles = new Vector3(0, 0, -1f * Data.CurrentMinute);      
 
         // Objects
         foreach (Timer t in Data.Timers.ToArray())
@@ -151,6 +146,9 @@ public class TimeSystem : MonoBehaviour
 
     public void NewDayCall()
     {
+        Master.Data.ShopEarnings.Add(Shop.TodayEarnings);
+        Shop.TodayEarnings = 0;
+
         Master.Data.LastDayPaid += Master.Data.LastDayWaterUsage;
         Master.Data.LastDayPaid += Master.Data.LastDayEnergyUsage;
 
@@ -191,13 +189,11 @@ public class TimeSystem : MonoBehaviour
             p.NewDay();
         }
         DeliverySystem.UpdatePackages();
-        DayDisplay.GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
+        UI.Elements["Day display"].GetComponent<Text>().text = string.Format(Localization.Translations["Day"], Master.Data.Day);
 
-        ((GarbageCan)ObjectsHandler.Data.Objects.Find(x => x.Name == "Garbage can")).Items = new List<IObject>();
-        Transform content = GameObject.Find("UI").transform.Find("Garbage can").Find("Objects").Find("Viewport").Find("Content");
-        foreach (Transform t in content)
+        foreach (IObject gc in ObjectsHandler.Data.Objects.FindAll(x => x.Name == "Garbage can"))
         {
-            Destroy(t.gameObject);
+            ((GarbageCan)gc).Items = new List<IObject>();
         }
 
         GameSaver.SaveGame();
@@ -226,7 +222,7 @@ public class TimeSystem : MonoBehaviour
         (Master.Player.GetComponent("PlayerMovement") as PlayerMovement).enabled = true;
         Master.Player.GetComponent<SpriteRenderer>().enabled = true;
         Master.Player.transform.Find("Character shadow").gameObject.SetActive(true);
-        Clock.GetComponent<Image>().sprite = ClockMorning;
+        UI.Elements["Clock"].GetComponent<Image>().sprite = ClockMorning;
         House.GetComponent<SpriteRenderer>().sprite = HouseDay;
 
         if (!Data.Sleeping) MusicHandler.StartTransition(SongType.Morning);
@@ -238,7 +234,7 @@ public class TimeSystem : MonoBehaviour
         if (Data.Sleeping) Background.GetComponent<SpriteRenderer>().color = ShopOpenBackground;
         else StartCoroutine(ColorTransition(MorningBackground, ShopOpenBackground));
 
-        Clock.GetComponent<Image>().sprite = ClockDay;
+        UI.Elements["Clock"].GetComponent<Image>().sprite = ClockDay;
         
         if (!Data.Sleeping) MusicHandler.StartTransition(SongType.ShopOpen);
     }
@@ -249,7 +245,7 @@ public class TimeSystem : MonoBehaviour
         if (Data.Sleeping) Background.GetComponent<SpriteRenderer>().color = EveningBackground;
         else StartCoroutine(ColorTransition(ShopOpenBackground, EveningBackground));
         
-        Clock.GetComponent<Image>().sprite = ClockEvening;
+        UI.Elements["Clock"].GetComponent<Image>().sprite = ClockEvening;
         House.GetComponent<SpriteRenderer>().sprite = HouseNoon;
         
         if (!Data.Sleeping) MusicHandler.StartTransition(SongType.Evening);
@@ -261,7 +257,7 @@ public class TimeSystem : MonoBehaviour
         if (Data.Sleeping) Background.GetComponent<SpriteRenderer>().color = NightBackground;
         else StartCoroutine(ColorTransition(EveningBackground, NightBackground));
         
-        Clock.GetComponent<Image>().sprite = ClockNight;
+        UI.Elements["Clock"].GetComponent<Image>().sprite = ClockNight;
         House.GetComponent<SpriteRenderer>().sprite = HouseNight;
 
         if (GameObject.FindGameObjectWithTag("Water pump") != null)

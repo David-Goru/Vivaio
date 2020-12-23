@@ -16,7 +16,6 @@ public class GameLoader : MonoBehaviour
     void Start()
     {
         if (Localization.Translations == null) Localization.LoadTranslations();
-        GameObject.Find("UI").GetComponent<Localization>().UpdateTexts();
 
         Log = new List<string>();
         loadingText = GameObject.Find("UI").transform.Find("Load screen").Find("Text").gameObject.GetComponent<Text>();
@@ -26,7 +25,7 @@ public class GameLoader : MonoBehaviour
     }
 
     IEnumerator NewGame()
-    {
+    {        
         // Options system
         loadingText.text = string.Format("Creating {0}...", "options");
         yield return new WaitUntil(() => Options.New());
@@ -87,11 +86,6 @@ public class GameLoader : MonoBehaviour
         yield return new WaitUntil(() => ObjectsHandler.New());
         yield return new WaitForSeconds(0.05f);
 
-        // Cash register system
-        loadingText.text = string.Format("Creating {0}...", "cash register data");
-        yield return new WaitUntil(() => CashRegisterHandler.New());
-        yield return new WaitForSeconds(0.05f);
-
         // Delivery system
         loadingText.text = string.Format("Creating {0}...", "delivery system");
         yield return new WaitUntil(() => DeliverySystem.New());
@@ -107,12 +101,15 @@ public class GameLoader : MonoBehaviour
         yield return new WaitUntil(() => Inventory.New());
         yield return new WaitForSeconds(0.05f);
 
-        GameObject.Find("UI").transform.Find("Tutorial").gameObject.SetActive(true);
-        GameObject.Find("UI").transform.Find("Load screen").gameObject.SetActive(false);
+        UI.Elements["Tutorial"].SetActive(true);
+        UI.Elements["Load screen"].SetActive(false);
 
         // Initialize time ticks
         TimeSystem ts = GameObject.Find("Farm handler").GetComponent<TimeSystem>();
         ts.StartCoroutine(ts.TimeTick());
+
+        // Set texts translations
+        Localization.UpdateTexts();
 
         Destroy(gameObject);
     }
@@ -196,11 +193,6 @@ public class GameLoader : MonoBehaviour
         yield return new WaitUntil(() => ObjectsHandler.Load(saveFile.ObjectsData));
         yield return new WaitForSeconds(0.05f);
 
-        // Cash register system
-        loadingText.text = string.Format("Loading {0}...", "cash register data");
-        yield return new WaitUntil(() => CashRegisterHandler.Load(saveFile.CashRegisterData));
-        yield return new WaitForSeconds(0.05f);
-
         // Delivery system
         loadingText.text = string.Format("Loading {0}...", "delivery system");
         yield return new WaitUntil(() => DeliverySystem.Load(saveFile.DeliverySystemData));
@@ -220,23 +212,26 @@ public class GameLoader : MonoBehaviour
         TimeSystem ts = GameObject.Find("Farm handler").GetComponent<TimeSystem>();
         ts.StartCoroutine(ts.TimeTick());
 
+        // Set texts translations
+        Localization.UpdateTexts();
+
         // Finished loading
         if (Log.Count > 0)
         {
-            loadingText.text = "Oups! We failed loading your game... Sorry!";
-            string errorText = "We couldn't load the game due to the following error(s).\n";
-            errorText += "Please, contact with the developers to get help (sending an screenshot of this and the save file will help): @VivaioGame (twitter), vivaio.gamedev@gmail.com (email). Thank you! \n\n";
-            errorText += string.Format("Version {0} \n", Master.GameVersion); 
+            loadingText.text = Localization.Translations["failed_to_load_game"];
+            string errorText = Localization.Translations["load_error_text_1"];
+            errorText += Localization.Translations["load_error_text_2"];
+            errorText += string.Format(Localization.Translations["load_error_text_3"], Master.GameVersion); 
             foreach (string s in Log)
             {
                 errorText += s;
                 errorText += "\n";
             }
-            GameObject.Find("UI").transform.Find("Load screen").Find("Error log").gameObject.GetComponent<Text>().text = errorText;
+            UI.Elements["Load screen error log"].GetComponent<Text>().text = errorText;
         }
         else
         {
-            GameObject.Find("UI").transform.Find("Load screen").gameObject.SetActive(false);
+            UI.Elements["Load screen"].SetActive(false);
             Destroy(gameObject);
         }
     }

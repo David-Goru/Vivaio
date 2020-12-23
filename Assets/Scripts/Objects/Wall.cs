@@ -12,7 +12,7 @@ public class Wall : BuildableObject
 
     public override void ActionTwo()
     {
-        if (!Inventory.AddObject(this)) return;
+        if (Inventory.AddObject(this) == 0) return;
 
         ObjectsHandler.Data.Objects.Remove(this);
         Placed = false;

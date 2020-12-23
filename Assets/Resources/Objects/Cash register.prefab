@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 228671691149419226}
   - component: {fileID: 228671691149419229}
-  - component: {fileID: 6178139824615960762}
   m_Layer: 12
   m_Name: Cash register
   m_TagString: Cash register
@@ -63,19 +62,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.6}
   m_EdgeRadius: 0
---- !u!114 &6178139824615960762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 228671691149419224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400883247e5ef7f4e843162077e522fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: fcad5a268ae7d05448072ebd5691ebd7, type: 3}
 --- !u!1 &228671691197393353
 GameObject:
   m_ObjectHideFlags: 0

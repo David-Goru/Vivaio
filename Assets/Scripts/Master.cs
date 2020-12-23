@@ -27,8 +27,14 @@ public class Master : MonoBehaviour
             Data = data;
             Player = GameObject.Find("Player");
             AudioHandler = Player.transform.Find("Camera").GetComponent<AudioSource>();
-            GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "€";
+            UI.Elements["Money display"].GetComponent<Text>().text = Data.Balance + "€";
             GameObject.Find("Farm handler").GetComponent<VersionHandlerGame>().LoadEditionStuff();
+
+            if (data.ShopInaugurated)
+            {                
+                UI.Elements["Shop inauguration"].SetActive(false);
+                UI.Elements["Shop management"].SetActive(true);
+            }
         }
         catch (System.Exception e)
         {
@@ -41,10 +47,10 @@ public class Master : MonoBehaviour
     // When creating a new game
     public static bool New()
     {
-        Data = new GeneralData(PlayerName, 2000, 0, 3000, 0, 100, 0, 0, 1);
+        Data = new GeneralData(PlayerName, 2000, 0, 3000, 0, 100, 0, 0, 1, false);
         Player = GameObject.Find("Player");
         AudioHandler = Player.transform.Find("Camera").GetComponent<AudioSource>();
-        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "€";
+        UI.Elements["Money display"].GetComponent<Text>().text = Data.Balance + "€";
         GameObject.Find("Farm handler").GetComponent<VersionHandlerGame>().LoadEditionStuff();
 
         return true;
@@ -58,13 +64,11 @@ public class Master : MonoBehaviour
     public static void UpdateBalance(int money)
     {
         Data.Balance += money;
-        GameObject.Find("UI").transform.Find("Money").transform.Find("Text").gameObject.GetComponent<Text>().text = Data.Balance + "€";
-
-        Transform MoneyHandler = GameObject.Find("UI").transform.Find("Money").Find("Money updates").Find("Viewport").Find("Content");
+        UI.Elements["Money display"].GetComponent<Text>().text = Data.Balance + "€";
 
         GameObject uiElement = Instantiate<GameObject>(Resources.Load<GameObject>("UI/Money " + (money < 0 ? "removed" : "added")), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
         uiElement.GetComponent<Text>().text = (money < 0 ? "" : "+") + money + "€";
-        uiElement.transform.SetParent(MoneyHandler, false);
+        uiElement.transform.SetParent(UI.Elements["Money updates list"].transform, false);
         uiElement.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
     }
 

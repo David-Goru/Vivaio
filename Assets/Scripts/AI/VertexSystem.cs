@@ -98,7 +98,6 @@ public class VertexSystem : MonoBehaviour
         while (openSet.Count > 0)
         {
             currentVertex = openSet.RemoveFirst();
-            Debug.Log("Cogemos el que tiene GCost " + currentVertex.GCost);
             closedSet.Add(currentVertex);
 
             if (targetVertices.Contains(currentVertex)) return RetracePath(startVertex, currentVertex);
@@ -108,10 +107,8 @@ public class VertexSystem : MonoBehaviour
                 if (neighbour.State == VertexState.Occuppied || closedSet.Contains(neighbour)) continue;
 
                 int newCostToNeighbour = currentVertex.GCost + GetDistance(currentVertex, neighbour) + neighbour.GetPenalty();
-                Debug.Log(newCostToNeighbour + " es menor que " + neighbour.GCost + " o " + !openSet.Contains(neighbour) + " es True?");
                 if (newCostToNeighbour < neighbour.GCost || !openSet.Contains(neighbour))
                 {
-                    Debug.Log("Sí, o al menos no está en el openSet");
                     neighbour.GCost = newCostToNeighbour;
                     neighbour.HCost = GetDistance(neighbour, targetVertices[0]);
                     neighbour.Parent = currentVertex;

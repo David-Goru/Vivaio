@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class Options : MonoBehaviour
 {
     public static OptionsData Data;
-    public static GameObject OptionsUI;
 
     // When loading a game
     public static bool Load(OptionsData data)
@@ -17,20 +16,19 @@ public class Options : MonoBehaviour
         {
             Data = data;   
 
-            OptionsUI = GameObject.Find("UI").transform.Find("Options").gameObject;  
             SetOptions();
 
             foreach (ISlot slot in Data.TopBarButtons)
             {
-                slot.Slot = GameObject.Find("UI").transform.Find("Top buttons bar").Find("Slots").Find(slot.SlotName).gameObject;
+                slot.Slot = UI.Elements[slot.SlotName];
                 slot.Initialize();
             }
 
             if (Data.TopBarCollapsed)
             {
-                GameObject.Find("UI").transform.Find("Top buttons bar").Find("Buttons").GetComponent<HideShowButtons>().Collapse();
-                GameObject.Find("UI").transform.Find("Top buttons bar").Find("Extended").gameObject.SetActive(false);
-                GameObject.Find("UI").transform.Find("Top buttons bar").Find("Collapsed").gameObject.SetActive(true);
+                UI.Elements["Top right buttons"].GetComponent<HideShowButtons>().Collapse();
+                UI.Elements["Top right extended"].SetActive(false);
+                UI.Elements["Top right collapsed"].SetActive(true);
             }
         }
         catch (System.Exception e)
@@ -55,14 +53,13 @@ public class Options : MonoBehaviour
         Data.SoundsVolume = 0.5f;
         Data.TopBarCollapsed = false;
 
-        OptionsUI = GameObject.Find("UI").transform.Find("Options").gameObject;
         SetOptions();
 
         // Top bar buttons
         Data.TopBarButtons = new List<ISlot>();
         string[] buttons = new string[5] {"Options button", "Farmazon button", "Management button", "Tutorial button", "Shop button"}; 
         int buttonNumber = 0;
-        foreach (Transform t in GameObject.Find("UI").transform.Find("Top buttons bar").Find("Slots"))
+        foreach (Transform t in UI.Elements["Top right slots"].transform)
         {
             ISlot slot = new ISlot(buttons[buttonNumber], t.gameObject);
             buttonNumber++;
@@ -75,7 +72,7 @@ public class Options : MonoBehaviour
 
     public void CheckCloseOptions()
     {
-        if (OptionsUI.activeSelf)
+        if (UI.Elements["Options"].activeSelf)
         {
             ShowOptions(false);
             Time.timeScale = 1;
@@ -89,7 +86,7 @@ public class Options : MonoBehaviour
 
     public static void ShowOptions(bool state)
     {
-        OptionsUI.SetActive(state);
+        UI.Elements["Options"].SetActive(state);
     }
 
     public static void SetOptions()
@@ -97,11 +94,11 @@ public class Options : MonoBehaviour
         Application.targetFrameRate = Data.FPS;
         
         Screen.SetResolution(Data.Width, Data.Height, Data.FullScreen);
-        OptionsUI.transform.Find("FullScreen").GetComponent<Toggle>().isOn = Data.FullScreen;
+        UI.Elements["Options fullscreen check"].GetComponent<Toggle>().isOn = Data.FullScreen;
 
         GameObject.Find("Player").transform.Find("Camera").GetComponent<Camera>().orthographicSize = (float)Screen.currentResolution.height / 64 / 8;
         
-        OptionsUI.transform.Find("Day duration").Find("Explanation").GetComponent<Text>().text = string.Format(Localization.Translations["options_current_day_duration"], Data.MinuteValue); 
+        UI.Elements["Options selected day duration text"].GetComponent<Text>().text = string.Format(Localization.Translations["options_current_day_duration"], Data.MinuteValue); 
         
         if(!Directory.Exists(Options.Data.DataPath + "/Saves/")) 
         {
@@ -109,14 +106,14 @@ public class Options : MonoBehaviour
             Directory.CreateDirectory(Options.Data.DataPath + "/Screenshots/");
         }
 
-        OptionsUI.transform.Find("Volume").Find("Music volume").GetComponent<Slider>().value = Data.MusicVolume;
-        OptionsUI.transform.Find("Volume").Find("Sounds volume").GetComponent<Slider>().value = Data.SoundsVolume;
+        UI.Elements["Options music volume"].GetComponent<Slider>().value = Data.MusicVolume;
+        UI.Elements["Options sounds volume"].GetComponent<Slider>().value = Data.SoundsVolume;
     }
 
     public void ChangeMinuteValue(float value)
     {
         Data.MinuteValue = value;
-        OptionsUI.transform.Find("Day duration").Find("Explanation").GetComponent<Text>().text = string.Format(Localization.Translations["options_current_day_duration"], Data.MinuteValue);
+        UI.Elements["Options selected day duration text"].GetComponent<Text>().text = string.Format(Localization.Translations["options_current_day_duration"], Data.MinuteValue);
     } 
 
     public void ChangeFullScreen()
@@ -128,7 +125,7 @@ public class Options : MonoBehaviour
 
     public void ChangeResolution()
     {
-        int res = OptionsUI.transform.Find("Resolution").GetComponent<Dropdown>().value;
+        int res = UI.Elements["Options resolution"].GetComponent<Dropdown>().value;
 
         if (res == 0) return;
 
@@ -192,13 +189,13 @@ public class Options : MonoBehaviour
 
     public void ChangeMusicVolume()
     {
-        Data.MusicVolume = OptionsUI.transform.Find("Volume").Find("Music volume").GetComponent<Slider>().value;
+        Data.MusicVolume = UI.Elements["Options music volume"].GetComponent<Slider>().value;
         GameObject.Find("Music handler").GetComponent<AudioSource>().volume = Data.MusicVolume;
     }
 
     public void ChangeSoundsVolume()
     {
-        Data.SoundsVolume = OptionsUI.transform.Find("Volume").Find("Sounds volume").GetComponent<Slider>().value;
+        Data.SoundsVolume = UI.Elements["Options sounds volume"].GetComponent<Slider>().value;
         GameObject.Find("Player").transform.Find("Camera").GetComponent<AudioSource>().volume = Data.SoundsVolume;
     }
 

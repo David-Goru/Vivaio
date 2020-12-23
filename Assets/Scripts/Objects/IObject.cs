@@ -6,6 +6,8 @@ public class IObject
     [SerializeField]
     public string Name;
     [SerializeField]
+    public string UIWindow;
+    [SerializeField]
     public int Stack;
     [SerializeField]
     public int MaxStack;
@@ -20,9 +22,10 @@ public class IObject
     [SerializeField]
     public string TranslationKey;
 
-    public IObject(string name, int stack, int maxStack, string translationKey)
+    public IObject(string name, string uiWindow, int stack, int maxStack, string translationKey)
     {
         Name = name;
+        UIWindow = uiWindow;
         Stack = stack;
         MaxStack = maxStack;
         TranslationKey = translationKey;
@@ -46,9 +49,7 @@ public class IObject
         else // Item on the floor
         {                    
             Model = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Item"), WorldPosition, Quaternion.Euler(0, 0, 0));
-            Sprite sprite = ObjectsHandler.ObjectInfo[Name].Icon;
-
-            Model.GetComponent<SpriteRenderer>().sprite = sprite;
+            Model.GetComponent<SpriteRenderer>().sprite = GetUISprite();
             Model.GetComponent<Item>().ItemObject = this;
         }
 
@@ -58,4 +59,37 @@ public class IObject
     public virtual void LoadObjectCustom() {}
 
     public virtual void RotateObject() {}
+
+    public virtual void OpenUI() {}
+
+    public virtual void CloseUI() {}
+
+    public virtual void UpdateUI() {}
+
+    public virtual string GetUIName()
+    {
+        if (MaxStack > 1) return Localization.Translations[TranslationKey] + " (" + Stack + ")";
+        return Localization.Translations[TranslationKey];
+    }
+
+    public virtual Sprite GetUISprite()
+    {
+        return UI.Sprites[Name];
+    }
+    
+    public static void TakeObject()
+    {  
+        if (Inventory.AddObject(UI.ObjectOnUI) == 0) return;
+        UI.ObjectOnUI.CloseUI();
+
+        ObjectsHandler.Data.Objects.Remove(UI.ObjectOnUI);
+        UI.ObjectOnUI.Placed = false;
+        foreach (Transform t in UI.ObjectOnUI.Model.transform.Find("Vertices"))
+        {                            
+            Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
+            if (v != null) v.State = VertexState.Available;
+        }
+        MonoBehaviour.Destroy(UI.ObjectOnUI.Model);
+        UI.ObjectOnUI = null;
+    }
 }

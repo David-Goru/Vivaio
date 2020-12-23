@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Furnace : BuildableObject
@@ -45,23 +46,32 @@ public class Furnace : BuildableObject
 
             Amount = 10;
         }
+        UI.Elements["Furnace product amount"].GetComponent<Image>().sprite = UI.Sprites["Content bar " + Mathf.Ceil((float)Amount / (float)MaxAmount * 5)];
     }
 
-    public bool TakeProduct()
-    {        
-        if (Inventory.AddObject(new IObject("Bread", Amount, 10, "Bread")))
+    public void TakeProduct()
+    {     
+        int amountTaken = Inventory.AddObject(new IObject("Bread", "", Amount, 10, "Bread"));   
+        if (amountTaken == Amount)
         {
             Amount = 0;
             State = MachineState.AVAILABLE;
             Model.transform.Find("Warning").gameObject.SetActive(false);
-            return true;
+            UI.Elements["Furnace product amount"].GetComponent<Image>().sprite = UI.Sprites["Content bar " + Mathf.Ceil((float)Amount / (float)MaxAmount * 5)];
+            UI.Elements["Furnace available"].SetActive(true);
+            UI.Elements["Furnace working"].SetActive(false);
+            UI.Elements["Furnace finished"].SetActive(false);
         }
-        return false;
+        else
+        {
+            Amount -= amountTaken;
+            UI.Elements["Furnace take product amount"].GetComponent<Text>().text = "x " + Amount;
+        }
     }
 
-    public bool TurnOn()
+    public void TurnOn()
     {
-        if (Amount == 0) return false;
+        if (Amount == 0) return;
 
         State = MachineState.WORKING;
         Model.transform.Find("Sprite").gameObject.SetActive(false);
@@ -70,8 +80,10 @@ public class Furnace : BuildableObject
         OnTimeReached createProduct = CreateProduct;
         Timer = new Timer(createProduct, 120);
         TimeSystem.Data.Timers.Add(Timer);
-
-        return true;
+        
+        UI.Elements["Furnace available"].SetActive(false);
+        UI.Elements["Furnace working"].SetActive(true);
+        UI.Elements["Furnace finished"].SetActive(false);
     }
 
     public void CreateProduct()
@@ -89,7 +101,7 @@ public class Furnace : BuildableObject
         {
             AddProduct();
             if (Amount == MaxAmount) TurnOn();
-            if (ObjectUI.ObjectHandling == this && ObjectUI.FurnaceUI.activeSelf) ObjectUI.OpenUI(this);
+            if (UI.ObjectOnUI == this && UI.Elements["Furnace"].activeSelf) OpenUI();
         }
     }
 
@@ -98,13 +110,13 @@ public class Furnace : BuildableObject
         if (Amount > 0 && State == MachineState.FINISHED)
         {
             TakeProduct();
-            if (ObjectUI.ObjectHandling == this && ObjectUI.FurnaceUI.activeSelf) ObjectUI.OpenUI(this);
+            if (UI.ObjectOnUI == this && UI.Elements["Furnace"].activeSelf) OpenUI();
         }
     }
 
     public override void ActionTwo()
     {
-        ObjectUI.OpenUI(this);
+        UI.OpenNewObjectUI(this);
     }
 
     public override void LoadObjectCustom()
@@ -120,5 +132,80 @@ public class Furnace : BuildableObject
                 Model.transform.Find("Warning").gameObject.SetActive(true);
                 break;
         }
+    }
+
+    // UI stuff
+    public override void OpenUI()
+    {
+        UI.Elements["Furnace product amount"].GetComponent<Image>().sprite = UI.Sprites["Content bar " + Mathf.Ceil((float)Amount / (float)MaxAmount * 5)];
+
+        switch (State)
+        {
+            case MachineState.AVAILABLE:
+                UI.Elements["Furnace available"].SetActive(true);
+                UI.Elements["Furnace working"].SetActive(false);
+                UI.Elements["Furnace finished"].SetActive(false);
+                break;
+            case MachineState.WORKING:
+                UI.Elements["Furnace available"].SetActive(false);
+                UI.Elements["Furnace working"].SetActive(true);
+                UI.Elements["Furnace finished"].SetActive(false);
+                break;
+            case MachineState.FINISHED:
+                UI.Elements["Furnace take product image"].GetComponent<Image>().sprite = UI.Sprites[ProductBaked];
+                UI.Elements["Furnace take product amount"].GetComponent<Text>().text = "x " + Amount;
+                
+                UI.Elements["Furnace available"].SetActive(false);
+                UI.Elements["Furnace working"].SetActive(false);
+                UI.Elements["Furnace finished"].SetActive(true);
+                break;
+        }
+        
+        UI.Elements["Furnace"].SetActive(true);
+    }
+
+    public override void CloseUI()
+    {
+        UI.Elements["Furnace"].SetActive(false);
+    }
+
+    public override void UpdateUI()
+    {
+        if (State == MachineState.WORKING)
+        {
+            int minutes = Timer.Time;
+            UI.Elements["Furnace working text"].GetComponent<Text>().text = string.Format(Localization.Translations["furnace_working"], ProductBaked, minutes);
+        }
+        else if (State == MachineState.FINISHED && !UI.Elements["Furnace finished"].activeSelf)
+        {
+            UI.Elements["Furnace working"].SetActive(false);
+            UI.Elements["Furnace take product image"].GetComponent<Image>().sprite = UI.Sprites["Bread"];
+            UI.Elements["Furnace take product amount"].GetComponent<Text>().text = "x 5";
+            UI.Elements["Furnace finished"].SetActive(true);
+        }
+    }
+
+    public static void InitializeUIButtons()
+    {
+        UI.Elements["Furnace take object button"].GetComponent<Button>().onClick.AddListener(() => TakeObject());  
+        UI.Elements["Furnace add product"].GetComponent<Button>().onClick.AddListener(() => AddProductButton());
+        UI.Elements["Furnace turn on"].GetComponent<Button>().onClick.AddListener(() => TurnOnButton());
+        UI.Elements["Furnace take product"].GetComponent<Button>().onClick.AddListener(() => TakeProductButton());
+        UI.Elements["Furnace take product image"].GetComponent<Button>().onClick.AddListener(() => TakeProductButton());
+    }
+    
+    public static void AddProductButton()
+    {
+        ((Furnace)UI.ObjectOnUI).AddProduct();
+    }
+    
+    public static void TurnOnButton()
+    {
+        ((Furnace)UI.ObjectOnUI).TurnOn();
+    }
+    
+    public static void TakeProductButton()
+    {
+        ((Furnace)UI.ObjectOnUI).TakeProduct();
     }
 }

@@ -13,9 +13,11 @@ public class Customer
 
     public int Trust;
     public bool LetterSent;
+    public int GlassBottles;
 
     GameObject body;
     Stand nextStand;
+    CashRegister cashRegister;
     Vector2 pathStart;
     Vector2 pathEnd;
     Stack<Vector2> path;
@@ -39,6 +41,7 @@ public class Customer
         this.speed = speed;
         Trust = 95;
         LetterSent = false;
+        GlassBottles = 0;
         lastDir = "Idle down";
         itemsBought = "";
         numberItemsBought = 0;
@@ -114,13 +117,23 @@ public class Customer
 
         if (nextStand == null)
         {
-            path = VertexSystem.FindPath(body.transform.position, CashRegisterHandler.CustomerPos);
-            if (path.Count == 0) // Can't reach the cash register
+            if (Master.Data.CashRegisters.Count > 0)
+            {
+                cashRegister = Master.Data.CashRegisters[Random.Range(0, Master.Data.CashRegisters.Count - 1)];
+                path = VertexSystem.FindPath(body.transform.position, cashRegister.CustomerPos);
+            }
+            if (cashRegister == null || path.Count == 0) // Can't reach the cash register
             {
                 if (Trust > 10) Trust--;
-                CashRegisterHandler.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
-                MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegisterHandler.CashRegisterModel.transform);
+                if (cashRegister != null)
+                {
+                    cashRegister.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
+                    MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), cashRegister.Model.transform);
+                }
                 Master.UpdateBalance(expenses);
+                Shop.TodayEarnings += expenses;
+                paid = true;
+                path = VertexSystem.FindPath(body.transform.position, pathEnd);
             }
         }
         else path = VertexSystem.FindPath(body.transform.position, nextStand.CustomerPos);
@@ -134,11 +147,14 @@ public class Customer
             {
                 if (expenses > 0)
                 {
-                    CashRegisterHandler.Data.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
-                    MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), CashRegisterHandler.CashRegisterModel.transform);
+                    cashRegister.CashLog.Add(new ShopTicket(Name, expenses, itemsBought, numberItemsBought));
+                    if (UI.ObjectOnUI == cashRegister) cashRegister.OpenUI();
+                    MonoBehaviour.Instantiate(Resources.Load<GameObject>("Shop/Coin animation"), cashRegister.Model.transform);
                     if (Trust < 85) Trust++;
                     Master.UpdateBalance(expenses);
-                    Master.RunSoundStatic(CashRegisterHandler.CashRegisterModel.GetComponent<CashRegisterHandler>().Clip);
+                    Shop.TodayEarnings += expenses;
+                    // Run coin sound
+                    //Master.RunSoundStatic(CashRegisterHandler.CashRegisterModel.GetComponent<CashRegisterHandler>().Clip);
                 }
                 else if (Trust > 10) Trust--;
                 paid = true;
@@ -204,46 +220,40 @@ public class Customer
 
         body.transform.position = pathStart;
 
-        /*
-        if (Shop.Data.Inaugurated)
+        if (Master.Data.ShopInaugurated)
         {
-            [...]
+            int totalDesires = Random.Range(1, Priorities.Length + 1);
+            for (int i = 0; i < totalDesires; i++)
+            {
+                customerDesires.Push(new CustomerDesire(Products.ProductsList.Find(x => x.Name == Priorities[i]), MediumAmount));
+            }
+
+            while (customerDesires.Count > 0 && nextStand == null)
+            {
+                currentDesire = customerDesires.Peek();
+                nextStand = Master.Data.Stands.Find(x => x.Available == true && x.Item == currentDesire.Item);
+                customerDesires.Pop();
+
+                if (nextStand != null)
+                {
+                    path = VertexSystem.FindPath(body.transform.position, nextStand.CustomerPos);
+                    if (path.Count == 0) nextStand = null;
+                }
+            }
+
+            if (nextStand == null) path = VertexSystem.FindPath(body.transform.position, pathEnd);
+
+            expenses = 0;
+            itemsBought = "";
+            numberItemsBought = 0;
+            desireTimer = 1;
+            paid = false;
         }
         else
         {
             path = VertexSystem.FindPath(body.transform.position, pathEnd);
             paid = true;
         }
-        */
-
-        // That goes inside the [...] thing
-        int totalDesires = Random.Range(1, Priorities.Length + 1);
-        for (int i = 0; i < totalDesires; i++)
-        {
-            customerDesires.Push(new CustomerDesire(Products.ProductsList.Find(x => x.Name == Priorities[i]), MediumAmount));
-        }
-
-        while (customerDesires.Count > 0 && nextStand == null)
-        {
-            currentDesire = customerDesires.Peek();
-            nextStand = Master.Data.Stands.Find(x => x.Available == true && x.Item == currentDesire.Item);
-            customerDesires.Pop();
-
-            if (nextStand != null)
-            {
-                path = VertexSystem.FindPath(body.transform.position, nextStand.CustomerPos);
-                if (path.Count == 0) nextStand = null;
-            }
-        }
-
-        if (nextStand == null) path = VertexSystem.FindPath(body.transform.position, pathEnd);
-
-        expenses = 0;
-        itemsBought = "";
-        numberItemsBought = 0;
-        desireTimer = 1;
-        paid = false;
-        // Until here
 
         body.SetActive(true);
         AI.ActiveCustomers.Add(id);

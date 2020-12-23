@@ -19,7 +19,7 @@ public class ISlot
 
     public void Initialize()
     {
-        Button = GameObject.Find("UI").transform.Find("Top buttons bar").Find("Buttons").Find(ButtonName).gameObject;
+        Button = UI.Elements[ButtonName];
         Button.GetComponent<RectTransform>().anchoredPosition = Slot.GetComponent<RectTransform>().anchoredPosition;
     }
 

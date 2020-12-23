@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class SeedBox : BuildableObject
@@ -80,6 +81,37 @@ public class SeedBox : BuildableObject
         }
     }
 
+    public void ClickSeedsSlot(int pos)
+    {
+        ClickSlot(pos);
+        if (Seeds[pos] == null)
+        {
+            UI.Elements["Seed box seed bag slot " + pos].SetActive(false);
+            UI.Elements["Seed box amount slot " + pos].GetComponent<Text>().text = Localization.Translations["Empty"];
+            UI.Elements["Seed box slot " + pos].GetComponent<Image>().enabled = true;
+
+            bool canTakeBox = true;
+            for (int j = 0; j < 8; j++)
+            {
+                if (Seeds[j] != null)
+                {
+                    canTakeBox = false;
+                    break;
+                }
+            }
+            
+            UI.Elements["Seed box take object button"].SetActive(canTakeBox);
+        }
+        else
+        {
+            UI.Elements["Seed box seed bag slot " + pos].GetComponent<Image>().sprite = UI.Sprites[Seeds[pos].Name];
+            UI.Elements["Seed box seed bag slot " + pos].SetActive(true);
+            UI.Elements["Seed box amount slot " + pos].GetComponent<Text>().text = Seeds[pos].Stack + "/" + Seeds[pos].MaxStack;
+            UI.Elements["Seed box slot " + pos].GetComponent<Image>().enabled = false;
+            UI.Elements["Seed box take object button"].SetActive(false);
+        }
+    }
+
     public override void ActionTwoHard()
     {
         if (!(Inventory.Data.ObjectInHand is Seed)) return;
@@ -94,7 +126,7 @@ public class SeedBox : BuildableObject
                 ClickSlot(i);
                 if (!(Inventory.Data.ObjectInHand is Seed))
                 {
-                    if (ObjectUI.ObjectHandling == this && ObjectUI.SeedBoxUI.activeSelf) ObjectUI.OpenUI(this);
+                    if (UI.ObjectOnUI == this && UI.Elements["Seed box"].activeSelf) OpenUI();
                     return;
                 }
             }
@@ -108,7 +140,7 @@ public class SeedBox : BuildableObject
                 ClickSlot(i);
                 if (!(Inventory.Data.ObjectInHand is Seed))
                 {
-                    if (ObjectUI.ObjectHandling == this && ObjectUI.SeedBoxUI.activeSelf) ObjectUI.OpenUI(this);
+                    if (UI.ObjectOnUI == this && UI.Elements["Seed box"].activeSelf) OpenUI();
                     return;
                 }
             }
@@ -117,7 +149,7 @@ public class SeedBox : BuildableObject
 
     public override void ActionTwo()
     {
-        ObjectUI.OpenUI(this);
+        UI.OpenNewObjectUI(this);
     }
 
     public override void LoadObjectCustom()
@@ -130,5 +162,47 @@ public class SeedBox : BuildableObject
                 Model.transform.Find("Slots").Find("Slot " + i).gameObject.SetActive(true);
             }
         }
+    }
+
+    // UI stuff
+    public override void OpenUI()
+    {
+        bool canTakeBox = true;
+
+        for (int i = 0; i < 8; i++)
+        {
+            int pos = i;
+
+            UI.Elements["Seed box slot " + pos].GetComponent<Button>().onClick.RemoveAllListeners();
+            UI.Elements["Seed box slot " + pos].GetComponent<Button>().onClick.AddListener(() => ClickSeedsSlot(pos));
+
+            if (Seeds[pos] == null)
+            {
+                UI.Elements["Seed box seed bag slot " + pos].SetActive(false);
+                UI.Elements["Seed box amount slot " + pos].GetComponent<Text>().text = Localization.Translations["Empty"];
+                UI.Elements["Seed box slot " + pos].GetComponent<Image>().enabled = true;
+            }
+            else
+            {
+                canTakeBox = false;
+                UI.Elements["Seed box seed bag slot " + pos].GetComponent<Image>().sprite = UI.Sprites[Seeds[pos].Name];
+                UI.Elements["Seed box seed bag slot " + pos].SetActive(true);
+                UI.Elements["Seed box amount slot " + pos].GetComponent<Text>().text = Seeds[pos].Stack + "/" + Seeds[pos].MaxStack;
+                UI.Elements["Seed box slot " + pos].GetComponent<Image>().enabled = false;
+            }
+        }
+
+        UI.Elements["Seed box take object button"].SetActive(canTakeBox);
+        UI.Elements["Seed box"].SetActive(true); 
+    }
+
+    public override void CloseUI()
+    {
+        UI.Elements["Seed box"].SetActive(false);
+    }
+
+    public static void InitializeUIButtons()
+    {
+        UI.Elements["Seed box take object button"].GetComponent<Button>().onClick.AddListener(() => TakeObject());  
     }
 }

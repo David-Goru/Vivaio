@@ -88,20 +88,44 @@
 		<TranslationKey>FenceGate</TranslationKey>
 	</FarmazonItem>
 	<FarmazonItem>
-		<Name>Shop box</Name>
+		<Name>Small vegetables stand</Name>
 		<Use>Build</Use>
 		<Price>50</Price>
-		<Description>A box to sell up to 10 things.</Description>
-		<Category>Stands</Category>
-		<TranslationKey>ShopBox</TranslationKey>
+		<Description>A box to sell up to 10 vegetables.</Description>
+		<Category>Shop</Category>
+		<TranslationKey>SmallVegetablesStand</TranslationKey>
 	</FarmazonItem>
 	<FarmazonItem>
-		<Name>Shop table</Name>
+		<Name>Big vegetables stand</Name>
 		<Use>Build</Use>
 		<Price>200</Price>
-		<Description>A stand to sell up to 50 things.</Description>
-		<Category>Stands</Category>
-		<TranslationKey>ShopTable</TranslationKey>
+		<Description>A stand to sell up to 50 vegetables.</Description>
+		<Category>Shop</Category>
+		<TranslationKey>BigVegetablesStand</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Beverages stand</Name>
+		<Use>Build</Use>
+		<Price>300</Price>
+		<Description>A stand to sell up to 15 water bottles.</Description>
+		<Category>Shop</Category>
+		<TranslationKey>BeveragesStand</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Food stand</Name>
+		<Use>Build</Use>
+		<Price>250</Price>
+		<Description>A stand to sell up to 35 units of bread.</Description>
+		<Category>Shop</Category>
+		<TranslationKey>BigVegetablesStand</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Cash register</Name>
+		<Use>Build</Use>
+		<Price>250</Price>
+		<Description>This is the description of the cash register.</Description>
+		<Category>Shop</Category>
+		<TranslationKey>CashRegister</TranslationKey>
 	</FarmazonItem>
 	<FarmazonItem>
 		<Name>Storage box</Name>
@@ -232,11 +256,43 @@
 		<TranslationKey>Furnace</TranslationKey>
 	</FarmazonItem>
 	<FarmazonItem>
+		<Name>Water bottling machine</Name>
+		<Use>Build</Use>
+		<Price>500</Price>
+		<Description>Water bottling machine description.</Description>
+		<Category>Machines</Category>
+		<TranslationKey>WaterBottlingMachine</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
 		<Name>Water pump</Name>
 		<Use>Build</Use>
 		<Price>1000</Price>
 		<Description>Get water from... Water... Places.</Description>
 		<Category>Watering</Category>
 		<TranslationKey>WaterPump</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Garbage can</Name>
+		<Use>Build</Use>
+		<Price>50</Price>
+		<Description>This is the description of the garbage can.</Description>
+		<Category>Others</Category>
+		<TranslationKey>GarbageCan</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Bottles recycler</Name>
+		<Use>Build</Use>
+		<Price>100</Price>
+		<Description>Bottles recycler description.</Description>
+		<Category>Others</Category>
+		<TranslationKey>BottlesRecycler</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Glass bottle</Name>
+		<Use>Other</Use>
+		<Price>300</Price>
+		<Description>A pack of 10 glass bottles.</Description>
+		<Category>Others</Category>
+		<TranslationKey>GlassBottle</TranslationKey>
 	</FarmazonItem>
 </FarmazonItems>

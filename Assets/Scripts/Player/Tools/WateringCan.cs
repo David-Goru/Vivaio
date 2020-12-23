@@ -25,6 +25,17 @@ public class WateringCan : Tool
 
     public override void LoadObjectCustom()
     {
-        if (Remaining == 0) Model.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/Watering can empty");
+        if (Remaining == 0) Model.GetComponent<SpriteRenderer>().sprite = UI.Sprites["Watering can empty"];
+    }
+
+    public override string GetUIName()
+    {
+        return Localization.Translations[TranslationKey] + " (" + Remaining + "/10)";
+    }
+
+    public override Sprite GetUISprite()
+    {
+        if (Remaining == 0) return UI.Sprites[Name + " empty"];
+        return UI.Sprites[Name];
     }
 }

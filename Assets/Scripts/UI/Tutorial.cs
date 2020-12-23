@@ -5,23 +5,23 @@ using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
-    int currentpage;
-    public Sprite[] Texts;
+    int currentPage;
+    [SerializeField] int totalPages = 0;
 
     public void JumpToPage(int newpage)
     {
+        UI.Elements["Tutorial page " + currentPage].SetActive(false);
         if (newpage == -1)
-            currentpage++;
+            currentPage++;
         else if (newpage == -2)
-            currentpage--;
-        else currentpage = newpage;
+            currentPage--;
+        else currentPage = newpage;
         
-        transform.Find("Text").gameObject.GetComponent<Image>().sprite = Texts[currentpage];
+        UI.Elements["Tutorial page " + currentPage].SetActive(true);
+        UI.Elements["Tutorial next"].SetActive(true);
+        UI.Elements["Tutorial previous"].SetActive(true);
 
-        transform.Find("Next").gameObject.SetActive(true);
-        transform.Find("Previous").gameObject.SetActive(true);
-
-        if (currentpage == (Texts.Length - 1)) transform.Find("Next").gameObject.SetActive(false);
-        else if (currentpage == 0) transform.Find("Previous").gameObject.SetActive(false);
+        if (currentPage == (totalPages - 1)) UI.Elements["Tutorial next"].SetActive(false);
+        else if (currentPage == 0) UI.Elements["Tutorial previous"].SetActive(false);
     }
 }

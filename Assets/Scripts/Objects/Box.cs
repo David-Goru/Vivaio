@@ -28,9 +28,8 @@ public class Box : BuildableObject
 
     public void TakeItem(int itemID)
     {
-        GameObject storageUI = GameObject.Find("UI").transform.Find("Storage").gameObject;
-
-        if (Inventory.AddObject(Items[itemID]))
+        int amountTaken = Inventory.AddObject(Items[itemID]);
+        if (amountTaken == Items[itemID].Stack)
         {
             Items[itemID] = null;
 
@@ -46,44 +45,40 @@ public class Box : BuildableObject
             if (!hasItems)
             {
                 if (IsDeliveryBox)
-                {   
+                {
+                    CloseUI();
+                    UI.ObjectOnUI = null;
                     RemoveBox();
-                    ObjectUI.CloseUIs();
                     return;
                 }
-                storageUI.transform.Find("Take storage").gameObject.SetActive(true);
+                UI.Elements["Storage take object button"].SetActive(true);
             }
 
-            int slotID = itemID + 1;
-            if (IsDeliveryBox) storageUI.transform.Find("Slot " + slotID).gameObject.SetActive(false);
+            int slotNumber = itemID + 1;
+            if (IsDeliveryBox) UI.Elements["Storage slot " + slotNumber].SetActive(false);
             else
             {
-                SetUIButton(storageUI.transform.Find("Slot " + slotID).gameObject.GetComponent<Button>(), itemID, false);
-                storageUI.transform.Find("Slot " + slotID).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Add");
+                SetUIButton(UI.Elements["Storage slot " + slotNumber].GetComponent<Button>(), itemID, false);
+                UI.Elements["Storage slot " + slotNumber].GetComponent<Image>().sprite = UI.Sprites["Add"];
             }
+        }
+        else
+        {
+            Items[itemID].Stack -= amountTaken;
         }
     }
 
     public void PutItem(int itemID)
     {
-        GameObject storageUI = GameObject.Find("UI").transform.Find("Storage").gameObject;
-
         if (Inventory.Data.ObjectInHand != null && !(Inventory.Data.ObjectInHand is Tool))
         {
             int slotNumber = itemID + 1;
             Items[itemID] = Inventory.Data.ObjectInHand;
             Inventory.RemoveObject();
 
-            storageUI.transform.Find("Take storage").gameObject.SetActive(false);
-            SetUIButton(storageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Button>(), itemID, true);
-            if (Items[itemID] is Letter)
-            {
-                Letter letter = (Letter)Items[itemID];                     
-                storageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + (letter.Read ? "Open" : "Closed") + " letter");
-            }
-            else if (Items[itemID].Name == "Drip bottle")
-                storageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/Drip bottle/" + ((DripBottle)Items[itemID]).WaterUnits);
-            else storageUI.transform.Find("Slot " + slotNumber).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("UI/" + Items[itemID].Name);
+            UI.Elements["Storage take object button"].SetActive(false);
+            SetUIButton(UI.Elements["Storage slot " + slotNumber].GetComponent<Button>(), itemID, true);
+            UI.Elements["Storage slot " + slotNumber].GetComponent<Image>().sprite = Items[itemID].GetUISprite();
             
         }
     }
@@ -111,6 +106,47 @@ public class Box : BuildableObject
 
     public override void ActionTwo()
     {
-        ObjectUI.OpenUI(this);
+        UI.OpenNewObjectUI(this);
+    }
+
+    // UI stuff
+    public override void OpenUI()
+    {
+        bool hasItems = false;
+        for (int i = 0; i < 4; i++)
+        { 
+            int slotNumber = i + 1;
+            UI.Elements["Storage slot " + slotNumber].SetActive(true);
+            if (Items[i] == null)
+            {
+                if (IsDeliveryBox) UI.Elements["Storage slot " + slotNumber].SetActive(false);
+                else
+                {
+                    SetUIButton(UI.Elements["Storage slot " + slotNumber].GetComponent<Button>(), i, false);
+                    UI.Elements["Storage slot " + slotNumber].GetComponent<Image>().sprite = UI.Sprites["Add"];                        
+                }
+            }
+            else
+            {
+                hasItems = true;
+                UI.Elements["Storage slot " + slotNumber].GetComponent<Image>().sprite = Items[i].GetUISprite();
+                SetUIButton(UI.Elements["Storage slot " + slotNumber].GetComponent<Button>(), i, true);
+            }
+        }
+
+        if (!hasItems && !IsDeliveryBox) UI.Elements["Storage take object button"].SetActive(true);
+        else UI.Elements["Storage take object button"].SetActive(false);
+
+        UI.Elements["Storage"].SetActive(true);
+    }
+
+    public override void CloseUI()
+    {
+        UI.Elements["Storage"].SetActive(false);
+    }
+
+    public static void InitializeUIButtons()
+    {
+        UI.Elements["Storage take object button"].GetComponent<Button>().onClick.AddListener(() => TakeObject());
     }
 }

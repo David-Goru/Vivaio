@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Sign : BuildableObject
@@ -21,11 +22,40 @@ public class Sign : BuildableObject
 
     public override void ActionTwo()
     {
-        ObjectUI.OpenUI(this);
+        UI.OpenNewObjectUI(this);
     }
 
     public override void LoadObjectCustom()
     {
         UpdateIcon(Icon);
+    }
+
+    // UI stuff
+    public override void OpenUI()
+    {            
+        if (!IconsHandler.Icons.Exists(x => x.Name == Icon)) Icon = "None";
+
+        UI.Elements["Sign selected icon"].GetComponent<Image>().sprite = IconsHandler.Icons.Find(x => x.Name == Icon).Sprite;
+        UI.Elements["Sign"].SetActive(true);
+    }
+
+    public override void CloseUI()
+    {
+        UI.Elements["Sign"].SetActive(false);
+    }
+
+    public static void InitializeUIButtons()
+    {
+        UI.Elements["Sign take object button"].GetComponent<Button>().onClick.AddListener(() => TakeObject());  
+    }
+
+    public static void ChooseIcon(string icon)
+    {
+        if (UI.ObjectOnUI is Sign)
+        {
+            Sign s = (Sign)UI.ObjectOnUI;
+            s.UpdateIcon(icon);
+            UI.Elements["Sign selected icon"].GetComponent<Image>().sprite = IconsHandler.Icons.Find(x => x.Name == s.Icon).Sprite;
+        }
     }
 }

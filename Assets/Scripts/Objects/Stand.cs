@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using CodeTools;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Stand : BuildableObject
 {    
+    [SerializeField]
+    public string StandType;
     [SerializeField]
     public List<Vector2> CustomerPos;
     [SerializeField]
@@ -22,8 +25,9 @@ public class Stand : BuildableObject
     [SerializeField]
     public int MaxAmount;
 
-    public Stand(int amount, int maxAmount, string name, string displayType, string translationKey) : base(name, 1, 1, translationKey)
+    public Stand(string standType, int amount, int maxAmount, string name, string displayType, string translationKey) : base(name, 1, 1, translationKey)
     {
+        StandType = standType;
         ItemName = "None";
         Amount = amount;
         MaxAmount = maxAmount;
@@ -45,6 +49,11 @@ public class Stand : BuildableObject
             p = Products.ProductsList.Find(x => x.Name == "Bread");
             amount = Inventory.Data.ObjectInHand.Stack;
         }
+        else if (Inventory.Data.ObjectInHand.Name == "Water bottle")
+        {
+            p = Products.ProductsList.Find(x => x.Name == "Water bottle");
+            amount = Inventory.Data.ObjectInHand.Stack;
+        }
         else
         {
             basket = (Basket)Inventory.Data.ObjectInHand;
@@ -53,7 +62,9 @@ public class Stand : BuildableObject
 
             p = basket.Product;
             amount = basket.Amount;
-        }        
+        }
+
+        if (p.Type != StandType) return;
 
         if (Item == null)
         {
@@ -84,7 +95,8 @@ public class Stand : BuildableObject
             }
             Amount = amountPlaced;
 
-            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/" + DisplayType + "/" + Item.Name);
+            int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
             Model.transform.Find("Display").gameObject.SetActive(true);
         }
         else if (Item == p)
@@ -110,6 +122,17 @@ public class Stand : BuildableObject
                 Inventory.ChangeObject();
             }
             Amount += amountPlaced;
+
+            int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
+        }
+
+        if (UI.ObjectOnUI == this)
+        {
+            UI.Elements["Stand product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
+            UI.Elements["Stand product price placeholder"].GetComponent<Text>().text = ItemValue.ToString();
+            UI.Elements["Stand recommended price"].GetComponent<Text>().text = string.Format(Localization.Translations["stand_recommended_price"], Item != null ? Item.MediumValue : 0);
+            UI.Elements["Stand product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
         }
     }
 
@@ -117,12 +140,22 @@ public class Stand : BuildableObject
     {
         if (Item.Name == "Bread")
         {
-            if (Inventory.AddObject(new IObject("Bread", Amount, 10, "Bread")))
+            int amountTaken = Inventory.AddObject(new IObject("Bread", "", Amount, 10, "Bread"));
+            if (amountTaken > 0)
             {
-                Model.transform.Find("Display").gameObject.SetActive(false);
-                Item = null;
-                ItemName = "None";
-                Amount = 0;
+                Amount -= amountTaken;
+                if (Amount == 0)
+                {
+                    Model.transform.Find("Display").gameObject.SetActive(false);
+                    Item = null;
+                    ItemName = "None";
+                    Amount = 0;
+                }
+                else
+                {
+                    int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+                    Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
+                }
                 return;
             }
         }
@@ -149,8 +182,23 @@ public class Stand : BuildableObject
             basket.Amount += amount;
             basket.Product = Item;
             Inventory.ChangeObject();
+
+            int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
         }
         Amount -= amount;
+
+        if (UI.ObjectOnUI == this)
+        {
+            UI.Elements["Stand product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
+            UI.Elements["Stand product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
+        }
+    }
+
+    public void ChangeState()
+    {
+        Available = !Available;
+        UI.Elements["Stand change state text"].GetComponent<Text>().text = Available ? Localization.Translations["stand_disable"] : Localization.Translations["stand_enable"];
     }
 
     public Tuple Take(int amount)
@@ -186,7 +234,7 @@ public class Stand : BuildableObject
 
     public override void ActionTwo()
     {
-        ObjectUI.OpenUI(this);
+        UI.OpenNewObjectUI(this);
     }
 
     public override void LoadObjectCustom()
@@ -194,7 +242,7 @@ public class Stand : BuildableObject
         if (Amount > 0)
         {
             Item = Products.ProductsList.Find(x => x.Name == ItemName);
-            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/" + DisplayType + "/" + Item.Name);
+            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name);
             Model.transform.Find("Display").gameObject.SetActive(true);
         }                        
 
@@ -202,6 +250,63 @@ public class Stand : BuildableObject
         foreach (Transform t in Model.transform.Find("Customer position"))
         {
             CustomerPos.Add(t.position);
+        }
+    }
+
+    // UI stuff
+    public override void OpenUI()
+    {
+        UI.Elements["Stand title"].GetComponent<Text>().text = Localization.Translations[TranslationKey]; 
+        UI.Elements["Stand product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount); 
+        UI.Elements["Stand product price placeholder"].GetComponent<Text>().text = ItemValue.ToString();
+        UI.Elements["Stand recommended price"].GetComponent<Text>().text = string.Format(Localization.Translations["stand_recommended_price"], Item != null ? Item.MediumValue : 0);
+        UI.Elements["Stand change state text"].GetComponent<Text>().text = Available ? Localization.Translations["stand_disable"] : Localization.Translations["stand_enable"];
+        UI.Elements["Stand"].SetActive(true); 
+    }
+
+    public override void CloseUI()
+    {
+        UI.Elements["Stand"].SetActive(false);
+    }
+
+    public override void UpdateUI()
+    {
+        UI.Elements["Stand product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
+        UI.Elements["Stand product price placeholder"].GetComponent<Text>().text = ItemValue.ToString();
+        UI.Elements["Stand recommended price"].GetComponent<Text>().text = string.Format(Localization.Translations["stand_recommended_price"], Item != null ? Item.MediumValue : 0);
+        UI.Elements["Stand product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
+    }
+
+    public static void InitializeUIButtons()
+    {
+        UI.Elements["Stand take object button"].GetComponent<Button>().onClick.AddListener(() => TakeObject());
+        UI.Elements["Stand add product"].GetComponent<Button>().onClick.AddListener(() => AddProductButton());
+        UI.Elements["Stand take product"].GetComponent<Button>().onClick.AddListener(() => TakeProductButton());
+        UI.Elements["Stand change state"].GetComponent<Button>().onClick.AddListener(() => ChangeStateButton());
+        UI.Elements["Stand product price"].GetComponent<InputField>().onEndEdit.AddListener(delegate{ChangePrice(UI.Elements["Stand product price"].GetComponent<InputField>());});
+    }
+    
+    public static void AddProductButton()
+    {
+        ((Stand)UI.ObjectOnUI).AddProduct();
+    }
+    
+    public static void TakeProductButton()
+    {
+        ((Stand)UI.ObjectOnUI).TakeProduct();
+    }
+
+    public static void ChangeStateButton()
+    {
+        ((Stand)UI.ObjectOnUI).ChangeState();
+    }
+    
+    public static void ChangePrice(InputField input)
+    {
+        if (input.text != "")
+        {
+            ((Stand)UI.ObjectOnUI).ItemValue = int.Parse(input.text);
+            input.text = "";
         }
     }
 }

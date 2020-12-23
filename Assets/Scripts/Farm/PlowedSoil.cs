@@ -129,7 +129,7 @@ public class PlowedSoil : MonoBehaviour
             return;
         }
 
-        if (Inventory.AddObject(new DripBottle(waterUnits, "DripBottle")))
+        if (Inventory.AddObject(new DripBottle(waterUnits, "DripBottle")) > 0)
         {
             waterUnits = 0;
             hasDripBottle = false;
@@ -141,7 +141,7 @@ public class PlowedSoil : MonoBehaviour
     {
         if (!hasDripIrrigationKit) return;
 
-        if (Inventory.AddObject(new DripIrrigationKit("DripIrrigationKit")))
+        if (Inventory.AddObject(new DripIrrigationKit("DripIrrigationKit")) > 0)
         {
             hasDripIrrigationKit = false;
             Destroy(transform.Find("Drip irrigation kit").gameObject);
@@ -247,7 +247,7 @@ public class PlowedSoil : MonoBehaviour
                     if (hasDripBottle)
                     {
                         GameObject item = Instantiate(Resources.Load<GameObject>("Item"), pos, transform.rotation);
-                        item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("UI/Drip bottle");
+                        item.GetComponent<SpriteRenderer>().sprite = UI.Sprites["Drip bottle"];
                         item.GetComponent<Item>().ItemObject = new DripBottle(waterUnits, "DripBottle");
                     }
                     
