@@ -9,16 +9,20 @@ public class Item : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject()) StartCoroutine(takeItem());
+    }
+    
+    IEnumerator takeItem()
+    {
+        yield return new WaitForSeconds(0.01f);
+
+        int amountTaken = Inventory.AddObject(ItemObject);
+        if (amountTaken == ItemObject.Stack)
         {
-            int amountTaken = Inventory.AddObject(ItemObject);
-            if (amountTaken == ItemObject.Stack)
-            {
-                ObjectsHandler.Data.Objects.Remove(ItemObject);
-                Destroy(gameObject);
-            }
-            else ItemObject.Stack -= amountTaken;
+            ObjectsHandler.Data.Objects.Remove(ItemObject);
+            Destroy(gameObject);
         }
+        else ItemObject.Stack -= amountTaken;
     }
 
     void OnMouseEnter()

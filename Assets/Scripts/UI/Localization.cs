@@ -40,6 +40,15 @@ public class Localization : MonoBehaviour
         Translations.Add("HalloweenUnlocked", "Halloween Edition");
         Translations.Add("HalloweenLocked", "Click to buy");
 
+        // Loading screen
+        Translations.Add("failed_to_load_game", "Oups! We failed to load your game... Sorry!");
+        Translations.Add("load_error_text_1", "We work hard to avoid this, but it can happen. You can report the error just pressing the Report error button and we'll try to fix it for the next version. If you want, you can also send us a DM at @VivaioGame (twitter) or an email at vivaio.gamedev@gmail.com and we'll help you.\n\n");
+        Translations.Add("load_error_text_2", "Version {0} \n");
+        Translations.Add("load_error_text_3", "We couldn't load the game due to the following error(s):\n");
+        Translations.Add("back_to_main_menu_button", "Back to main menu");
+        Translations.Add("report_error_button", "Report error");
+        Translations.Add("error_reported_text", "Error reported, thank you!");
+
         // General UI
         Translations.Add("Day", "Day {0}");
         Translations.Add("Empty", "Empty");
@@ -107,6 +116,7 @@ public class Localization : MonoBehaviour
         // Shop UI
         Translations.Add("shop_title", "Shop");
         Translations.Add("shop_inauguration_text", "Once the shop is inaugurated, customers will start buying from your shop. Be careful: inaugurating a shop without products to sell will make customers angry.");
+        Translations.Add("shop_inauguration_button_text", "Inaugurate");
         Translations.Add("shop_earnings_yesterday", "Yesterday earnings:");
         Translations.Add("shop_earnings_yesterday_value", "{0}€");
         Translations.Add("shop_earnings_last_7_days", "Last 7 days earnings:");
@@ -183,6 +193,7 @@ public class Localization : MonoBehaviour
         Translations.Add("GarbageCan", "Garbage can");
         Translations.Add("WaterBottle", "Water bottle");
         Translations.Add("GlassBottle", "Glass bottle");
+        Translations.Add("House", "House");
 
         // Letters
         Translations.Add("grandma_signature", "Grandma");
@@ -303,6 +314,18 @@ public class Localization : MonoBehaviour
         Translations.Add("tutorial_chapter_3_text_6", "To end the Farmazon chapter, I would like to emphasize that you have to remember, always, to confirm your purchase. If you don't, you won't receive anything at all. That's how Farmazon works.");
 
         Translations.Add("tutorial_chapter_4_title", "HOW TO USE THE TOOLS");
+        Translations.Add("tutorial_chapter_4_text_1", "Tools! The key of the farm. Without them, you would be hopeless.\nEvery farmer should have available four tools: a hoe, a shovel, a watering can and a basket.\nLet's start explaining one by one why they are so important.");
+        Translations.Add("tutorial_chapter_4_text_2", "The hoe");
+        Translations.Add("tutorial_chapter_4_text_3", "The tool that will let you start working on the farm. Take it with your hands, choose a spot of grass and click it! Is the way the land is plowed. Pretty easy.");
+        Translations.Add("tutorial_chapter_4_text_4", "The shovel");
+        Translations.Add("tutorial_chapter_4_text_5", "This is the tool for those who regret doing something like planting or building floor. Click the thing you want to remove (remember: plant or floor!) and it will disappear.");
+        Translations.Add("tutorial_chapter_4_text_6", "The watering can");
+        Translations.Add("tutorial_chapter_4_text_7", "This is also called the happiness source for your plants. They love it! It is used to water your plants or fill the drip bottles. Click at the plant or drip bottle with the watering can filled with water and watch sad life becoming happy once again. A common watering can will have up to 10 units of water of space.");
+        Translations.Add("tutorial_chapter_4_text_8", "Every plant needs 1 unit of water, and a drip bottle can store up to 5 of them. You can fill the watering can at any water source. They should be near the tools stand! Just get close and click it.");
+        Translations.Add("tutorial_chapter_4_text_9", "By the way, drip bottles will make watering faster and cheaper. They are available at Farmazon!");
+        Translations.Add("tutorial_chapter_4_text_10", "The basket");
+        Translations.Add("tutorial_chapter_4_text_11", "Every good farmer needs a basket to harvest the products of the hard work. A common basket will store up to 20 products. To harvest the plants, just click on them with the basket in your hand once they are mature.");
+        Translations.Add("tutorial_chapter_4_text_12", "After harvesting, you can store the products in a product box (Farmazon!) or place them on a vegetables stand.");
 
         Translations.Add("tutorial_chapter_5_title", "GETTING STARTED WITH THE CROPS");
         Translations.Add("tutorial_chapter_5_text_1", "As a farmer, you'll have the power to plant whatever you want. If the seeds are available at Farmazon, of course.");
@@ -313,16 +336,15 @@ public class Localization : MonoBehaviour
         Translations.Add("tutorial_chapter_5_text_6", "One last thing about seeds: Farmazon (heh) has grass seeds available (they're pretty cheap). Using them is the only way to grow grass back on a plowed soil.");
 
         Translations.Add("tutorial_chapter_6_title", "HOW TO BUILD A SHOP");
+        Translations.Add("tutorial_chapter_6_text_1", "If you want to keep your farm, you'll need to earn money. And, the only way to get money as a farmer, is selling your products. This is like... The most obvious thing on this book.");
+        Translations.Add("tutorial_chapter_6_text_2", "To sell your products, all you need is a stand. One for each type of product. A small vegetables stand can keep up to 10 vegetables, and a big one can keep up to 50.");
+        Translations.Add("tutorial_chapter_6_text_3", "There's an option to change the price of the product at one stand. If the price is too high, customers won't like it. But, if the price is too  low...");
+        Translations.Add("tutorial_chapter_6_text_4", "Every customer is different, and they'll only come one time per day if they want to. The more happy they're, the more options there are that the next day they'll come.");
+        Translations.Add("tutorial_chapter_6_text_5", "Every shop has the same schedule: it will open at 9AM and close at 9PM. It will remain open even if you are sleeping, what means that customers will be buying at your shop during that time.");
 
         Translations.Add("tutorial_chapter_7_title", "END");
-        Translations.Add("tutorial_chapter_7_text_1", "That's everything I can explain you as a former farmer (heh). At least, that's everything... In this book. I hope you have learn the things I would love to have learnt when I started in this world.");
+        Translations.Add("tutorial_chapter_7_text_1", "That's everything I can explain you as a former farmer (heh). At least, that's everything... In this book. I hope you have learnt the things I would love to have learnt when I started in this world.");
         Translations.Add("tutorial_chapter_7_text_2", "See you in my next book:\n'Getting specialized with the plants'\n\n:)");
-
-        // Debug
-        Translations.Add("failed_to_load_game", "Oups! We failed to load your game... Sorry!");
-        Translations.Add("load_error_text_1", "We couldn't load the game due to the following error(s).\n");
-        Translations.Add("load_error_text_2", "Please, contact with the developers to get help (sending an screenshot of this and the save file will help): @VivaioGame (twitter), vivaio.gamedev@gmail.com (email). Thank you! \n\n");
-        Translations.Add("load_error_text_3", "Version {0} \n");
     }
 
     public static void UpdateTexts()

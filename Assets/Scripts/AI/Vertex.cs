@@ -73,5 +73,6 @@ public enum VertexState
 {
     Available,
     Walkable,
-    Occuppied
+    Occuppied,
+    NotUsable
 }

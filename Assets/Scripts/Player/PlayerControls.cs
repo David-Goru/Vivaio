@@ -90,7 +90,7 @@ public class PlayerControls : MonoBehaviour
         if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")))
         {
             GameObject objectToMove = Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Pickable")).gameObject;
-            if (Vector2.Distance(transform.position, objectToMove.transform.position) <= ObjectRange) buildScript.StartBuild(objectToMove);
+            if (!objectToMove.CompareTag("House") && Vector2.Distance(transform.position, objectToMove.transform.position) <= ObjectRange) buildScript.StartBuild(objectToMove);
             
         }
         else if (Physics2D.OverlapPoint(mousePos, 1 << LayerMask.NameToLayer("Floor")))

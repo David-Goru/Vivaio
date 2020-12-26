@@ -30,6 +30,8 @@ public class Master : MonoBehaviour
             UI.Elements["Money display"].GetComponent<Text>().text = Data.Balance + "€";
             GameObject.Find("Farm handler").GetComponent<VersionHandlerGame>().LoadEditionStuff();
 
+            if (Data.Log == null) Data.Log = new List<string>();
+
             if (data.ShopInaugurated)
             {                
                 UI.Elements["Shop inauguration"].SetActive(false);

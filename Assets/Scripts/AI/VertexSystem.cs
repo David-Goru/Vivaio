@@ -104,7 +104,7 @@ public class VertexSystem : MonoBehaviour
 
             foreach (Vertex neighbour in GetNeighbours(currentVertex))
             {
-                if (neighbour.State == VertexState.Occuppied || closedSet.Contains(neighbour)) continue;
+                if (neighbour.State == VertexState.NotUsable || neighbour.State == VertexState.Occuppied || closedSet.Contains(neighbour)) continue;
 
                 int newCostToNeighbour = currentVertex.GCost + GetDistance(currentVertex, neighbour) + neighbour.GetPenalty();
                 if (newCostToNeighbour < neighbour.GCost || !openSet.Contains(neighbour))
@@ -148,7 +148,8 @@ public class VertexSystem : MonoBehaviour
     public static void CreateGrid()
     {
         GridInfo = new Vertex[GridSizeX, GridSizeY];
-        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2;
+        Vector2 fixVector = new Vector3(-0.3f, -0.35f);
+        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2 + fixVector;
 
         Vector2 vertexPosition = Vector2.one;
         VertexState state = VertexState.Available;
@@ -159,7 +160,7 @@ public class VertexSystem : MonoBehaviour
                 vertexPosition = bottomLeft + Vector2.right * (x * VertexDiameter + VertexRadius) + Vector2.up * (y * VertexDiameter + VertexRadius);
                 if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, OnlyWalkableMask)) state = VertexState.Walkable;
                 else if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, BuildableMask)) state = VertexState.Available;
-                else state = VertexState.Occuppied;
+                else state = VertexState.NotUsable;
                 GridInfo[x, y] = new Vertex(vertexPosition, state, x, y);
             }
         }
@@ -181,7 +182,8 @@ public class VertexSystem : MonoBehaviour
         }
 
         // Get bottom left position
-        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2;
+        Vector2 fixVector = new Vector3(-0.3f, -0.35f);
+        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2 + fixVector;
 
         // Add new vertex for the last 5 rows
         Vector2 vertexPosition = Vector2.one;
@@ -193,7 +195,7 @@ public class VertexSystem : MonoBehaviour
                 vertexPosition = bottomLeft + Vector2.right * (x * VertexDiameter + VertexRadius) + Vector2.up * (y * VertexDiameter + VertexRadius);
                 if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, OnlyWalkableMask)) state = VertexState.Walkable;
                 else if (Physics2D.OverlapCircle(vertexPosition, VertexRadius, BuildableMask)) state = VertexState.Available;
-                else state = VertexState.Occuppied;
+                else state = VertexState.NotUsable;
                 newGrid[x, y] = new Vertex(vertexPosition, state, x, y);
             }
         }
@@ -218,8 +220,8 @@ public class VertexSystem : MonoBehaviour
 
     public static Vertex VertexFromPosition(Vector2 pos)
     {
-        int x = Mathf.RoundToInt((GridSizeX - 1) * (pos.x + GridWorldSize.x / 2) / GridWorldSize.x);
-        int y = Mathf.RoundToInt((GridSizeY - 1) * (pos.y + GridWorldSize.y / 2) / GridWorldSize.y);
+        int x = Mathf.RoundToInt((GridSizeX - 1) * (pos.x + GridWorldSize.x / 2 + 0.3f) / GridWorldSize.x);
+        int y = Mathf.RoundToInt((GridSizeY - 1) * (pos.y + GridWorldSize.y / 2 + 0.35f) / GridWorldSize.y);
 
         return GridInfo[x, y];
     }

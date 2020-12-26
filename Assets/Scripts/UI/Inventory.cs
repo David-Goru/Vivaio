@@ -27,6 +27,7 @@ public class Inventory : MonoBehaviour
     public static bool New()
     {
         Data = new InventoryData();
+        AddObject(new House());
 
         return true;
     }

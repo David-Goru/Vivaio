@@ -32,11 +32,6 @@ public class ToolsHolder : MonoBehaviour
     {
         Data = new ToolsData();
 
-        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Tool"))
-        {
-            g.GetComponent<ToolPhysical>().New();
-        }
-
         return true;
     }
 }

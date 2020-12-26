@@ -80,6 +80,7 @@ public class ToolPhysical : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) return;
         if (!EventSystem.current.IsPointerOverGameObject() && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1.5f)
         {
             if (Inventory.Data.ObjectInHand == null)
@@ -97,6 +98,7 @@ public class ToolPhysical : MonoBehaviour
 
     void OnMouseOver()
     {
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) return;
         if (!EventSystem.current.IsPointerOverGameObject()) 
         {
             if (Inventory.Data.ObjectInHand == null) 

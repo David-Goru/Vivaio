@@ -4,10 +4,7 @@ using UnityEngine;
 public class DeliverySystem : MonoBehaviour
 {
     public static DeliverySystemData Data;
-    public static Vector2[] PointPositions = new Vector2[] { new Vector2(-3.5f, 0.25f), 
-                                                             new Vector2(-2.5f, 0.25f), 
-                                                             new Vector2(-3.5f, 0.75f), 
-                                                             new Vector2(-2.5f, 0.75f) };
+    public static Vector2[] PointPositions;
 
     // When loading a game
     public static bool Load(DeliverySystemData data)
@@ -30,28 +27,6 @@ public class DeliverySystem : MonoBehaviour
         Data = new DeliverySystemData();
         Data.DeliveryList = new List<Box>();
         Data.DeliveryPoints = new List<DeliveryPoint>();
-
-        for (int i = 0; i < PointPositions.Length; i++)
-        {
-            Data.DeliveryPoints.Add(new DeliveryPoint(PointPositions[i]));
-        }
-
-        // First grandma present
-        Box box = new Box("Present box", "PresentBox");
-        DeliveryPoint point = Data.DeliveryPoints[1];
-        point.Available = false;
-        box.Point = point;
-        box.Model = Instantiate(Resources.Load<GameObject>("Objects/Present box"), point.Pos, Quaternion.Euler(0, 0, 0));
-        box.Model.name = "Present box";
-        string type = "Family";
-        string title = Localization.Translations["grandma_first_letter_title"];
-        string body = Localization.Translations["grandma_first_letter_body"];
-        string signature = Localization.Translations["grandma_signature"];
-        box.Items[0] = new Letter(type, title, body, signature);
-        box.Items[1] = new Seed("Carrot", 10, 10, "CarrotSeeds");
-        box.Placed = true;
-        box.WorldPosition = point.Pos;
-        ObjectsHandler.Data.Objects.Add(box);
         
         return true;
     }

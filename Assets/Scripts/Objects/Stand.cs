@@ -96,6 +96,7 @@ public class Stand : BuildableObject
             Amount = amountPlaced;
 
             int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
             Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
             Model.transform.Find("Display").gameObject.SetActive(true);
         }
@@ -124,6 +125,7 @@ public class Stand : BuildableObject
             Amount += amountPlaced;
 
             int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
             Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
         }
 
@@ -154,6 +156,7 @@ public class Stand : BuildableObject
                 else
                 {
                     int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+                    if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
                     Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
                 }
                 return;
@@ -184,6 +187,7 @@ public class Stand : BuildableObject
             Inventory.ChangeObject();
 
             int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
             Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
         }
         Amount -= amount;

@@ -66,6 +66,11 @@ public class IObject
 
     public virtual void UpdateUI() {}
 
+    public virtual void OnObjectPlaced(GameObject model)
+    {
+        Model = model;
+    }
+
     public virtual string GetUIName()
     {
         if (MaxStack > 1) return Localization.Translations[TranslationKey] + " (" + Stack + ")";

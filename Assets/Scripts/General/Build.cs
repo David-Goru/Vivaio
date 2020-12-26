@@ -47,7 +47,7 @@ public class Build : MonoBehaviour
                 {
                     Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
 
-                    if (v == null) buildable = false;
+                    if (v == null || v.State == VertexState.NotUsable) buildable = false;
                     else if (boInfo is Floor)
                     {
                         if (v.Floor != "None") buildable = false;
@@ -122,6 +122,7 @@ public class Build : MonoBehaviour
 
             if (boInfo.Name == "Fence gate") physicalObject.transform.Find("R button").gameObject.SetActive(false);
 
+            boInfo.OnObjectPlaced(physicalObject);
             switch (boInfo.Name)
             {
                 case "Small vegetables stand":
@@ -177,6 +178,7 @@ public class Build : MonoBehaviour
                 case "Water bottling machine":
                 case "Bottles recycler":
                 case "Garbage can":
+                case "House":
                     boInfo.Model = physicalObject;
                     ObjectsHandler.Data.Objects.Add(boInfo);
                     boInfo.Placed = true;

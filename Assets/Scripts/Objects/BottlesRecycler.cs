@@ -25,7 +25,7 @@ public class BottlesRecycler : BuildableObject
             BottlesAmount -= amount;
             UI.Elements["Bottles recycler bottles amount"].GetComponent<Text>().text = string.Format("{0}/{1}", BottlesAmount, MaxAmount);
             UI.Elements["Bottles recycler bottles"].GetComponent<Image>().sprite = UI.Sprites[BottlesAmount > 0 ? "Glass bottle" : "None"];
-            Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (Mathf.Ceil((float)BottlesAmount / (float)MaxAmount * 5) - 1));
+            Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (BottlesAmount - 1));
         }        
     }
 
@@ -42,13 +42,13 @@ public class BottlesRecycler : BuildableObject
 
     public override void LoadObjectCustom()
     {
-        Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (Mathf.Ceil((float)BottlesAmount / (float)MaxAmount * 5) - 1));
+        Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (BottlesAmount - 1));
     }
 
     public void AddBottle(int amount)
     {
         BottlesAmount -= amount;
-        Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (Mathf.Ceil((float)BottlesAmount / (float)MaxAmount * 5) - 1));
+        Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (BottlesAmount - 1));
         if (UI.ObjectOnUI == this)
         {
             UI.Elements["Bottles recycler bottles amount"].GetComponent<Text>().text = string.Format("{0}/{1}", BottlesAmount, MaxAmount);

@@ -14,11 +14,8 @@ public class Mailbox : MonoBehaviour
         try
         {
             Data = data;
-            Warning = GameObject.FindGameObjectWithTag("Mailbox").transform.Find("Warning").gameObject;
 
             if (data.Letters == null) Data.Letters = new Queue<Letter>();
-            if (data.Letters.Count > 0) Warning.SetActive(true);
-            else Warning.SetActive(false);
         }
         catch (Exception e)
         {
@@ -32,7 +29,6 @@ public class Mailbox : MonoBehaviour
     public static bool New()
     {
         Data = new MailboxData();
-        Warning = GameObject.FindGameObjectWithTag("Mailbox").transform.Find("Warning").gameObject;
         Data.Letters = new Queue<Letter>();
 
         // Send first letter ever (debt information letter)
@@ -43,6 +39,13 @@ public class Mailbox : MonoBehaviour
         NewLetter(type, title, body, signature);
 
         return true;
+    }
+
+    void Start()
+    {
+        Warning = transform.Find("Warning").gameObject;
+        if (Mailbox.Data.Letters.Count > 0) Warning.SetActive(true);
+        else Warning.SetActive(false);
     }
 
     public void UpdateLetters()
@@ -111,12 +114,12 @@ public class Mailbox : MonoBehaviour
         Data.Letters.Enqueue(new Letter(type, title, body, signature));
 
         // Update mail box warning
-        if (!Warning.activeSelf) Warning.SetActive(true);
+        if (Warning != null && !Warning.activeSelf) Warning.SetActive(true);
     }
 
     void OnMouseDown()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) > 2.5f) return;
+        if (EventSystem.current.IsPointerOverGameObject() || Vector2.Distance(GameObject.Find("Player").transform.position, transform.position) > 3) return;
 
         if (Data.Letters.Count > 0 && Inventory.AddObject(Data.Letters.Peek()) > 0) Data.Letters.Dequeue();
         

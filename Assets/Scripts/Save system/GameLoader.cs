@@ -5,11 +5,15 @@ using UnityEngine.UI;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
+using UnityEngine.SceneManagement;
 
 public class GameLoader : MonoBehaviour
 {
     public static List<string> Log;
     Text loadingText;
+    string errorText;
 
     Save saveFile;
 
@@ -18,10 +22,31 @@ public class GameLoader : MonoBehaviour
         if (Localization.Translations == null) Localization.LoadTranslations();
 
         Log = new List<string>();
-        loadingText = GameObject.Find("UI").transform.Find("Load screen").Find("Text").gameObject.GetComponent<Text>();
+        loadingText = UI.Elements["Load screen text"].GetComponent<Text>();
 
         if (Master.LoadingGame) StartCoroutine(LoadGame());
         else StartCoroutine(NewGame());
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("Main menu");
+    }
+
+    public void ReportError()
+    {
+        UI.Elements["Report error button"].SetActive(false);
+
+        var smtpClient = new SmtpClient("smtp.gmail.com")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential("vivaio.gamedev.error@gmail.com", "7xjnE4TMxCZ3u8D"),
+            EnableSsl = true,
+        };
+            
+        smtpClient.Send("vivaio.gamedev.error@gmail.com", "vivaio.gamedev@gmail.com", "Error reported", errorText);
+
+        UI.Elements["Error reported text"].SetActive(true);
     }
 
     IEnumerator NewGame()
@@ -219,15 +244,18 @@ public class GameLoader : MonoBehaviour
         if (Log.Count > 0)
         {
             loadingText.text = Localization.Translations["failed_to_load_game"];
-            string errorText = Localization.Translations["load_error_text_1"];
-            errorText += Localization.Translations["load_error_text_2"];
-            errorText += string.Format(Localization.Translations["load_error_text_3"], Master.GameVersion); 
+            errorText = Localization.Translations["load_error_text_1"];
+            errorText += string.Format(Localization.Translations["load_error_text_2"], Master.GameVersion); 
+            errorText += Localization.Translations["load_error_text_3"];
             foreach (string s in Log)
             {
                 errorText += s;
                 errorText += "\n";
             }
             UI.Elements["Load screen error log"].GetComponent<Text>().text = errorText;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(UI.Elements["Load screen error log"].transform.parent.GetComponent<RectTransform>());
+            UI.Elements["Back to main menu button"].SetActive(true);
+            UI.Elements["Report error button"].SetActive(true);
         }
         else
         {
