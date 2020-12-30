@@ -71,7 +71,7 @@ public class FlourMachine : BuildableObject
         if (State != MachineState.FINISHED) return false;
         if (Flour > 0)
         {
-            int amountTaken = Inventory.AddObject(new IObject("Flour", "", Flour, 10, "Flour"));
+            int amountTaken = Inventory.AddObject(new IObject("Flour", Flour, 10, "Flour"));
             if (amountTaken == Flour)
             {
                 Flour = 0;

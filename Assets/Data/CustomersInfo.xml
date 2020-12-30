@@ -4,9 +4,10 @@
 		<Age>62</Age>
 		<Job>Cook</Job>
 		<Priorities>
-			<Priority>Tomato</Priority>
-			<Priority>Bread</Priority>
 			<Priority>Carrot</Priority>
+			<Priority>Bread</Priority>
+			<Priority>Tomato</Priority>
+			<Priority>Water bottle</Priority>
 			<Priority>Potato</Priority>
 			<Priority>Onion</Priority>
 			<Priority>Lettuce</Priority>
@@ -23,6 +24,7 @@
 			<Priority>Pumpkin</Priority>
 			<Priority>Bread</Priority>
 			<Priority>Potato</Priority>
+			<Priority>Water bottle</Priority>
 			<Priority>Onion</Priority>
 			<Priority>Lettuce</Priority>
 			<Priority>Carrot</Priority>
@@ -36,11 +38,12 @@
 		<Age>11</Age>
 		<Job>Student</Job>
 		<Priorities>
-			<Priority>Tomato</Priority>
-			<Priority>Bread</Priority>
-			<Priority>Lettuce</Priority>
-			<Priority>Carrot</Priority>
 			<Priority>Onion</Priority>
+			<Priority>Bread</Priority>
+			<Priority>Tomato</Priority>
+			<Priority>Water bottle</Priority>
+			<Priority>Carrot</Priority>
+			<Priority>Lettuce</Priority>
 			<Priority>Pumpkin</Priority>
 			<Priority>Potato</Priority>
 		</Priorities>
@@ -55,6 +58,7 @@
 			<Priority>Lettuce</Priority>
 			<Priority>Bread</Priority>
 			<Priority>Potato</Priority>
+			<Priority>Water bottle</Priority>
 			<Priority>Onion</Priority>
 			<Priority>Pumpkin</Priority>
 			<Priority>Carrot</Priority>
@@ -71,6 +75,7 @@
 			<Priority>Pumpkin</Priority>
 			<Priority>Bread</Priority>
 			<Priority>Carrot</Priority>
+			<Priority>Water bottle</Priority>
 			<Priority>Tomato</Priority>
 			<Priority>Potato</Priority>
 			<Priority>Lettuce</Priority>

@@ -89,8 +89,10 @@ public class AI : MonoBehaviour
 
         int customerCount = 0;        
         foreach (XmlNode customer in customers)
-        {       
-            Customer c = new Customer(customerCount, (GameObject)Instantiate(Resources.Load("Customers/" + customer["Name"].InnerText), new Vector2(-15, -5), Quaternion.Euler(0, 0, 0)), float.Parse(customer["Speed"].InnerText, NumberStyles.Float, new CultureInfo("en-US")));
+        {
+            string editionType = "";
+            if (Master.GameEdition == "Christmas") editionType = " Christmas";
+            Customer c = new Customer(customerCount, (GameObject)Instantiate(Resources.Load("Customers/" + customer["Name"].InnerText + "" + editionType), new Vector2(-15, -5), Quaternion.Euler(0, 0, 0)), float.Parse(customer["Speed"].InnerText, NumberStyles.Float, new CultureInfo("en-US")));
 
             c.Name = customer["Name"].InnerText;
             c.Age = int.Parse(customer["Age"].InnerText);

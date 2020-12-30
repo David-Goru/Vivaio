@@ -39,6 +39,9 @@ public class Localization : MonoBehaviour
         Translations.Add("Halloween", "Halloween");
         Translations.Add("HalloweenUnlocked", "Halloween Edition");
         Translations.Add("HalloweenLocked", "Click to buy");
+        Translations.Add("Christmas", "Christmas");
+        Translations.Add("ChristmasUnlocked", "Christmas Edition");
+        Translations.Add("ChristmasLocked", "Click to buy");
 
         // Loading screen
         Translations.Add("failed_to_load_game", "Oups! We failed to load your game... Sorry!");
@@ -146,6 +149,7 @@ public class Localization : MonoBehaviour
         Translations.Add("Shovel", "Shovel");
         Translations.Add("WateringCan", "Watering can");
         Translations.Add("Basket", "Basket");
+        Translations.Add("BasketWithProduct", "Basket with {0} ({1}/{2})");
 
         // Objects
         Translations.Add("CarrotSeeds", "Carrot seeds");
@@ -169,6 +173,7 @@ public class Localization : MonoBehaviour
         Translations.Add("ConcreteTile", "Concrete tile");
         Translations.Add("CompositeTile", "Composite tile");
         Translations.Add("BrickTile", "Brick tile");
+        Translations.Add("DirtTile", "Dirt tile");
         Translations.Add("WoodTile", "Wood tile");
         Translations.Add("DripBottle", "Drip bottle");
         Translations.Add("DripIrrigationKit", "Drip irrigation kit");
@@ -194,6 +199,8 @@ public class Localization : MonoBehaviour
         Translations.Add("WaterBottle", "Water bottle");
         Translations.Add("GlassBottle", "Glass bottle");
         Translations.Add("House", "House");
+        Translations.Add("MarbleTile", "Marble tile");
+        Translations.Add("OutdoorLight", "Outdoor light");
 
         // Letters
         Translations.Add("grandma_signature", "Grandma");

@@ -31,6 +31,8 @@ public class GeneralData
     [SerializeField]
     public List<CashRegister> CashRegisters;
     [SerializeField]
+    public List<BottlesRecycler> BottlesRecyclers;
+    [SerializeField]
     public List<string> Log;
 
     public GeneralData(string playerName, int balance, int day, int debt, int lastDayDebt, int dailyDebt, int lastDayPaid, int lastDayWaterUsage, int lastDayEnergyUsage, bool shopInaugurated)
@@ -48,6 +50,7 @@ public class GeneralData
         ShopEarnings = new List<int>();
         Stands = new List<Stand>();
         CashRegisters = new List<CashRegister>();
+        BottlesRecyclers = new List<BottlesRecycler>();
         Log = new List<string>();
     }
 }

@@ -52,6 +52,17 @@ public class MainMenu : MonoBehaviour
     public Text HWCreateFarmText;
     public Text HWLoadFarmText;
 
+    [Header("Christmas translations")]
+    public Text ChristmasText;
+    public Text ChristmasUnlockedText;
+    public Text ChristmasLockedText;
+    public Text CHNewGameText;
+    public Text CHLoadGameText;
+    public Text CHExitText;
+    public Text CHAlphaDateText;
+    public Text CHCreateFarmText;
+    public Text CHLoadFarmText;
+
     [Header("Extras")]
     public GameObject GameVersions;
 
@@ -84,7 +95,7 @@ public class MainMenu : MonoBehaviour
         Localization.LoadTranslations();
 
         // Vanilla
-        VanillaText.text = Localization.Translations["Vanilla"];
+        VanillaText.text = Localization.Translations["Vanilla"].ToUpper();
         VanillaUnlockedText.text = Localization.Translations["VanillaUnlocked"];
         VanillaLockedText.text = Localization.Translations["VanillaLocked"];
         NewGameText.text = Localization.Translations["mainMenu_newGame"];
@@ -95,7 +106,7 @@ public class MainMenu : MonoBehaviour
         LoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
 
         // Halloween
-        HalloweenText.text = Localization.Translations["Halloween"];
+        HalloweenText.text = Localization.Translations["Halloween"].ToUpper();
         HalloweenUnlockedText.text = Localization.Translations["HalloweenUnlocked"];
         HalloweenLockedText.text = Localization.Translations["HalloweenLocked"];
         HWNewGameText.text = Localization.Translations["mainMenu_newGame"];
@@ -104,6 +115,17 @@ public class MainMenu : MonoBehaviour
         HWAlphaDateText.text = string.Format(Master.GameVersion + " - " + Master.VersionDate);
         HWCreateFarmText.text = Localization.Translations["mainMenu_createFarm"];
         HWLoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
+
+        // Christmas
+        ChristmasText.text = Localization.Translations["Christmas"].ToUpper();
+        ChristmasUnlockedText.text = Localization.Translations["ChristmasUnlocked"];
+        ChristmasLockedText.text = Localization.Translations["ChristmasLocked"];
+        CHNewGameText.text = Localization.Translations["mainMenu_newGame"];
+        CHLoadGameText.text = Localization.Translations["mainMenu_loadGame"];
+        CHExitText.text = Localization.Translations["mainMenu_exit"];
+        CHAlphaDateText.text = string.Format(Master.GameVersion + " - " + Master.VersionDate);
+        CHCreateFarmText.text = Localization.Translations["mainMenu_createFarm"];
+        CHLoadFarmText.text = Localization.Translations["mainMenu_loadFarm"];
 
         // General
         FarmNamePlaceholderText.text = Localization.Translations["mainMenu_farmNamePlaceholder"];

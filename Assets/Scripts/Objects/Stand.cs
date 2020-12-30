@@ -38,23 +38,17 @@ public class Stand : BuildableObject
     public void AddProduct()
     {
         if (Inventory.Data.ObjectInHand == null) return;
-        if (!(Inventory.Data.ObjectInHand is Basket) && Inventory.Data.ObjectInHand.Name != "Bread") return;
 
         Product p = null;
         int amount = 0;
         Basket basket = null;
 
-        if (Inventory.Data.ObjectInHand.Name == "Bread")
+        if (Products.ProductsList.Exists(x => x.Name == Inventory.Data.ObjectInHand.Name))
         {
-            p = Products.ProductsList.Find(x => x.Name == "Bread");
+            p = Products.ProductsList.Find(x => x.Name == Inventory.Data.ObjectInHand.Name);
             amount = Inventory.Data.ObjectInHand.Stack;
         }
-        else if (Inventory.Data.ObjectInHand.Name == "Water bottle")
-        {
-            p = Products.ProductsList.Find(x => x.Name == "Water bottle");
-            amount = Inventory.Data.ObjectInHand.Stack;
-        }
-        else
+        else if (Inventory.Data.ObjectInHand is Basket)
         {
             basket = (Basket)Inventory.Data.ObjectInHand;
 
@@ -64,7 +58,7 @@ public class Stand : BuildableObject
             amount = basket.Amount;
         }
 
-        if (p.Type != StandType) return;
+        if (p == null || p.Type != StandType) return;
 
         if (Item == null)
         {
@@ -76,7 +70,7 @@ public class Stand : BuildableObject
             {
                 amountPlaced = amount;
 
-                if (Inventory.Data.ObjectInHand.Name == "Bread") Inventory.RemoveObject();
+                if (basket == null) Inventory.RemoveObject();
                 else
                 {
                     basket.Amount = 0;
@@ -88,7 +82,7 @@ public class Stand : BuildableObject
             {
                 amountPlaced = MaxAmount;
                 
-                if (Inventory.Data.ObjectInHand.Name == "Bread") Inventory.Data.ObjectInHand.Stack -= amountPlaced;
+                if (basket == null) Inventory.Data.ObjectInHand.Stack -= amountPlaced;
                 else basket.Amount -= amountPlaced;
                 Inventory.ChangeObject();
 
@@ -107,7 +101,7 @@ public class Stand : BuildableObject
             {
                 amountPlaced = amount;
 
-                if (Inventory.Data.ObjectInHand.Name == "Bread") Inventory.RemoveObject();
+                if (basket == null) Inventory.RemoveObject();
                 else
                 {
                     basket.Amount = 0;
@@ -118,7 +112,7 @@ public class Stand : BuildableObject
             else
             {
                 amountPlaced = MaxAmount - Amount;
-                if (Inventory.Data.ObjectInHand.Name == "Bread") Inventory.Data.ObjectInHand.Stack -= amountPlaced;
+                if (basket == null) Inventory.Data.ObjectInHand.Stack -= amountPlaced;
                 else basket.Amount -= amountPlaced;
                 Inventory.ChangeObject();
             }
@@ -140,9 +134,10 @@ public class Stand : BuildableObject
 
     public void TakeProduct()
     {
-        if (Item.Name == "Bread")
+        if (Item == null) return;
+        if (Item.Type != "Vegetables")
         {
-            int amountTaken = Inventory.AddObject(new IObject("Bread", "", Amount, 10, "Bread"));
+            int amountTaken = Inventory.AddObject(new IObject(Item.Name, Amount, 10, Item.TranslationKey));
             if (amountTaken > 0)
             {
                 Amount -= amountTaken;
@@ -159,13 +154,13 @@ public class Stand : BuildableObject
                     if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
                     Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
                 }
-                return;
             }
+                return;
         }
+
         if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
         Basket basket = (Basket)Inventory.Data.ObjectInHand;
         if (basket.Amount > 0 && basket.Product != Item) return;
-        if (Item == null) return;
 
         int amount;
         int maxAmount = 20 - basket.Amount;
@@ -187,7 +182,6 @@ public class Stand : BuildableObject
             Inventory.ChangeObject();
 
             int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
-            if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
             Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
         }
         Amount -= amount;

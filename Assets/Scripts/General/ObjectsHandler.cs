@@ -33,7 +33,7 @@ public class ObjectsHandler : MonoBehaviour
         // Add bed
         Bed bed = new Bed("Bed");
         bed.Placed = true;
-        bed.Model = Instantiate(Resources.Load<GameObject>("Objects/Bed"), new Vector2(-17.75f, -2.5f), Quaternion.Euler(0, 0, 0));     
+        bed.Model = Instantiate(Resources.Load<GameObject>("Objects/Bed"), new Vector2(-17.75f, -2.25f), Quaternion.Euler(0, 0, 0));     
         bed.WorldPosition = bed.Model.transform.position;
 
         foreach (Transform t in bed.Model.transform.Find("Vertices"))
@@ -48,7 +48,7 @@ public class ObjectsHandler : MonoBehaviour
         // Add house lamp
         BuildableObject lamp = new Lamp("House lamp", "HouseLamp");
         lamp.Placed = true;
-        lamp.Model = Instantiate(Resources.Load<GameObject>("Objects/House lamp"), new Vector2(-20.75f, -1.75f), Quaternion.Euler(0, 0, 0));     
+        lamp.Model = Instantiate(Resources.Load<GameObject>("Objects/House lamp"), new Vector2(-20.5f, -2), Quaternion.Euler(0, 0, 0));     
         lamp.WorldPosition = lamp.Model.transform.position;
 
         foreach (Transform t in lamp.Model.transform.Find("Vertices"))

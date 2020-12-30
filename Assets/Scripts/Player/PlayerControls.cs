@@ -111,16 +111,28 @@ public class PlayerControls : MonoBehaviour
                             floorsToUpdate = Floor.GetCollidingFloors(floor);
                             floorName = v.Floor;
                         }
+                        else if (v.Floor == "Dirt tile")
+                        {
+                            floorsToUpdate = Floor.GetCollidingFloorsFull(floor);
+                            floorName = v.Floor;
+                        }
                         v.Floor = "None";
                     }
                 }
                 Destroy(floor);
 
-                if (floorName != "None")
+                if (floorName == "Composite tile")
                 {
                     foreach (GameObject f in floorsToUpdate)
                     {
                         Floor.UpdateFloorSprite(f, floorName);
+                    }
+                }
+                else if (floorName == "Dirt tile")
+                {
+                    foreach (GameObject f in floorsToUpdate)
+                    {
+                        Floor.UpdateFloorSprite8Positions(f, floorName);
                     }
                 }
             }
@@ -143,7 +155,7 @@ public class PlayerControls : MonoBehaviour
                 foreach (Transform t in farmLand.transform.Find("Vertices"))
                 {
                     Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
-                    if (v.State != VertexState.Available) plowable = false;
+                    if (v.State != VertexState.Available || v.Floor != "None") plowable = false;
                 }
                 
                 if (plowable)
@@ -170,6 +182,7 @@ public class PlayerControls : MonoBehaviour
                     {
                         Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
                         v.State = VertexState.Occuppied;
+                        v.Floor = "Plowed soil";
                     }
                 }
             }

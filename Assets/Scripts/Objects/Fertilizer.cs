@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Fertilizer : IObject
 {
-    public Fertilizer(int stack, int maxStack, string translationKey) : base("Fertilizer", "", stack, maxStack, translationKey)
+    public Fertilizer(int stack, int maxStack, string translationKey) : base("Fertilizer", stack, maxStack, translationKey)
     {
         Name = "Fertilizer";
     }

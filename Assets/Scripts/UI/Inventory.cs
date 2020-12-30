@@ -73,6 +73,7 @@ public class Inventory : MonoBehaviour
             {
                 int amountToTake = item.MaxStack - Data.ObjectInHand.Stack;
                 Data.ObjectInHand.Stack += amountToTake;
+                ChangeObject();
                 return amountToTake;
             }
         }

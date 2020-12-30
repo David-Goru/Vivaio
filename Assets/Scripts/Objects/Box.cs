@@ -109,6 +109,15 @@ public class Box : BuildableObject
         UI.OpenNewObjectUI(this);
     }
 
+    public override void LoadObjectCustom()
+    {
+        if (IsDeliveryBox && Master.GameEdition == "Christmas")
+        {
+            if (Name == "Present box") Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = VersionHandlerGame.PresentChristmas;
+            else Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = VersionHandlerGame.DeliveryBoxChristmas;
+        }
+    }
+
     // UI stuff
     public override void OpenUI()
     {

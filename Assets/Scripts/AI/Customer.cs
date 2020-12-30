@@ -17,6 +17,7 @@ public class Customer
 
     GameObject body;
     Stand nextStand;
+    BottlesRecycler bottlesRecycler;
     CashRegister cashRegister;
     Vector2 pathStart;
     Vector2 pathEnd;
@@ -55,7 +56,7 @@ public class Customer
                                             nextStand.Model.transform.position.y - body.transform.position.y);
             if (distance.x > 0 && lastDir != "Idle right")
             { 
-                body.GetComponent<Animator>().SetTrigger("IdleRight");
+                body.GetComponent<Animator>().SetTrigger("IdleRight"); // Get component????????????????? I really should improve this
                 lastDir = "Idle right";
             }
             else if (distance.x < 0 && lastDir != "Idle left")
@@ -93,8 +94,9 @@ public class Customer
 
                 if (amountTaken != "0")
                 {
+                    if (currentDesire.Item.Name == "Water bottle") GlassBottles += int.Parse(amountTaken);
                     expenses += itemCost;
-                    itemsBought += string.Format("{0} x{1} ({2}€)\n", Localization.Translations[currentDesire.Item.Name], amountTaken, itemCost);                    
+                    itemsBought += string.Format("{0} x{1} ({2}€)\n", Localization.Translations[currentDesire.Item.TranslationKey], amountTaken, itemCost);                    
                     numberItemsBought++;
                 }
             }
@@ -119,7 +121,7 @@ public class Customer
         {
             if (Master.Data.CashRegisters.Count > 0)
             {
-                cashRegister = Master.Data.CashRegisters[Random.Range(0, Master.Data.CashRegisters.Count - 1)];
+                cashRegister = Master.Data.CashRegisters[Random.Range(0, Master.Data.CashRegisters.Count)];
                 path = VertexSystem.FindPath(body.transform.position, cashRegister.CustomerPos);
             }
             if (cashRegister == null || path.Count == 0) // Can't reach the cash register
@@ -143,7 +145,18 @@ public class Customer
     {
         if (path.Count == 0)
         {
-            if (!paid && nextStand == null)
+            if (bottlesRecycler != null)
+            {
+                int spaceAvailable = bottlesRecycler.MaxAmount - bottlesRecycler.BottlesAmount;
+                int amountToAdd = spaceAvailable > GlassBottles ? GlassBottles : spaceAvailable;
+                bottlesRecycler.AddBottles(amountToAdd);
+                GlassBottles -= amountToAdd;
+
+                bottlesRecycler = null;
+                if (GlassBottles > 0) bottlesRecycler = Master.Data.BottlesRecyclers.Find(x => x.BottlesAmount < x.MaxAmount);
+                if (bottlesRecycler == null) NextDesire();
+            }
+            else if (!paid && nextStand == null)
             {
                 if (expenses > 0)
                 {
@@ -228,20 +241,26 @@ public class Customer
                 customerDesires.Push(new CustomerDesire(Products.ProductsList.Find(x => x.Name == Priorities[i]), MediumAmount));
             }
 
-            while (customerDesires.Count > 0 && nextStand == null)
+            if (GlassBottles > 0) bottlesRecycler = Master.Data.BottlesRecyclers.Find(x => x.BottlesAmount < x.MaxAmount);
+
+            if (bottlesRecycler == null)
             {
-                currentDesire = customerDesires.Peek();
-                nextStand = Master.Data.Stands.Find(x => x.Available == true && x.Item == currentDesire.Item);
-                customerDesires.Pop();
-
-                if (nextStand != null)
+                while (customerDesires.Count > 0 && nextStand == null)
                 {
-                    path = VertexSystem.FindPath(body.transform.position, nextStand.CustomerPos);
-                    if (path.Count == 0) nextStand = null;
-                }
-            }
+                    currentDesire = customerDesires.Peek();
+                    nextStand = Master.Data.Stands.Find(x => x.Available == true && x.Item == currentDesire.Item);
+                    customerDesires.Pop();
 
-            if (nextStand == null) path = VertexSystem.FindPath(body.transform.position, pathEnd);
+                    if (nextStand != null)
+                    {
+                        path = VertexSystem.FindPath(body.transform.position, nextStand.CustomerPos);
+                        if (path.Count == 0) nextStand = null;
+                    }
+                }
+
+                if (nextStand == null) path = VertexSystem.FindPath(body.transform.position, pathEnd);
+            }
+            else path = VertexSystem.FindPath(body.transform.position, bottlesRecycler.CustomerPos);
 
             expenses = 0;
             itemsBought = "";

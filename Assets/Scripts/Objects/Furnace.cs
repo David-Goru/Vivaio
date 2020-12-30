@@ -51,7 +51,7 @@ public class Furnace : BuildableObject
 
     public void TakeProduct()
     {     
-        int amountTaken = Inventory.AddObject(new IObject("Bread", "", Amount, 10, "Bread"));   
+        int amountTaken = Inventory.AddObject(new IObject("Bread", Amount, 10, "Bread"));   
         if (amountTaken == Amount)
         {
             Amount = 0;

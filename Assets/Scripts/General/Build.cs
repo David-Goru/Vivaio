@@ -58,6 +58,7 @@ public class Build : MonoBehaviour
 
             if (boInfo is Wall) ((Wall)boInfo).CheckRotation();
             else if (boInfo.Name == "Composite tile") ((Floor)boInfo).CheckRotation();
+            else if (boInfo.Name == "Dirt tile") ((Floor)boInfo).CheckFullRotation();
 
             if (boInfo is Gate) physicalObject.transform.Find("Rotation " + boInfo.Rotation).Find(((Gate)boInfo).Opened ? "Open" : "Closed").gameObject.GetComponent<SpriteRenderer>().color = buildable ? Color.green : Color.red;
             else physicalObject.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().color = buildable ? Color.green : Color.red;
@@ -98,6 +99,11 @@ public class Build : MonoBehaviour
                     v.Floor = boInfo.Name;
                     v.FloorType = ((Floor)boInfo).SpriteType;
                 }
+                else if (boInfo is House)
+                {
+                    v.State = VertexState.Occuppied;
+                    v.Floor = "House ground";
+                }
                 else v.State = VertexState.Occuppied;
             }
         }
@@ -110,6 +116,7 @@ public class Build : MonoBehaviour
             if (boInfo is Floor)
             {
                 if (boInfo.Name == "Composite tile") ((Floor)boInfo).CheckRotation(true);
+                else if (boInfo.Name == "Dirt tile") ((Floor)boInfo).CheckFullRotation(true);
                 
                 boInfo.Stack--;
                 if (boInfo.Stack > 0)
@@ -165,6 +172,19 @@ public class Build : MonoBehaviour
                     }
                     Master.Data.CashRegisters.Add((CashRegister)boInfo);
                     break;
+                case "Bottles recycler":
+                    boInfo.Model = physicalObject;
+                    ObjectsHandler.Data.Objects.Add(boInfo);
+                    boInfo.Placed = true;
+
+                    BottlesRecycler br = (BottlesRecycler)boInfo;                
+                    br.CustomerPos = new List<Vector2>();
+                    foreach (Transform t in physicalObject.transform.Find("Customer position"))
+                    {
+                        br.CustomerPos.Add(t.position);
+                    }
+                    Master.Data.BottlesRecyclers.Add((BottlesRecycler)boInfo);
+                    break;                
                 case "Product box":
                 case "Composter":
                 case "Storage box":
@@ -176,8 +196,8 @@ public class Build : MonoBehaviour
                 case "Sign":
                 case "Fence gate":
                 case "Water bottling machine":
-                case "Bottles recycler":
                 case "Garbage can":
+                case "Outdoor light":
                 case "House":
                     boInfo.Model = physicalObject;
                     ObjectsHandler.Data.Objects.Add(boInfo);
@@ -271,7 +291,11 @@ public class Build : MonoBehaviour
         foreach (Transform t in tParent)
         {                            
             Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
-            if (v != null) v.State = VertexState.Available;
+            if (v != null)
+            {
+                if (boInfo is Box && v.Floor == "House ground") continue;
+                v.State = VertexState.Available;
+            }
         }
 
         isMoving = true;

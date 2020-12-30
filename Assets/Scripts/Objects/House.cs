@@ -9,7 +9,9 @@ public class House : BuildableObject
 
     public override void OnObjectPlaced(GameObject model)
     {
-        Model = model;       
+        Model = model;     
+
+        if (Master.GameEdition != "Vanilla") Model.transform.Find("House exterior").GetComponent<SpriteRenderer>().sprite = VersionHandlerGame.HouseSprite;
 
         // Tools
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Tool"))
@@ -30,6 +32,7 @@ public class House : BuildableObject
         box.Point = point;
         box.Model = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Objects/Present box"), point.Pos, Quaternion.Euler(0, 0, 0));
         box.Model.name = "Present box";
+        if (Master.GameEdition == "Christmas") box.Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = VersionHandlerGame.PresentChristmas;
         string type = "Family";
         string title = Localization.Translations["grandma_first_letter_title"];
         string body = Localization.Translations["grandma_first_letter_body"];
@@ -55,6 +58,7 @@ public class House : BuildableObject
 
     public override void LoadObjectCustom()
     {
+        if (Master.GameEdition != "Vanilla") Model.transform.Find("House exterior").GetComponent<SpriteRenderer>().sprite = VersionHandlerGame.HouseSprite;
         Model.transform.Find("Mailbox").Find("Obstacle").GetComponent<BoxCollider2D>().enabled = true;
         Model.transform.Find("First floor entry").GetComponent<BoxCollider2D>().enabled = true;
         Model.transform.Find("Basement entry").GetComponent<BoxCollider2D>().enabled = true;

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class BottlesRecycler : BuildableObject
 {
     [SerializeField]
+    public List<Vector2> CustomerPos;
+    [SerializeField]
     public int BottlesAmount;
     [SerializeField]
     public int MaxAmount;
@@ -19,7 +21,7 @@ public class BottlesRecycler : BuildableObject
 
     public void TakeBottles()
     {
-        int amount = Inventory.AddObject(new IObject("Glass bottle", "", BottlesAmount, 10, "GlassBottle"));
+        int amount = Inventory.AddObject(new IObject("Glass bottle", BottlesAmount > 10 ? 10 : BottlesAmount, 10, "GlassBottle"));
         if (amount > 0)
         {
             BottlesAmount -= amount;
@@ -45,9 +47,9 @@ public class BottlesRecycler : BuildableObject
         Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (BottlesAmount - 1));
     }
 
-    public void AddBottle(int amount)
+    public void AddBottles(int amount)
     {
-        BottlesAmount -= amount;
+        BottlesAmount += amount;
         Model.transform.Find("Bottles").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/Bottle recycler stand/Bottles " + (BottlesAmount - 1));
         if (UI.ObjectOnUI == this)
         {

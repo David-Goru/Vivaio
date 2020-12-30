@@ -14,7 +14,8 @@ public class Basket : Tool
 
     public override string GetUIName()
     {
-        return Localization.Translations[TranslationKey] + " (" + Amount + "/10)";
+        if (Product != null) return string.Format(Localization.Translations["BasketWithProduct"], Localization.Translations[Product.TranslationKey].ToLower(), Amount, 20);
+        return Localization.Translations[TranslationKey];
     }
 
     public override Sprite GetUISprite()

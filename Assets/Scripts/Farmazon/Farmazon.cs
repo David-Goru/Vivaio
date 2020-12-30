@@ -204,16 +204,16 @@ public class Farmazon : MonoBehaviour
                         else if (fi.Name == "Water bottling machine") box.Items[slotCounter] = new WaterBottlingMachine(fi.TranslationKey);
                         else if (fi.Name == "Bottles recycler") box.Items[slotCounter] = new BottlesRecycler(fi.TranslationKey);
                         else if (fi.Name == "Cash register") box.Items[slotCounter] = new CashRegister(fi.TranslationKey);
+                        else if (fi.Name == "Outdoor light") box.Items[slotCounter] = new Lamp("Outdoor light", fi.TranslationKey);
                         else box.Items[slotCounter] = new BuildableObject(fi.Name, 1, 1, fi.TranslationKey);
                         break;
                     case "Floor":
-                        if (fi.Name == "Composite tile" || fi.Name == "Wood tile") box.Items[slotCounter] = new Floor(fi.Name, 10, 10, fi.TranslationKey);
-                        else box.Items[slotCounter] = new Floor(fi.Name, 10, 10, fi.TranslationKey);
+                        box.Items[slotCounter] = new Floor(fi.Name, 10, 10, fi.TranslationKey);
                         break;
                     case "Farm":
                         if (fi.Name == "Drip bottle") box.Items[slotCounter] = new DripBottle(0, fi.TranslationKey);
                         else if (fi.Name == "Drip irrigation kit") box.Items[slotCounter] = new DripIrrigationKit(fi.TranslationKey);
-                        else box.Items[slotCounter] = new IObject(fi.Name, "", 1, 1, fi.TranslationKey);
+                        else box.Items[slotCounter] = new IObject(fi.Name, 1, 1, fi.TranslationKey);
                         break;
                     case "Seed":
                         box.Items[slotCounter] = new Seed(fi.Name, 10, 10, fi.TranslationKey);
@@ -222,7 +222,7 @@ public class Farmazon : MonoBehaviour
                         box.Items[slotCounter] = new Fertilizer(10, 10, fi.TranslationKey);
                         break;                          
                     case "Other":
-                        box.Items[slotCounter] = new IObject(fi.Name, "", 10, 10, fi.TranslationKey);
+                        box.Items[slotCounter] = new IObject(fi.Name, 10, 10, fi.TranslationKey);
                         break;
                 }
 

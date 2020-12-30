@@ -3,50 +3,66 @@
 		<Name>Sticks</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>0</MediumValue>
+		<TranslationKey>Sticks</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Wheat</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>0</MediumValue>
+		<TranslationKey>Wheat</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Tomato</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>4</MediumValue>
+		<TranslationKey>Tomato</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Carrot</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>3</MediumValue>
+		<TranslationKey>Carrot</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Potato</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>3</MediumValue>
+		<TranslationKey>Potato</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Pumpkin</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>25</MediumValue>
+		<TranslationKey>Pumpkin</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Onion</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>4</MediumValue>
+		<TranslationKey>Onion</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Lettuce</Name>
 		<Type>Vegetables</Type>
 		<MediumValue>11</MediumValue>
+		<TranslationKey>Lettuce</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Bread</Name>
 		<Type>Food</Type>
 		<MediumValue>45</MediumValue>
+		<TranslationKey>Bread</TranslationKey>
 	</Product>
 	<Product>
 		<Name>Water bottle</Name>
 		<Type>Beverages</Type>
 		<MediumValue>75</MediumValue>
+		<TranslationKey>WaterBottle</TranslationKey>
+	</Product>
+	<Product>
+		<Name>Glass bottle</Name>
+		<Type>None</Type>
+		<MediumValue>0</MediumValue>
+		<TranslationKey>GlassBottle</TranslationKey>
 	</Product>
 </Products>

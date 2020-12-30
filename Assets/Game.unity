@@ -1424,8 +1424,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41934048}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.75, y: -2.625, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 20.825, y: -2.875, z: 0}
+  m_LocalScale: {x: 1, y: 1.045, z: 1}
   m_Children:
   - {fileID: 219112914}
   - {fileID: 1614413516}
@@ -1723,6 +1723,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 8300000, guid: b3104ba2158fa49409580ae30914c159,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 12850992}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3285,7 +3296,7 @@ GameObject:
   - component: {fileID: 79613110}
   - component: {fileID: 79613111}
   m_Layer: 16
-  m_Name: Obstacle
+  m_Name: Basement obstacle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3318,7 +3329,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.04732704, y: -0.14198112}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3329,7 +3340,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.3, y: 1.75}
+  m_Size: {x: 3.2741852, y: 1.758605}
   m_EdgeRadius: 0
 --- !u!1 &83172566
 GameObject:
@@ -4585,8 +4596,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2.5}
-  m_SizeDelta: {x: -20, y: -5}
+  m_AnchoredPosition: {x: 0, y: 7.5}
+  m_SizeDelta: {x: -20, y: -15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118886338
 MonoBehaviour:
@@ -6051,6 +6062,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 8300000, guid: 9799ab97e5e151b428a54168ad02ffed,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 12850992}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -8828,12 +8850,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9491,7 +9513,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -35}
-  m_SizeDelta: {x: 128, y: 64}
+  m_SizeDelta: {x: 256, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &264647002
 MonoBehaviour:
@@ -9579,7 +9601,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 682546f48e758f4428fed481da29f40f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c207118c354f0a94f845d63d64227c08, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10352,7 +10374,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1059466318}
-  - {fileID: 355931258}
   m_Father: {fileID: 793250884}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10963,7 +10984,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306331996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.27, y: 12.1, z: 0}
+  m_LocalPosition: {x: -10.27, y: 12.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1711025024}
@@ -10993,7 +11014,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 21.25, y: 0.2}
+  m_Size: {x: 21.25, y: 0.3}
   m_EdgeRadius: 0
 --- !u!1 &308524550
 GameObject:
@@ -11873,6 +11894,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 12850992}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &338125502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12580,7 +12612,7 @@ GameObject:
   - component: {fileID: 355931260}
   - component: {fileID: 355931259}
   m_Layer: 5
-  m_Name: Take object icon
+  m_Name: Stand take object icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12597,7 +12629,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 281342122}
+  m_Father: {fileID: 514462018}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -12696,7 +12728,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 11, y: 6.8}
+  m_Size: {x: 10.8, y: 6.8}
   m_EdgeRadius: 0
 --- !u!1 &365203763
 GameObject:
@@ -15240,7 +15272,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 471207418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.15, y: -2.375, z: 0}
+  m_LocalPosition: {x: -19.15, y: -2.3275, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1909709490}
@@ -16491,7 +16523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4f66f5de27a03548b06aa973fd7d0ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsLocalizable: 0
+  IsLocalizable: 1
 --- !u!1 &512536911
 GameObject:
   m_ObjectHideFlags: 0
@@ -16689,6 +16721,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 530852566}
+  - {fileID: 355931258}
   m_Father: {fileID: 793250884}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18237,7 +18270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -22121,7 +22154,7 @@ GameObject:
   - component: {fileID: 690391568}
   - component: {fileID: 690391569}
   m_Layer: 16
-  m_Name: Obstacle
+  m_Name: Basement obstacle 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22154,7 +22187,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.05163002, y: -0.12477136}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -22165,7 +22198,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8, y: 0.52}
+  m_Size: {x: 1.7655792, y: 0.511395}
   m_EdgeRadius: 0
 --- !u!1 &692806718
 GameObject:
@@ -23995,7 +24028,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743371638}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.859, y: 1.579, z: 0}
+  m_LocalPosition: {x: 7.859, y: 1.7015, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -24744,7 +24777,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757286940}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.75, y: 1.375, z: 1}
+  m_LocalPosition: {x: 6.75, y: 1.5, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1448245980}
@@ -26686,63 +26719,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &827980467
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 827980468}
-  - component: {fileID: 827980469}
-  m_Layer: 16
-  m_Name: Obstacle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &827980468
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 827980467}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.5, y: 7.15, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1711025024}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &827980469
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 827980467}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3.5, y: 1.75}
-  m_EdgeRadius: 0
 --- !u!1 &829350580
 GameObject:
   m_ObjectHideFlags: 0
@@ -27209,6 +27185,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3a3fda884feba124a8b3428107640f9e, type: 3}
   - {fileID: 8300000, guid: c9229f8449a06d54fbb8e51e6ad0d895, type: 3}
   - {fileID: 8300000, guid: c6be81612ca51014a9eab69997b31ed6, type: 3}
+  - {fileID: 8300000, guid: e2502add159415242b83cf14332732ff, type: 3}
   FadeRate: 1
   AudioSource: {fileID: 0}
 --- !u!114 &830983565
@@ -29357,8 +29334,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2.5}
-  m_SizeDelta: {x: -20, y: -15}
+  m_AnchoredPosition: {x: 0, y: 4.9999995}
+  m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &915236581
 MonoBehaviour:
@@ -32192,6 +32169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1014680330}
+  - component: {fileID: 1014680331}
   m_Layer: 5
   m_Name: Composter finished
   m_TagString: Untagged
@@ -32219,6 +32197,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1014680331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014680329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4f66f5de27a03548b06aa973fd7d0ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsLocalizable: 0
 --- !u!1 &1017958589
 GameObject:
   m_ObjectHideFlags: 0
@@ -35331,7 +35322,7 @@ GameObject:
   - component: {fileID: 1163121105}
   - component: {fileID: 1163121106}
   m_Layer: 16
-  m_Name: Obstacle
+  m_Name: House obstacle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35345,7 +35336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163121104}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -29.399, y: 7.236, z: 0}
+  m_LocalPosition: {x: -29.375, y: 7.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1711025024}
@@ -35375,7 +35366,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.26, y: 2}
+  m_Size: {x: 3.25, y: 1.75}
   m_EdgeRadius: 0
 --- !u!1 &1167166597
 GameObject:
@@ -40093,7 +40084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -47154,6 +47145,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 12850992}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1487826646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48977,7 +48979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -49758,7 +49760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -50057,7 +50059,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1587250188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.0625, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1436347728}
@@ -52598,7 +52600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -53248,7 +53250,7 @@ Transform:
   - {fileID: 306331997}
   - {fileID: 363734146}
   - {fileID: 1163121105}
-  - {fileID: 827980468}
+  - {fileID: 1944824363}
   - {fileID: 79613110}
   - {fileID: 690391568}
   m_Father: {fileID: 0}
@@ -53309,7 +53311,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 6cb1711bb4b76b049a534c31580e3d21, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -57531,13 +57533,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40bbb00b1a57e8e40a8f68edcc26b265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HouseExterior: {fileID: 0}
   PlayerHalloweenController: {fileID: 9100000, guid: b1cf506bfec39314b8dad8102488f742,
+    type: 2}
+  PlayerChristmasController: {fileID: 9100000, guid: 8d6358efcac0c684ba6d5a825a4fdabc,
     type: 2}
   HouseExperiorHalloween: {fileID: 21300000, guid: bf7d7a5f44d7e3c47a7404f6f4def43c,
     type: 3}
+  HouseExperiorChristmas: {fileID: 21300000, guid: 75eb4fcd27560e646bb2b4b783e03fdf,
+    type: 3}
   InitialModuleHalloween: {fileID: 684091123}
   LastModuleHalloween: {fileID: 1514700354}
+  DeliveryBoxChristmasAA: {fileID: 21300000, guid: 86e7f0ed297644d40a70db85fd89eec0,
+    type: 3}
+  PresentChristmasAA: {fileID: 21300000, guid: c1b7dbe709a58c84fb252936a1ee092d, type: 3}
 --- !u!114 &1859907981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60230,6 +60238,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940674396}
   m_CullTransparentMesh: 0
+--- !u!1 &1944824362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1944824363}
+  - component: {fileID: 1944824364}
+  m_Layer: 16
+  m_Name: House obstacle 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1944824363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944824362}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -29, y: 6.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1711025024}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1944824364
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944824362}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 0.25}
+  m_EdgeRadius: 0
 --- !u!1 &1948421085
 GameObject:
   m_ObjectHideFlags: 0
@@ -63720,7 +63785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2091015568
 RectTransform:
   m_ObjectHideFlags: 0
@@ -64817,7 +64882,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136278617}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4, y: -5.375, z: 1}
+  m_LocalPosition: {x: -4, y: -5.25, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1448245980}
@@ -65343,7 +65408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:

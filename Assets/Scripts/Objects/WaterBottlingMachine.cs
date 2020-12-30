@@ -35,11 +35,11 @@ public class WaterBottlingMachine : BuildableObject
     public void TakeWaterBottle()
     {
         if (State != MachineState.FINISHED) return;
-        if (Inventory.AddObject(new IObject("Water bottle", "", 1, 10, "WaterBottle")) > 0)
+        if (Inventory.AddObject(new IObject("Water bottle", 1, 10, "WaterBottle")) > 0)
         {             
             Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Water bottling machine/Available");
             State = MachineState.AVAILABLE;
-            Model.transform.Find("Warning").gameObject.SetActive(false);
+            //Model.transform.Find("Warning").gameObject.SetActive(false);
             UI.Elements["Water bottling machine take water bottle image"].GetComponent<Image>().sprite = UI.Sprites["None"];
             UI.Elements["Water bottling machine take water bottle amount"].GetComponent<Text>().text = "x 0";
             UI.Elements["Water bottling machine available"].SetActive(true);
@@ -52,7 +52,7 @@ public class WaterBottlingMachine : BuildableObject
     {
         Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Water bottling machine/Finished");
         State = MachineState.FINISHED;
-        Model.transform.Find("Warning").gameObject.SetActive(true);
+        //Model.transform.Find("Warning").gameObject.SetActive(true);
         Master.Data.LastDayEnergyUsage++;
     }
 
@@ -82,7 +82,7 @@ public class WaterBottlingMachine : BuildableObject
                 break;
             case MachineState.FINISHED:
                 Model.transform.Find("Sprite").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Water bottling machine/Finished");
-                Model.transform.Find("Warning").gameObject.SetActive(true);
+                //Model.transform.Find("Warning").gameObject.SetActive(true);
                 break;
         }
     }

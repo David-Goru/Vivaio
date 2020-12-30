@@ -9,10 +9,7 @@ public class GarbageCan : BuildableObject
     [System.NonSerialized]
     public List<IObject> Items;
 
-    public GarbageCan(string translationKey) : base("Garbage can", 1, 1, translationKey)
-    {
-        Items = new List<IObject>();
-    }
+    public GarbageCan(string translationKey) : base("Garbage can", 1, 1, translationKey) {}
 
     public void ThrowItem()
     {
@@ -20,15 +17,19 @@ public class GarbageCan : BuildableObject
         {
             IObject trash = Inventory.Data.ObjectInHand;
             Items.Add(trash);
-
-            GameObject itemUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Trash"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-            itemUI.transform.SetParent(UI.Elements["Garbage can objects list"].transform, false);
-            itemUI.transform.SetAsFirstSibling();
-            itemUI.transform.Find("Image").GetComponent<Image>().sprite = trash.GetUISprite();
-            itemUI.transform.Find("Name").GetComponent<Text>().text = trash.GetUIName();
-            itemUI.GetComponent<Button>().onClick.AddListener(() => GetItemBack(trash, itemUI));
-
             Inventory.RemoveObject();
+
+            if (UI.ObjectOnUI == this && UI.Elements["Garbage can"].activeSelf)
+            {
+                GameObject itemUI = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Trash"), new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                itemUI.transform.SetParent(UI.Elements["Garbage can objects list"].transform, false);
+                itemUI.transform.SetAsFirstSibling();
+                itemUI.transform.Find("Image").GetComponent<Image>().sprite = trash.GetUISprite();
+                itemUI.transform.Find("Name").GetComponent<Text>().text = trash.GetUIName();
+                itemUI.GetComponent<Button>().onClick.AddListener(() => GetItemBack(trash, itemUI));
+
+                UI.Elements["Garbage can take object button"].SetActive(false);
+            }
         }
     }
 
@@ -39,12 +40,20 @@ public class GarbageCan : BuildableObject
         {
             Items.Remove(item);
             MonoBehaviour.Destroy(trashIcon);
+
+            if (Items.Count == 0) UI.Elements["Garbage can take object button"].SetActive(true);
         }
         else
         {
             item.Stack -= amountTaken;
             trashIcon.transform.Find("Name").GetComponent<Text>().text = item.GetUIName();
         }       
+    }
+
+    public override void ActionOne()
+    {
+        ThrowItem();
+        if (UI.ObjectOnUI == this && UI.Elements["Garbage can"].activeSelf) OpenUI();
     }
 
     public override void ActionTwo()
@@ -58,10 +67,17 @@ public class GarbageCan : BuildableObject
         Items = new List<IObject>();
     }
 
+    public override void OnObjectPlaced(GameObject model)
+    {
+        Model = model;
+        Items = new List<IObject>();
+    }
+
     // UI stuff
     public override void OpenUI()
     {
-        if (Items.Count > 0)
+        if (Items.Count == 0) UI.Elements["Garbage can take object button"].SetActive(true);
+        else
         {
             UI.Elements["Garbage can take object button"].SetActive(false);
             foreach (IObject item in Items)
@@ -74,7 +90,6 @@ public class GarbageCan : BuildableObject
                 itemUI.GetComponent<Button>().onClick.AddListener(() => GetItemBack(item, itemUI));
             }
         }
-        else UI.Elements["Garbage can take object button"].SetActive(true);
         
         Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/Garbage can/Open");
         UI.Elements["Garbage can"].SetActive(true);

@@ -146,15 +146,19 @@ public class TimeSystem : MonoBehaviour
 
     public void NewDayCall()
     {
-        Master.Data.ShopEarnings.Add(Shop.TodayEarnings);
-        Shop.TodayEarnings = 0;
+        if (Master.Data.ShopInaugurated)
+        {
+            Master.Data.ShopEarnings.Add(Shop.TodayEarnings);
+            Shop.TodayEarnings = 0;
+        }
 
+        int minimumMoneyLeft = 500; // So loans aren't paid until the player has at least 500 extra
         Master.Data.LastDayPaid += Master.Data.LastDayWaterUsage;
         Master.Data.LastDayPaid += Master.Data.LastDayEnergyUsage;
 
         if (Master.Data.Debt > Master.Data.DailyDebt)
         { 
-            if (Master.Data.DailyDebt + Master.Data.LastDayPaid <= Master.Data.Balance)
+            if (Master.Data.DailyDebt + Master.Data.LastDayPaid + minimumMoneyLeft <= Master.Data.Balance)
             {
                 Master.Data.Debt -= Master.Data.DailyDebt;
                 Master.Data.LastDayDebt = Master.Data.DailyDebt;
@@ -163,7 +167,7 @@ public class TimeSystem : MonoBehaviour
         }
         else if (Master.Data.Debt > 0)
         {
-            if (Master.Data.Debt + Master.Data.LastDayPaid <= Master.Data.Balance)
+            if (Master.Data.Debt + Master.Data.LastDayPaid + minimumMoneyLeft <= Master.Data.Balance)
             {
                 Master.Data.LastDayDebt = Master.Data.Debt;
                 Master.Data.LastDayPaid += Master.Data.Debt;
@@ -236,7 +240,11 @@ public class TimeSystem : MonoBehaviour
 
         UI.Elements["Clock"].GetComponent<Image>().sprite = ClockDay;
         
-        if (!Data.Sleeping) MusicHandler.StartTransition(SongType.ShopOpen);
+        if (!Data.Sleeping)
+        {
+            if (Master.GameEdition == "Christmas") MusicHandler.StartTransition(SongType.ShopOpenChristmas);
+            else MusicHandler.StartTransition(SongType.ShopOpen);
+        }
     }
 
     void setEvening()

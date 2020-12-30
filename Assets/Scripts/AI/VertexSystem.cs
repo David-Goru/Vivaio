@@ -37,12 +37,12 @@ public class VertexSystem : MonoBehaviour
             {
                 for (int j = 0; j < GridSizeY; j++)
                 {
-                    if (GridInfo[i,j].Floor != "None")
+                    if (GridInfo[i,j].Floor != "None" && GridInfo[i,j].Floor != "House ground" && GridInfo[i,j].Floor != "Plowed soil")
                     {
                         GameObject floor = Instantiate(Resources.Load<GameObject>("Objects/" + GridInfo[i,j].Floor), GridInfo[i,j].Pos, Quaternion.Euler(0, 0, 0));
                         floor.GetComponent<BoxCollider2D>().enabled = true;
 
-                        if (GridInfo[i,j].Floor == "Composite tile")
+                        if (GridInfo[i,j].Floor == "Composite tile" || GridInfo[i,j].Floor == "Dirt tile")
                             floor.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Objects/" + GridInfo[i,j].Floor + "/" + GridInfo[i,j].FloorType);
                     }
                 }
@@ -148,8 +148,7 @@ public class VertexSystem : MonoBehaviour
     public static void CreateGrid()
     {
         GridInfo = new Vertex[GridSizeX, GridSizeY];
-        Vector2 fixVector = new Vector3(-0.3f, -0.35f);
-        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2 + fixVector;
+        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2;
 
         Vector2 vertexPosition = Vector2.one;
         VertexState state = VertexState.Available;
@@ -182,8 +181,7 @@ public class VertexSystem : MonoBehaviour
         }
 
         // Get bottom left position
-        Vector2 fixVector = new Vector3(-0.3f, -0.35f);
-        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2 + fixVector;
+        Vector2 bottomLeft = Vector2.zero - Vector2.right * GridWorldSize.x / 2 - Vector2.up * GridWorldSize.y / 2;
 
         // Add new vertex for the last 5 rows
         Vector2 vertexPosition = Vector2.one;
@@ -220,8 +218,10 @@ public class VertexSystem : MonoBehaviour
 
     public static Vertex VertexFromPosition(Vector2 pos)
     {
-        int x = Mathf.RoundToInt((GridSizeX - 1) * (pos.x + GridWorldSize.x / 2 + 0.3f) / GridWorldSize.x);
-        int y = Mathf.RoundToInt((GridSizeY - 1) * (pos.y + GridWorldSize.y / 2 + 0.35f) / GridWorldSize.y);
+        int x = Mathf.RoundToInt((GridSizeX - 1) * (pos.x + GridWorldSize.x / 2) / GridWorldSize.x);
+        int y = Mathf.RoundToInt((GridSizeY - 1) * (pos.y + GridWorldSize.y / 2) / GridWorldSize.y);
+
+        //Debug.Log(GridInfo[x, y].Pos + " should be " + pos);
 
         return GridInfo[x, y];
     }

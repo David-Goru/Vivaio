@@ -15,6 +15,7 @@ public class Shop : MonoBehaviour
     {
         if (Master.Data.ShopInaugurated) return;
 
+        Master.Data.ShopInaugurated = true;
         UI.Elements["Shop inauguration"].SetActive(false);
         UI.Elements["Shop management"].SetActive(true);
 
@@ -23,16 +24,13 @@ public class Shop : MonoBehaviour
 
     public void OpenShopUI()
     {
-        if (!Master.Data.ShopInaugurated)
-        {
-            UI.Elements["Shop"].SetActive(true);
-            return;
-        }
+        UI.Elements["Shop"].SetActive(true);
+        if (!Master.Data.ShopInaugurated) return;
 
         // Earnings
         int days = Master.Data.ShopEarnings.Count;
         int yesterdayEarnings = days >= 1 ? Master.Data.ShopEarnings[days - 1] : 0;
-        UI.Elements["Shop daily earnings yesterday"].GetComponent<Text>().text = string.Format(Localization.Translations["shop_earnings_yesterday_value"], yesterdayEarnings);
+        UI.Elements["Shop earnings yesterday"].GetComponent<Text>().text = string.Format(Localization.Translations["shop_earnings_yesterday_value"], yesterdayEarnings);
 
         if (days >= 7)
         {
@@ -47,6 +45,12 @@ public class Shop : MonoBehaviour
             UI.Elements["Shop earnings last 14 days"].GetComponent<Text>().text = string.Format(Localization.Translations["shop_earnings_last_14_days_value"], last14DaysEarnings, Mathf.Floor(last14DaysEarnings / 14));
         }
         else UI.Elements["Shop earnings last 14 days"].GetComponent<Text>().text = Localization.Translations["shop_earnings_no_data"];
+
+        // Clean all texts
+        foreach (Transform t in UI.Elements["Products list"].transform)
+        {
+            Destroy(t.gameObject);
+        }
 
         // Stock
         Dictionary<string, int> productsStock = new Dictionary<string, int>();

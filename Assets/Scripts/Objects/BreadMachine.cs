@@ -102,7 +102,7 @@ public class BreadMachine : BuildableObject
         if (State != MachineState.FINISHED) return;
         if (DoughAmount > 0)
         {
-            int amountTaken = Inventory.AddObject(new IObject("Bread dough", "", DoughAmount, 10, "BreadDough"));
+            int amountTaken = Inventory.AddObject(new IObject("Bread dough", DoughAmount, 10, "BreadDough"));
             if (amountTaken == DoughAmount)
             {
                 DoughAmount = 0;                

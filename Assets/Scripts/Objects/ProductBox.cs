@@ -22,74 +22,119 @@ public class ProductBox : BuildableObject
 
     public void AddProduct()
     {
-        if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
-        Basket basket = (Basket)Inventory.Data.ObjectInHand;
-        if (basket.Amount == 0) return;
-        if (Item == null)
+        if (Inventory.Data.ObjectInHand == null) return;
+
+        if (Inventory.Data.ObjectInHand is Basket)
         {
-            Item = basket.Product;
-            ItemName = basket.Product.Name;
-            int amountPlaced;
-            if (basket.Amount <= MaxAmount)
+            Basket basket = (Basket)Inventory.Data.ObjectInHand;
+            if (basket.Amount == 0) return;
+        
+            if (Item == null)
             {
-                amountPlaced = basket.Amount;
-                basket.Amount = 0;
-                basket.Product = null;
+                Item = basket.Product;
+                ItemName = basket.Product.Name;
+                int amountPlaced;
+                if (basket.Amount <= MaxAmount)
+                {
+                    amountPlaced = basket.Amount;
+                    basket.Amount = 0;
+                    basket.Product = null;
+                }
+                else
+                { 
+                    amountPlaced = MaxAmount;
+                    basket.Amount -= amountPlaced;
+                }
+                Amount += amountPlaced;
+
                 Inventory.ChangeObject();
+                Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Big display/" + Item.Name);
+                Model.transform.Find("Product").gameObject.SetActive(true);
             }
-            else
-            { 
-                amountPlaced = MaxAmount;
+            else if (Item.Name == basket.Product.Name)
+            {
+                int amountPlaced;
+                if (basket.Amount <= (MaxAmount - Amount)) amountPlaced = basket.Amount;
+                else amountPlaced = MaxAmount - Amount;
+
+                Amount += amountPlaced;
                 basket.Amount -= amountPlaced;
-            }
-            Amount += amountPlaced;
-
-            Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Big display/" + Item.Name);
-            Model.transform.Find("Product").gameObject.SetActive(true);
-        }
-        else if (Item.Name == basket.Product.Name)
-        {
-            int amountPlaced;
-            if (basket.Amount <= (MaxAmount - Amount)) amountPlaced = basket.Amount;
-            else amountPlaced = MaxAmount - Amount;
-
-            Amount += amountPlaced;
-            basket.Amount -= amountPlaced;
-            if (basket.Amount == 0)
-            {
-                basket.Product = null;
+                if (basket.Amount == 0) basket.Product = null;
                 Inventory.ChangeObject();
             }
         }
+        else if (Products.ProductsList.Exists(x => x.Name == Inventory.Data.ObjectInHand.Name))
+        {        
+            if (Item == null)
+            {
+                Item = Products.ProductsList.Find(x => x.Name == Inventory.Data.ObjectInHand.Name);
+                ItemName = Inventory.Data.ObjectInHand.Name;
+                int amountPlaced;
+                if (Inventory.Data.ObjectInHand.Stack <= MaxAmount) amountPlaced = Inventory.Data.ObjectInHand.Stack;
+                else amountPlaced = MaxAmount;                
+                Amount += amountPlaced;
+
+                Inventory.RemoveObject(amountPlaced);
+                Model.transform.Find("Product").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Big display/" + Item.Name);
+                Model.transform.Find("Product").gameObject.SetActive(true);
+            }
+            else if (Item.Name == Inventory.Data.ObjectInHand.Name)
+            {
+                int amountPlaced;
+                if (Inventory.Data.ObjectInHand.Stack <= (MaxAmount - Amount)) amountPlaced = Inventory.Data.ObjectInHand.Stack;
+                else amountPlaced = MaxAmount - Amount;
+
+                Amount += amountPlaced;
+                Inventory.RemoveObject(amountPlaced);
+            }
+        }
+        else return;
+
         UI.Elements["Product box product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
         UI.Elements["Product box product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
     }
 
     public void TakeProduct()
     {
-        if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
-        Basket basket = (Basket)Inventory.Data.ObjectInHand;
-        if (basket.Amount > 0 && basket.Product != Item) return;
         if (Item == null) return;
 
-        int amount;
-        int maxAmount = 20 - basket.Amount;
-        if (maxAmount >= Amount)
+        if (Item.Type != "Vegetables")
         {
-            amount = Amount;
-            if (amount > 0) basket.Product = Item;
-            Item = null;
-            ItemName = "None";
-            Model.transform.Find("Product").gameObject.SetActive(false);
+            int amountAdded = Inventory.AddObject(new IObject(Item.Name, Amount > 10 ? 10 : Amount, 10, Item.TranslationKey));            
+
+            Amount -= amountAdded;
+            if (Amount == 0)
+            {
+                Item = null;
+                ItemName = "None";
+                Model.transform.Find("Product").gameObject.SetActive(false);
+            }
         }
-        else
+        else if (Inventory.Data.ObjectInHand != null && Inventory.Data.ObjectInHand is Basket)
         {
-            amount = maxAmount;
-            if (amount > 0) basket.Product = Item;
+            Basket basket = (Basket)Inventory.Data.ObjectInHand;
+            if (basket.Amount > 0 && basket.Product != Item) return;
+
+            int amount;
+            int maxAmount = 20 - basket.Amount;
+            if (maxAmount >= Amount)
+            {
+                amount = Amount;
+                if (amount > 0) basket.Product = Item;
+                Item = null;
+                ItemName = "None";
+                Model.transform.Find("Product").gameObject.SetActive(false);
+            }
+            else
+            {
+                amount = maxAmount;
+                if (amount > 0) basket.Product = Item;
+            }
+            Amount -= amount;
+            basket.Amount += amount;
+            Inventory.ChangeObject();
         }
-        Amount -= amount;
-        basket.Amount += amount;
-        Inventory.ChangeObject();
+
         UI.Elements["Product box product amount"].GetComponent<Text>().text = string.Format("{0}/{1}", Amount, MaxAmount);
         UI.Elements["Product box product"].GetComponent<Image>().sprite = UI.Sprites[ItemName];
     }

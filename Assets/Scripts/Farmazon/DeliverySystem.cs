@@ -57,6 +57,7 @@ public class DeliverySystem : MonoBehaviour
                 box.Point = point;
                 box.Model = Instantiate(Resources.Load<GameObject>("Objects/Delivery box"), point.Pos, Quaternion.Euler(0, 0, 0));
                 box.Model.name = "Delivery box";
+                if (Master.GameEdition == "Christmas") box.Model.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite = VersionHandlerGame.DeliveryBoxChristmas;
                 Data.DeliveryList.Remove(box);
                 box.Placed = true;
                 box.WorldPosition = point.Pos;

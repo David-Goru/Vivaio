@@ -242,6 +242,7 @@ public class PlowedSoil : MonoBehaviour
                     {
                         Vertex v = VertexSystem.VertexFromPosition(t.transform.position);
                         v.State = VertexState.Available;
+                        v.Floor = "None";
                     }
 
                     if (hasDripBottle)

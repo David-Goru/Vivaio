@@ -64,8 +64,8 @@ public class Vertex : IHeapItem<Vertex>
     public int GetPenalty()
     {
         if (State == VertexState.Walkable) return 0;
-        else if (FloorType != "None") return 3;
-        else return 6;
+        else if (FloorType != "None") return 5;
+        else return 50;
     }
 }
 

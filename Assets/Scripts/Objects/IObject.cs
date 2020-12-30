@@ -22,10 +22,9 @@ public class IObject
     [SerializeField]
     public string TranslationKey;
 
-    public IObject(string name, string uiWindow, int stack, int maxStack, string translationKey)
+    public IObject(string name, int stack, int maxStack, string translationKey)
     {
         Name = name;
-        UIWindow = uiWindow;
         Stack = stack;
         MaxStack = maxStack;
         TranslationKey = translationKey;
@@ -45,6 +44,7 @@ public class IObject
         {
             Model = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Objects/" + Name), WorldPosition, Quaternion.Euler(0, 0, 0));                    
             Model.GetComponent<BoxCollider2D>().enabled = true;
+            if (Model.transform.Find("Obstacle") != null) Model.transform.Find("Obstacle").gameObject.SetActive(true);
         }
         else // Item on the floor
         {                    
@@ -88,6 +88,11 @@ public class IObject
         UI.ObjectOnUI.CloseUI();
 
         ObjectsHandler.Data.Objects.Remove(UI.ObjectOnUI);
+
+        if (UI.ObjectOnUI is CashRegister) Master.Data.CashRegisters.Remove((CashRegister)UI.ObjectOnUI);
+        else if (UI.ObjectOnUI is Stand) Master.Data.Stands.Remove((Stand)UI.ObjectOnUI);
+        else if (UI.ObjectOnUI is BottlesRecycler) Master.Data.BottlesRecyclers.Remove((BottlesRecycler)UI.ObjectOnUI);
+
         UI.ObjectOnUI.Placed = false;
         foreach (Transform t in UI.ObjectOnUI.Model.transform.Find("Vertices"))
         {                            

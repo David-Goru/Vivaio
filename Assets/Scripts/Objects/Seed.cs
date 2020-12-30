@@ -8,7 +8,7 @@ public class Seed : IObject
     [SerializeField]
     public string Type;
 
-    public Seed(string type, int stack,  int maxStack, string translationKey) : base(type + " seeds", "", stack, maxStack, translationKey)
+    public Seed(string type, int stack,  int maxStack, string translationKey) : base(type + " seeds", stack, maxStack, translationKey)
     {
         Type = type;
         Name = type + " seeds";

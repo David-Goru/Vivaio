@@ -117,13 +117,13 @@
 		<Price>250</Price>
 		<Description>A stand to sell up to 35 units of bread.</Description>
 		<Category>Shop</Category>
-		<TranslationKey>BigVegetablesStand</TranslationKey>
+		<TranslationKey>FoodStand</TranslationKey>
 	</FarmazonItem>
 	<FarmazonItem>
 		<Name>Cash register</Name>
 		<Use>Build</Use>
 		<Price>250</Price>
-		<Description>This is the description of the cash register.</Description>
+		<Description>If you ever want to sell something, you'd need this.</Description>
 		<Category>Shop</Category>
 		<TranslationKey>CashRegister</TranslationKey>
 	</FarmazonItem>
@@ -182,6 +182,22 @@
 		<Description>A pack of 10 wood tiles.</Description>
 		<Category>Floors</Category>
 		<TranslationKey>WoodTile</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Marble tile</Name>
+		<Use>Floor</Use>
+		<Price>45</Price>
+		<Description>A pack of 10 marble tiles.</Description>
+		<Category>Floors</Category>
+		<TranslationKey>MarbleTile</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Dirt tile</Name>
+		<Use>Floor</Use>
+		<Price>5</Price>
+		<Description>A pack of 10 dirt tiles.</Description>
+		<Category>Floors</Category>
+		<TranslationKey>DirtTile</TranslationKey>
 	</FarmazonItem>
 	<FarmazonItem>
 		<Name>Drip bottle</Name>
@@ -259,7 +275,7 @@
 		<Name>Water bottling machine</Name>
 		<Use>Build</Use>
 		<Price>500</Price>
-		<Description>Water bottling machine description.</Description>
+		<Description>Used to fill glass bottles with water.</Description>
 		<Category>Machines</Category>
 		<TranslationKey>WaterBottlingMachine</TranslationKey>
 	</FarmazonItem>
@@ -275,7 +291,7 @@
 		<Name>Garbage can</Name>
 		<Use>Build</Use>
 		<Price>50</Price>
-		<Description>This is the description of the garbage can.</Description>
+		<Description>Get's rid of anything inside it every morning.</Description>
 		<Category>Others</Category>
 		<TranslationKey>GarbageCan</TranslationKey>
 	</FarmazonItem>
@@ -283,7 +299,7 @@
 		<Name>Bottles recycler</Name>
 		<Use>Build</Use>
 		<Price>100</Price>
-		<Description>Bottles recycler description.</Description>
+		<Description>Customers will put glass bottles here after buying water bottles.</Description>
 		<Category>Others</Category>
 		<TranslationKey>BottlesRecycler</TranslationKey>
 	</FarmazonItem>
@@ -294,5 +310,13 @@
 		<Description>A pack of 10 glass bottles.</Description>
 		<Category>Others</Category>
 		<TranslationKey>GlassBottle</TranslationKey>
+	</FarmazonItem>
+	<FarmazonItem>
+		<Name>Outdoor light</Name>
+		<Use>Build</Use>
+		<Price>50</Price>
+		<Description>Darkness is just a question of perspective.</Description>
+		<Category>Others</Category>
+		<TranslationKey>OutdoorLight</TranslationKey>
 	</FarmazonItem>
 </FarmazonItems>

@@ -27,7 +27,7 @@ public class Sign : BuildableObject
 
     public override void LoadObjectCustom()
     {
-        UpdateIcon(Icon);
+        if (Placed) UpdateIcon(Icon);
     }
 
     // UI stuff
