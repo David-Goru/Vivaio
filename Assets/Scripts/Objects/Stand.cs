@@ -155,7 +155,7 @@ public class Stand : BuildableObject
                     Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
                 }
             }
-                return;
+            return;
         }
 
         if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
@@ -205,6 +205,9 @@ public class Stand : BuildableObject
         {
             int cost = amount * ItemValue;
             Amount -= amount;
+            int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
+            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
             return new Tuple(amount.ToString(), cost);
         }
         else if (Amount > 0)
