@@ -27,6 +27,7 @@ public class ToolPhysical : MonoBehaviour
             case "Basket":
                 Tool = ToolsHolder.Data.Basket;
                 Tool.Clips = Clips;
+                ToolsHolder.Data.Basket.LoadObjectCustom();                
                 break;
         }
         Tool.Model = gameObject;

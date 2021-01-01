@@ -52,7 +52,7 @@ public class Stand : BuildableObject
         {
             basket = (Basket)Inventory.Data.ObjectInHand;
 
-            if (basket.Amount == 0 || basket.Product.Name == "Sticks" || basket.Product.Name == "Wheat") return;
+            if (basket.Amount == 0 || basket.Product == null || basket.Product.Name == "Sticks" || basket.Product.Name == "Wheat") return;
 
             p = basket.Product;
             amount = basket.Amount;
@@ -160,6 +160,7 @@ public class Stand : BuildableObject
 
         if (Inventory.Data.ObjectInHand == null || !(Inventory.Data.ObjectInHand is Basket)) return;
         Basket basket = (Basket)Inventory.Data.ObjectInHand;
+        
         if (basket.Amount > 0 && basket.Product != Item) return;
 
         int amount;
@@ -243,7 +244,10 @@ public class Stand : BuildableObject
         if (Amount > 0)
         {
             Item = Products.ProductsList.Find(x => x.Name == ItemName);
-            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name);
+
+            int spriteAmount = (int)Mathf.Ceil(((float)Amount / (float)MaxAmount) * 5.0f) - 1;
+            if (Item.Name == "Water bottle") spriteAmount = Amount - 1;
+            Model.transform.Find("Display").gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Shop/Stands/" + DisplayType + "/" + Item.Name + " " + spriteAmount);
             Model.transform.Find("Display").gameObject.SetActive(true);
         }                        
 

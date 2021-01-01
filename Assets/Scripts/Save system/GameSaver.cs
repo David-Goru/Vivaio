@@ -49,6 +49,7 @@ public class GameSaver : MonoBehaviour
 
         // Tools system (Physical)
         save.ToolsData = ToolsHolder.Data;
+        if (ToolsHolder.Data.Basket.Amount > 0) save.ToolsData.Basket.ProductName = ToolsHolder.Data.Basket.Product.Name;
 
         // Inventory system
         save.InventoryData = Inventory.Data;
